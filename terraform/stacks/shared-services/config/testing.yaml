@@ -1,0 +1,19 @@
+platform_name: az-platform-lab
+environment: testing
+location: westeurope
+
+monitoring:
+  retention_days: 30
+  sli_signals:
+    - log-ingestion
+    - diagnostic-settings
+    - alert-actionability
+
+tags:
+  purpose: platform-showcase
+  single_source_of_truth: git
+
+governance:
+  change_model: pull-request
+  required_reviews: 1
+  error_budget_policy: review-before-observability-change

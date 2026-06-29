@@ -1,0 +1,3 @@
+environment   = "production"
+location      = "germanywestcentral"
+platform_name = "az-platform-lab"

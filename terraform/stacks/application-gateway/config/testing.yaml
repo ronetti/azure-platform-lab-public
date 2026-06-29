@@ -1,0 +1,33 @@
+remote_state:
+  network:
+    resource_group_name: rg-tfstate-platform
+    storage_account_name: sttfstateplatform
+    container_name: tfstate
+    key: platform/network/testing.tfstate
+
+application_gateway:
+  name: agw-platform-testing
+  subnet_key: ingress
+  waf_policy: prevention
+  listeners:
+    - name: https-app
+      host_name: app.testing.example.com
+      protocol: Https
+      port: 443
+  backends:
+    - name: app
+      targets:
+        - 10.10.1.20
+      probe_path: /healthz
+  availability:
+    sli_signals:
+      - listener-availability
+      - backend-health
+      - 5xx-rate
+      - latency
+    error_budget_policy: review-before-edge-change
+
+governance:
+  single_source_of_truth: git
+  change_model: pull-request
+  required_reviews: 1

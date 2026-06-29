@@ -1,0 +1,26 @@
+remote_state:
+  compute:
+    resource_group_name: rg-tfstate-platform
+    storage_account_name: sttfstateplatform
+    container_name: tfstate
+    key: platform/compute/testing.tfstate
+
+host_groups:
+  mgmt-01:
+    - linux
+    - management
+
+pipeline:
+  runner: azure-devops-managed-pool
+  guardrails:
+    - yaml-lint
+    - ansible-lint
+    - syntax-check
+    - check-mode
+    - approval-before-production
+
+governance:
+  single_source_of_truth: terraform-remote-state
+  change_model: separate-ansible-pipeline
+  required_reviews: 1
+  error_budget_policy: stabilize-before-config-drift-change
