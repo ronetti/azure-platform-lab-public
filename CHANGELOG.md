@@ -45,8 +45,9 @@ All notable changes to this anonymized Azure Platform Lab are documented here.
 
 ### Geändert
 
-- Externe GitHub Actions sind auf vollständige Commit-SHAs gepinnt; lesbare
-  Versionskommentare dokumentieren den jeweiligen Release-Stand.
+- Externe GitHub Actions sind auf vollständige Commit-SHAs und aktuelle
+  Node.js-24-fähige Releases gepinnt; lesbare Versionskommentare dokumentieren
+  den jeweiligen Release-Stand.
 - Terraform-Provider-Auswahlen der ausführbaren Root-Stacks sind über
   eingecheckte Lockfiles reproduzierbar; der kubeconform-Download in CI wird
   vor der Ausführung per SHA-256 geprüft.
@@ -108,8 +109,9 @@ All notable changes to this anonymized Azure Platform Lab are documented here.
 
 ### Changed
 
-- External GitHub Actions are pinned to full commit SHAs with readable version
-  comments documenting the corresponding release.
+- External GitHub Actions are pinned to full commit SHAs and current
+  Node.js-24-capable releases, with readable version comments documenting the
+  corresponding release.
 - Reworked the main README into a bilingual portfolio cover and architecture
   overview.
 - Extended GitHub Actions validation to include Terraform stack validation and
