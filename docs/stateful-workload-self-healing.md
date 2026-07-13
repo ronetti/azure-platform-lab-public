@@ -163,7 +163,8 @@ The desired operating model combines:
 
 - `terraform/stacks/shared-services` modelliert gemeinsame Monitoring-,
   Key-Vault- und Storage-Grenzen.
-- `terraform/stacks/compute/config/testing.yaml` modelliert VM-Intent als
+- `compute.virtual_machines` in
+  `environments/nonproduction/nonproduction.yaml` modelliert VM-Intent als
   Daten.
 - `docs/monitoring.md`, `docs/runbook.md` und `docs/operating-model.md`
   dokumentieren die Betriebsseite.
@@ -174,7 +175,8 @@ The desired operating model combines:
 
 - `terraform/stacks/shared-services` models shared monitoring, Key Vault and
   storage boundaries.
-- `terraform/stacks/compute/config/testing.yaml` models VM intent as data.
+- `compute.virtual_machines` in
+  `environments/nonproduction/nonproduction.yaml` models VM intent as data.
 - `docs/monitoring.md`, `docs/runbook.md` and `docs/operating-model.md`
   document the operational side.
 - `docs/restore-automation-pattern.md` describes Azure VM Backup policies,

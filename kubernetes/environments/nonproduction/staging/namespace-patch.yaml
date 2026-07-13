@@ -1,0 +1,5 @@
+- op: add
+  path: /metadata/annotations
+  value:
+    platform.azure-lab.io/cost-profile: production-like-low-baseline
+    platform.azure-lab.io/ownership: platform-team

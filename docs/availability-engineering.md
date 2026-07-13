@@ -212,8 +212,8 @@ one person's head; they can be read, checked and handed over later.
 
 ## Repo-Bezug
 
-- `terraform/stacks/*/config/testing.yaml` zeigt YAML-getriebene
-  Plattformkonfiguration.
+- `environments/nonproduction/nonproduction.yaml` zeigt die zentrale,
+  YAML-getriebene Plattformkonfiguration.
 - `.github/workflows/validate.yml` zeigt Pipeline-Validierung.
 - `docs/change-governance.md` beschreibt nachvollziehbare Änderungen, Reviews,
   Approvals und Changelogs.
@@ -226,8 +226,8 @@ one person's head; they can be read, checked and handed over later.
 
 ## Repository Mapping
 
-- `terraform/stacks/*/config/testing.yaml` shows YAML-driven platform
-  configuration.
+- `environments/nonproduction/nonproduction.yaml` shows the central,
+  YAML-driven platform configuration.
 - `.github/workflows/validate.yml` shows pipeline validation.
 - `docs/change-governance.md` describes understandable changes, reviews,
   approvals and changelogs.

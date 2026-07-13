@@ -1,4 +1,0 @@
-resource_group_name  = "rg-az-platform-lab-testing-tfstate"
-storage_account_name = "stazplatformlabtestingtf"
-container_name       = "tfstate"
-key                  = "testing/platform.tfstate"

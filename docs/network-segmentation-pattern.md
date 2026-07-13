@@ -112,6 +112,30 @@ Typical NSG intent:
 - outbound traffic can be routed through a central firewall
 - virtual machines do not require public IP addresses
 
+## Defense In Depth Mit ASGs
+
+Die Subnetze bilden die Solution- und Workload-Grenze. Application Security
+Groups können innerhalb dieser Grenze zusätzlich Rollen wie Web, Applikation
+oder Daten gruppieren. NSG-Regeln referenzieren dann logische Rollen statt
+einzelner IP-Adressen.
+
+ASGs ersetzen weder die Subnetztrennung noch die zentrale Firewall. Sie
+ergänzen beide als Defense-in-Depth-Schicht, ohne für jede VM ein eigenes
+Subnetz zu erzeugen. In diesem Repository ist das als mögliche Erweiterung
+dokumentiert und noch nicht als Terraform-Ressource implementiert.
+
+## Defense In Depth With ASGs
+
+Subnets define the solution and workload boundary. Application Security Groups
+can additionally group roles such as web, application or data within that
+boundary. NSG rules can then reference logical roles instead of individual IP
+addresses.
+
+ASGs replace neither subnet isolation nor the central firewall. They complement
+both as a defense-in-depth layer without creating a subnet for every virtual
+machine. This repository documents the option but does not yet implement ASGs
+as Terraform resources.
+
 ## Skalierungsmodell
 
 Der Adressplan sollte Kapazität für zentrale Infrastruktur und eine bekannte
@@ -143,7 +167,8 @@ The important point is the operating model:
 
 ## Repo-Bezug
 
-- `terraform/stacks/network/config/testing.yaml` modelliert die Netzwerkdaten.
+- `network` in `environments/nonproduction/nonproduction.yaml` modelliert
+  die Netzwerkdaten.
 - `terraform/stacks/network/outputs.tf` veröffentlicht Subnet IDs als stabilen
   Übergabepunkt.
 - `terraform/stacks/routing` und `terraform/stacks/firewall` nutzen diese
@@ -151,7 +176,8 @@ The important point is the operating model:
 
 ## Repository Mapping
 
-- `terraform/stacks/network/config/testing.yaml` models the network data.
+- `network` in `environments/nonproduction/nonproduction.yaml` models the
+  network data.
 - `terraform/stacks/network/outputs.tf` exposes subnet IDs as a stable
   handover point.
 - `terraform/stacks/routing` and `terraform/stacks/firewall` consume these

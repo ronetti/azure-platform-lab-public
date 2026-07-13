@@ -1,0 +1,2 @@
+# TFLint exceptions
+# RULE_ID # reason=<reason>; owner=<team>; expires=YYYY-MM-DD

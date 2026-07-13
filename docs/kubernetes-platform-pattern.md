@@ -6,6 +6,51 @@ Dieses Pattern beschreibt Kubernetes als Teil einer Plattform, nicht als
 isolierten Cluster. Workloads sollen wiederholbar, sicher, beobachtbar und
 über Konfiguration steuerbar sein.
 
+Die Darstellung folgt bewusst meiner Arbeitsweise aus dem k3s-Lab: Ich baue
+Schichten nacheinander auf, prüfe Voraussetzungen vor der Automatisierung und
+trenne den gewünschten Zustand von der späteren Verifikation im laufenden
+System.
+
+## Meine Plattformfragen
+
+- Welche Schicht entsteht gerade?
+- Welche Entscheidung ist Day 0 und später nur schwer änderbar?
+- Was stellt die Plattform bereit und was konfiguriert ein Workload-Team?
+- Welche sichere Vorgabe gilt automatisch?
+- Wie wird eine Änderung vor dem Apply sichtbar?
+- Wie werden Kosten, Verfügbarkeit und Betrieb gegeneinander abgewogen?
+
+Diese Fragen sind wichtiger als die Anzahl vorhandener Kubernetes-Manifeste.
+
+## Blueprint-Modell
+
+Das Repository nutzt keine Azure-Blueprint-Definitionen. Stattdessen bilden
+Terraform-Stacks und versionierte Kustomize-Bases die wiederverwendbaren
+Blueprints:
+
+- Der Platform Baseline Blueprint definiert Namespace-, Security-, Netzwerk-
+  und Ressourcen-Guardrails.
+- Der Web Workload Blueprint definiert einen sicheren und beobachtbaren
+  Workload-Vertrag.
+- Environment-Overlays konfigurieren Testing, Staging und Production, ohne die
+  Blueprint-Logik zu kopieren.
+
+Testing und Staging laufen getrennt in einer gemeinsamen
+Nonproduction-Umgebung. Namespaces, RBAC, Quotas und Network Policies halten ihre
+Verantwortung getrennt, während Cluster, Edge, Egress und Monitoring gemeinsam
+bezahlt werden. Production behält eine eigene Plattformgrenze, Redundanz und
+Zonenverteilung; Kostenoptimierung erfolgt dort über Messwerte, Autoscaling und
+später gegebenenfalls Reservierungen statt über den Abbau notwendiger
+Verfügbarkeit.
+
+Blue-Green gehört zur Delivery, nicht zur Plattformtopologie. Staging soll den
+parallelen Slot und den Traffic-Switch proben; dasselbe freigegebene Image wird
+anschließend in Production mit zusätzlicher Freigabe ausgerollt. Während des
+Wechsels wird Workload-Kapazität doppelt benötigt, die Plattformbasis aber
+nicht kopiert. Die vorhandenen Kubernetes-Overlays nutzen noch RollingUpdate;
+für den echten Traffic-Switch fehlt bewusst noch eine Pipeline oder ein
+Rollout-Controller.
+
 ## Purpose
 
 This pattern describes Kubernetes as part of a platform, not as an isolated
@@ -128,22 +173,19 @@ stable, while the concrete shape is changed through versioned configuration.
 
 ## Repo-Bezug
 
-- `kubernetes/apps/sample-app.yaml` zeigt Probes, Ressourcenlimits und
-  Security Context.
-- `kubernetes/namespaces/` zeigt Namespace-Grenzen.
-- `kubernetes/ingress/` zeigt kontrollierten Ingress.
-- `kubernetes/storage/` zeigt Storage-Anforderungen.
-- `helm/` zeigt Prometheus- und Grafana-Konfiguration.
-- `observability/prometheus-grafana-notes.md` beschreibt Signale und
-  Observability-Zielbild.
+- `kubernetes/blueprint-templates/platform-baseline/` definiert
+  Plattform-Guardrails.
+- `kubernetes/blueprint-templates/web-workload/` definiert den
+  Workload-Vertrag.
+- `kubernetes/environments/` zeigt kosten- und verfügbarkeitsbewusste
+  Ausprägungen.
+- `docs/monitoring.md` beschreibt Signale und das Observability-Zielbild.
 
 ## Repository Mapping
 
-- `kubernetes/apps/sample-app.yaml` shows probes, resource limits and security
-  context.
-- `kubernetes/namespaces/` shows namespace boundaries.
-- `kubernetes/ingress/` shows controlled ingress.
-- `kubernetes/storage/` shows storage requirements.
-- `helm/` shows Prometheus and Grafana configuration.
-- `observability/prometheus-grafana-notes.md` describes signals and the
-  observability target model.
+- `kubernetes/blueprint-templates/platform-baseline/` defines platform
+  guardrails.
+- `kubernetes/blueprint-templates/web-workload/` defines the workload
+  contract.
+- `kubernetes/environments/` contains cost- and availability-aware variants.
+- `docs/monitoring.md` describes signals and the observability target model.

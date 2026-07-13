@@ -1,6 +1,7 @@
 locals {
-  config_path = coalesce(var.config_file, "${path.module}/config/${var.environment}.yaml")
-  config      = yamldecode(file(local.config_path))
+  config_path        = coalesce(var.config_file, "${path.module}/../../../environments/${var.environment}/${var.environment}.yaml")
+  environment_config = yamldecode(file(local.config_path))
+  config             = local.environment_config.configuration_management
 
   inventory_hosts = {
     for name, vm in data.terraform_remote_state.compute.outputs.virtual_machines : name => {

@@ -1,0 +1,33 @@
+name: Security exception contract
+description: Validate centrally documented IaC scanner exceptions
+
+inputs:
+  directory:
+    description: >-
+      Repository-relative directory containing scanner exception files
+    required: false
+    default: assets/security_checks
+
+outputs:
+  checkov:
+    description: Comma-separated Checkov rule IDs
+    value: ${{ steps.exceptions.outputs.checkov }}
+  terrascan:
+    description: Comma-separated Terrascan rule IDs
+    value: ${{ steps.exceptions.outputs.terrascan }}
+  tflint:
+    description: Comma-separated TFLint rule IDs
+    value: ${{ steps.exceptions.outputs.tflint }}
+  tfsec:
+    description: Comma-separated tfsec rule IDs
+    value: ${{ steps.exceptions.outputs.tfsec }}
+
+runs:
+  using: composite
+  steps:
+    - name: Validate and read security exceptions
+      id: exceptions
+      shell: bash
+      run: >-
+        "${{ github.action_path }}/../../scripts/security-exceptions.sh"
+        "${{ inputs.directory }}"

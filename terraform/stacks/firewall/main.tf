@@ -1,8 +1,9 @@
 locals {
-  config_path = coalesce(var.config_file, "${path.module}/config/${var.environment}.yaml")
-  config      = yamldecode(file(local.config_path))
+  config_path        = coalesce(var.config_file, "${path.module}/../../../environments/${var.environment}/${var.environment}.yaml")
+  environment_config = yamldecode(file(local.config_path))
+  config             = local.environment_config.firewall
 
-  firewall_subnet_id = data.terraform_remote_state.network.outputs.subnet_ids[local.config.firewall.subnet_key]
+  firewall_subnet_id = data.terraform_remote_state.network.outputs.subnet_ids[local.config.subnet_key]
 }
 
 # Boundary stack:

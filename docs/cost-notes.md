@@ -41,3 +41,35 @@ For lab or demo environments, small SKUs, short retention and automatic shutdown
 Error budgets help make cost and stability decisions deliberate: when
 stabilization takes priority, scaling, retention and additional platform
 services can be evaluated more deliberately.
+
+## AKS-Umgebungsmodell / AKS Environment Model
+
+Testing und Staging laufen in einer gemeinsamen Nonproduction-Umgebung. Sie
+teilen den AKS-Cluster, Netzwerk, Edge, Egress,
+Registry, Key Vault und Monitoring. Kosten werden über Namespace-, Stage- und
+Owner-Metadaten zugeordnet. Quotas, RBAC und Network Policies begrenzen
+gegenseitige Beeinflussung.
+
+Die gemeinsame Umgebung hält eine kleine reguläre Grundlast und optionale
+Spot-Kapazität für unterbrechbare Tests. Stop/Start außerhalb definierter
+Test- und Releasefenster ist erlaubt. Ein dedizierter Staging-Node-Pool wird
+erst bei gemessener Last oder einem echten Isolationsbedarf ergänzt.
+
+Production wird nicht durch Entfernen von Redundanz verbilligt. Zwei
+System-Nodes, reguläre Workload-Nodes und Zonenverteilung bleiben Teil des
+Verfügbarkeitsvertrags. Rightsizing, Autoscaling und eine mögliche
+Reservierung werden erst nach Auswertung realer Kosten und
+Production-Auslastungsmetriken entschieden. Production teilt keine States,
+Netzwerke, Cluster, Identitäten, Secrets, Registry oder Monitoring-Ressourcen
+mit Nonproduction.
+
+Blue-Green dupliziert vorübergehend nur die auszurollende Workload. Die
+kostenintensive Plattformbasis wird dabei innerhalb derselben Umgebung nicht
+dupliziert. Die YAML-Profile sind keine Preisberechnung und kein
+Einsparversprechen.
+
+Testing and staging run in one shared nonproduction environment.
+They share fixed platform services and allocate usage by namespace and stage.
+Production keeps its own platform boundary and availability contract;
+it shares no runtime resources or state with nonproduction. Rightsizing and
+commitments require production cost and utilization data.

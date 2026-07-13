@@ -9,6 +9,20 @@ All notable changes to this anonymized Azure Platform Lab are documented here.
 
 ### Hinzugefügt
 
+- Kurze anonymisierte Plattform-Fallstudie mit im Repository überprüfbaren
+  Ergebnissen und klarer Abgrenzung zu produktiven Kundenkennzahlen.
+- Kubernetes Platform Baseline und Web Workload Blueprints mit Kustomize.
+- Kosten- und verfügbarkeitsbewusste AKS-Intents und Kubernetes-Overlays für
+  Testing, Staging und Production.
+- Namespace-, Ressourcen-, Netzwerk- und Pod-Security-Guardrails als
+  wiederverwendbarer Plattformvertrag.
+- Zentrale `assets/security_checks`-Konvention und wiederverwendbare
+  Pipeline-Action für begründete, verantwortete und befristete Scanner-
+  Ausnahmen.
+- Wiederverwendbarer GitHub-Actions-Terraform-Workflow mit Check, Validate,
+  Plan-Artefakt, Entra OIDC, geschütztem Apply, versionsgepinntem
+  Consumer-Beispiel sowie Nutzungs-READMEs für alle Terraform-Root-Stacks.
+
 - Stack-basierte Terraform-Struktur unter `terraform/stacks/`, um getrennte
   Root-Repositories und Remote-State-Übergaben zu modellieren.
 - YAML-getriebene Konfigurationsbeispiele für Network, Routing, Firewall,
@@ -31,8 +45,35 @@ All notable changes to this anonymized Azure Platform Lab are documented here.
 
 ### Geändert
 
-- Die Haupt-README wurde zu einem zweisprachigen Portfolio-Einstieg mit
-  Architekturüberblick erweitert.
+- Externe GitHub Actions sind auf vollständige Commit-SHAs gepinnt; lesbare
+  Versionskommentare dokumentieren den jeweiligen Release-Stand.
+- Terraform-Provider-Auswahlen der ausführbaren Root-Stacks sind über
+  eingecheckte Lockfiles reproduzierbar; der kubeconform-Download in CI wird
+  vor der Ausführung per SHA-256 geprüft.
+- Lose Kubernetes-Beispiele wurden durch renderbare Blueprints und
+  Environment-Overlays ersetzt.
+- Kubernetes-CI rendert und validiert Nonproduction mit Testing und Staging
+  sowie Production als getrennte Infrastrukturgrenzen.
+- Zwei kompakte Environment-Bereiche beschreiben Nonproduction und Production.
+- Testing und Staging teilen die kostenintensiven Nonproduction-Dienste;
+  Blue-Green ist als Delivery-Strategie für Staging und Production modelliert.
+- Alle Terraform-Root-Stacks besitzen parallele Nonproduction- und
+  Production-Konfigurationen mit getrennten State-Accounts und State-Schlüsseln.
+- Kubernetes gruppiert Testing und Staging unter Nonproduction und hält das
+  Production-Overlay als eigene Infrastrukturgrenze.
+- Nicht angebundene Helm-Beispielwerte und doppelte Observability-Notizen
+  wurden entfernt; das Zielbild liegt kompakt in `docs/monitoring.md`.
+- Der Kubernetes-Datenpfad ist durchgängig als Application Gateway/WAF,
+  interner AKS-Ingress und Workload-Service modelliert; TLS-Referenzen und eine
+  Blue-Green-fähige Production-Quota sind sichtbar.
+- Der alte monolithische Terraform-Root und nicht implementierte README-only
+  Module wurden zugunsten der eindeutigen Stack-Struktur entfernt.
+- Stack-spezifische Kopien von Environment- und Backend-Daten wurden durch
+  genau eine YAML- und Backend-Basis je Subscription-Grenze ersetzt.
+
+- Die Haupt-README wurde auf einen kompakten Recruiter-/Tech-Lead-Einstieg mit
+  Architektur, Wirkung, Implementierungsstatus und gezielten Deep Dives
+  reduziert.
 - GitHub Actions validieren zusätzlich Terraform-Stacks und YAML-Dateien unter
   `terraform/stacks`.
 - GitHub Actions prüfen die Configuration-Management-Guardrails.
@@ -44,6 +85,8 @@ All notable changes to this anonymized Azure Platform Lab are documented here.
 
 ### Added
 
+- Short anonymized platform case study with repository-verifiable results and
+  a clear boundary from production customer metrics.
 - Stack-based Terraform structure under `terraform/stacks/` to model separate
   root repositories and remote-state handovers.
 - YAML-driven configuration examples for network, routing, firewall, compute,
@@ -65,6 +108,8 @@ All notable changes to this anonymized Azure Platform Lab are documented here.
 
 ### Changed
 
+- External GitHub Actions are pinned to full commit SHAs with readable version
+  comments documenting the corresponding release.
 - Reworked the main README into a bilingual portfolio cover and architecture
   overview.
 - Extended GitHub Actions validation to include Terraform stack validation and

@@ -1,0 +1,287 @@
+name: Terraform Blueprint
+
+on:
+  workflow_call:
+    inputs:
+      terraform_root:
+        description: Terraform root relative to the product repository
+        required: true
+        type: string
+      environment:
+        description: Terraform environment value
+        required: true
+        type: string
+      backend_config:
+        description: Backend configuration relative to the product repository
+        required: true
+        type: string
+      state_key:
+        description: Unique state key for product, stack, and environment
+        required: true
+        type: string
+      plan_environment:
+        description: GitHub Environment containing read-only Azure OIDC variables
+        required: true
+        type: string
+      apply_environment:
+        description: Protected GitHub Environment containing apply OIDC variables
+        required: true
+        type: string
+      terraform_version:
+        description: Pinned Terraform version
+        required: false
+        default: "1.10.5"
+        type: string
+      tfvars:
+        description: Optional tfvars file relative to the product repository
+        required: false
+        default: ""
+        type: string
+      security_exceptions_path:
+        description: Directory containing the four scanner exception files
+        required: false
+        default: assets/security_checks
+        type: string
+      enable_plan:
+        description: Enable Azure login and Terraform plan
+        required: false
+        default: true
+        type: boolean
+      enable_apply:
+        description: Enable apply after branch and environment protection
+        required: false
+        default: false
+        type: boolean
+      allowed_apply_ref:
+        description: Full Git ref allowed to apply
+        required: false
+        default: refs/heads/main
+        type: string
+      parallelism:
+        description: Maximum Terraform parallelism
+        required: false
+        default: 10
+        type: number
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: terraform-${{ github.repository }}-${{ inputs.environment }}-${{ inputs.state_key }}
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout product repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4.3.1
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd  # v3.1.2
+        with:
+          terraform_version: ${{ inputs.terraform_version }}
+          terraform_wrapper: false
+
+      - name: Terraform format
+        env:
+          TF_ROOT: ${{ inputs.terraform_root }}
+        run: terraform -chdir="$GITHUB_WORKSPACE/$TF_ROOT" fmt -check -recursive
+
+      - name: Security exception contract
+        env:
+          EXCEPTIONS_PATH: ${{ inputs.security_exceptions_path }}
+        run: |
+          set -euo pipefail
+
+          for scanner in checkov terrascan tflint tfsec
+          do
+            file="$GITHUB_WORKSPACE/$EXCEPTIONS_PATH/${scanner}_exceptions.txt"
+            test -f "$file"
+
+            awk '
+              /^[[:space:]]*($|#)/ { next }
+              $0 !~ /^[A-Za-z0-9_.-]+[[:space:]]+# reason=.+; owner=.+; expires=[0-9]{4}-[0-9]{2}-[0-9]{2}[[:space:]]*$/ {
+                printf "%s:%d: expected RULE_ID # reason=...; owner=...; expires=YYYY-MM-DD\n", FILENAME, NR
+                invalid = 1
+              }
+              END { exit invalid }
+            ' "$file"
+          done
+
+  validate:
+    name: Validate
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout product repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4.3.1
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd  # v3.1.2
+        with:
+          terraform_version: ${{ inputs.terraform_version }}
+          terraform_wrapper: false
+
+      - name: Terraform init without backend
+        env:
+          TF_ROOT: ${{ inputs.terraform_root }}
+        run: terraform -chdir="$GITHUB_WORKSPACE/$TF_ROOT" init -backend=false -input=false
+
+      - name: Terraform validate
+        env:
+          TF_ROOT: ${{ inputs.terraform_root }}
+        run: terraform -chdir="$GITHUB_WORKSPACE/$TF_ROOT" validate -no-color
+
+  plan:
+    name: Plan
+    if: ${{ inputs.enable_plan }}
+    needs: validate
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.plan_environment }}
+    outputs:
+      has_changes: ${{ steps.plan.outputs.has_changes }}
+    env:
+      AZURE_CORE_OUTPUT: none
+      TF_IN_AUTOMATION: true
+    steps:
+      - name: Checkout product repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4.3.1
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd  # v3.1.2
+        with:
+          terraform_version: ${{ inputs.terraform_version }}
+          terraform_wrapper: false
+
+      - name: Azure login with OIDC
+        uses: azure/login@eec3c95657c1536435858eda1f3ff5437fee8474  # v2.3.0
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Terraform init
+        env:
+          TF_ROOT: ${{ inputs.terraform_root }}
+          BACKEND_CONFIG: ${{ inputs.backend_config }}
+          STATE_KEY: ${{ inputs.state_key }}
+        run: |
+          terraform -chdir="$GITHUB_WORKSPACE/$TF_ROOT" init \
+            -input=false \
+            -reconfigure \
+            -backend-config="$GITHUB_WORKSPACE/$BACKEND_CONFIG" \
+            -backend-config="key=$STATE_KEY" \
+            -backend-config="use_azuread_auth=true"
+
+      - name: Terraform plan
+        id: plan
+        env:
+          TF_ROOT: ${{ inputs.terraform_root }}
+          TFVARS: ${{ inputs.tfvars }}
+          TF_ENVIRONMENT: ${{ inputs.environment }}
+          TF_PARALLELISM: ${{ inputs.parallelism }}
+        run: |
+          set -euo pipefail
+
+          tfvars_argument=()
+          if [[ -n "$TFVARS" ]]
+          then
+            tfvars_argument=(-var-file="$GITHUB_WORKSPACE/$TFVARS")
+          fi
+
+          set +e
+          terraform -chdir="$GITHUB_WORKSPACE/$TF_ROOT" plan \
+            -input=false \
+            -detailed-exitcode \
+            -parallelism="$TF_PARALLELISM" \
+            -out="$RUNNER_TEMP/tfplan" \
+            -var="environment=$TF_ENVIRONMENT" \
+            "${tfvars_argument[@]}"
+          exit_code=$?
+          set -e
+
+          case "$exit_code" in
+            0)
+              echo "has_changes=false" >> "$GITHUB_OUTPUT"
+              ;;
+            2)
+              echo "has_changes=true" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              exit "$exit_code"
+              ;;
+          esac
+
+      - name: Upload reviewed plan
+        if: steps.plan.outputs.has_changes == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        with:
+          name: tfplan-${{ inputs.environment }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/tfplan
+          if-no-files-found: error
+          retention-days: 1
+
+  apply:
+    name: Apply
+    if: >-
+      ${{
+        inputs.enable_apply &&
+        github.ref == inputs.allowed_apply_ref &&
+        needs.plan.outputs.has_changes == 'true'
+      }}
+    needs: plan
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.apply_environment }}
+    env:
+      AZURE_CORE_OUTPUT: none
+      TF_IN_AUTOMATION: true
+    steps:
+      - name: Checkout product repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4.3.1
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd  # v3.1.2
+        with:
+          terraform_version: ${{ inputs.terraform_version }}
+          terraform_wrapper: false
+
+      - name: Download reviewed plan
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4.3.0
+        with:
+          name: tfplan-${{ inputs.environment }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/reviewed-plan
+
+      - name: Azure login with OIDC
+        uses: azure/login@eec3c95657c1536435858eda1f3ff5437fee8474  # v2.3.0
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Terraform init
+        env:
+          TF_ROOT: ${{ inputs.terraform_root }}
+          BACKEND_CONFIG: ${{ inputs.backend_config }}
+          STATE_KEY: ${{ inputs.state_key }}
+        run: |
+          terraform -chdir="$GITHUB_WORKSPACE/$TF_ROOT" init \
+            -input=false \
+            -reconfigure \
+            -backend-config="$GITHUB_WORKSPACE/$BACKEND_CONFIG" \
+            -backend-config="key=$STATE_KEY" \
+            -backend-config="use_azuread_auth=true"
+
+      - name: Apply reviewed plan
+        env:
+          TF_ROOT: ${{ inputs.terraform_root }}
+          TF_PARALLELISM: ${{ inputs.parallelism }}
+        run: |
+          terraform -chdir="$GITHUB_WORKSPACE/$TF_ROOT" apply \
+            -input=false \
+            -parallelism="$TF_PARALLELISM" \
+            "$RUNNER_TEMP/reviewed-plan/tfplan"

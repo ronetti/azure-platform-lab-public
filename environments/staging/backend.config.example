@@ -1,4 +1,0 @@
-resource_group_name  = "rg-az-platform-lab-staging-tfstate"
-storage_account_name = "stazplatformlabstagingtf"
-container_name       = "tfstate"
-key                  = "staging/platform.tfstate"

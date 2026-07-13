@@ -1,0 +1,265 @@
+platform_name: az-platform-lab
+environment: nonproduction
+status: architecture-model
+location: westeurope
+
+terraform_backend:
+  resource_group_name: rg-tfstate-platform-nonproduction
+  storage_account_name: sttfstateplatformnonprod
+  container_name: tfstate
+  use_azuread_auth: true
+
+used_for:
+  testing:
+    namespace: workload-testing
+    deployment: rolling
+    purpose: fast-feedback
+  staging:
+    namespace: workload-staging
+    deployment: blue-green
+    implementation: requires-rollout-controller
+    purpose: production-like-validation
+    traffic_switch: approval-required
+
+shared_infrastructure:
+  terraform_state: true
+  network: true
+  application_gateway_and_waf: true
+  firewall: true
+  aks_cluster: true
+  container_registry: true
+  key_vault: true
+  monitoring: true
+  storage: true
+
+costs:
+  profile: shared-and-small
+  stop_outside_working_hours: true
+  spot_for_interruptible_testing: true
+  controls:
+    - one-system-node-at-rest
+    - one-shared-regular-user-node-at-rest
+    - testing-and-staging-share-cluster-and-fixed-services
+    - stop-cluster-outside-testing-and-release-windows
+    - short-log-retention
+  allocate_by:
+    - namespace
+    - environment
+    - owner
+
+security_boundary:
+  shared_only_between:
+    - testing
+    - staging
+  shared_with_production: false
+  production_remote_state_access: forbidden
+  separation:
+    - namespaces
+    - service-accounts-without-default-bindings
+    - namespace-scoped-rbac-when-required
+    - workload-identities
+    - secrets
+    - resource-quotas
+    - network-policies
+
+guardrails:
+  terraform: true
+  yaml: true
+  kubernetes: true
+  secrets_outside_git: true
+
+tags:
+  purpose: platform-showcase
+  single_source_of_truth: git
+
+network:
+  address_space:
+    - 10.10.0.0/16
+  subnets:
+    app: 10.10.1.0/24
+    data: 10.10.2.0/24
+    ingress: 10.10.10.0/24
+    management: 10.10.20.0/24
+    aks: 10.10.30.0/23
+    firewall: 10.10.100.0/26
+  governance:
+    required_reviews: 1
+    error_budget_policy: review-before-network-change
+
+shared_services:
+  monitoring:
+    retention_days: 30
+    sli_signals:
+      - log-ingestion
+      - diagnostic-settings
+      - alert-actionability
+  governance:
+    required_reviews: 1
+    error_budget_policy: review-before-observability-change
+
+routing:
+  route_tables:
+    - name: rt-app-egress
+      subnet_keys:
+        - app
+        - data
+        - aks
+      routes:
+        - name: default-to-firewall
+          address_prefix: 0.0.0.0/0
+          next_hop_type: VirtualAppliance
+          next_hop_in_ip_address: 10.10.100.4
+  governance:
+    required_reviews: 1
+    error_budget_policy: review-before-routing-change
+
+firewall:
+  subnet_key: firewall
+  network_rule_collections:
+    - name: allow-management
+      priority: 100
+      action: Allow
+      rules:
+        - name: allow-admin-to-management
+          source_addresses:
+            - 10.10.20.0/24
+          destination_addresses:
+            - 10.10.1.0/24
+          destination_ports:
+            - "443"
+          protocols:
+            - TCP
+  governance:
+    required_reviews: 1
+    error_budget_policy: review-before-firewall-change
+
+application_gateway:
+  name: agw-platform-nonproduction
+  subnet_key: ingress
+  waf:
+    mode: Prevention
+    managed_rule_set:
+      type: OWASP
+      version: "3.2"
+    exclusions: []
+    custom_rules: []
+  listeners:
+    - name: https-testing
+      host_name: web.testing.example.internal
+      protocol: Https
+      port: 443
+    - name: https-staging
+      host_name: web.staging.example.internal
+      protocol: Https
+      port: 443
+  backends:
+    - name: aks-ingress
+      targets:
+        - 10.10.30.20
+      protocol: Https
+      port: 443
+      probe_path: /healthz
+  availability:
+    sli_signals:
+      - listener-availability
+      - backend-health
+      - 5xx-rate
+      - latency
+    error_budget_policy: review-before-edge-change
+  governance:
+    required_reviews: 1
+
+compute:
+  virtual_machines:
+    - name: mgmt-01
+      subnet_key: management
+      size: Standard_B2ms
+      private_ip: 10.10.20.10
+      image:
+        publisher: Canonical
+        offer: 0001-com-ubuntu-server-jammy
+        sku: 22_04-lts-gen2
+        version: latest
+  inventory_contract: terraform-output
+  governance:
+    required_reviews: 1
+    error_budget_policy: review-before-vm-change
+
+configuration_management:
+  host_groups:
+    mgmt-01:
+      - linux
+      - management
+  pipeline:
+    runner: azure-devops-managed-pool
+    guardrails:
+      - yaml-lint
+      - ansible-lint
+      - syntax-check
+      - check-mode
+      - approval-before-production
+  governance:
+    required_reviews: 1
+    error_budget_policy: stabilize-before-config-drift-change
+
+aks:
+  cluster:
+    name: aks-platform-nonproduction
+    sku: standard
+    subnet_key: aks
+    kubernetes_version_strategy: validated-region-version
+    private_cluster_enabled: true
+    network:
+      plugin: azure
+      plugin_mode: overlay
+      dataplane: cilium
+      outbound_type: userDefinedRouting
+      service_cidr: 10.240.10.0/24
+      dns_service_ip: 10.240.10.10
+      pod_cidr: 10.244.0.0/16
+    identity:
+      entra_integration: true
+      workload_identity: true
+      oidc_issuer: true
+    security:
+      azure_policy: true
+      deployment_safeguards: enforcement
+      key_vault_csi: true
+    ingress:
+      controller: web-app-routing
+      exposure: internal
+      upstream_edge: application-gateway-waf
+    operations:
+      automatic_upgrade_channel: patch
+      node_os_upgrade_channel: NodeImage
+      maintenance_window: saturday-early
+      stop_start_allowed: true
+    node_pools:
+      - name: system
+        mode: System
+        priority: Regular
+        vm_size: Standard_D2ds_v5
+        min_count: 1
+        max_count: 2
+      - name: user
+        mode: User
+        priority: Regular
+        vm_size: Standard_D2ds_v5
+        min_count: 1
+        max_count: 3
+      - name: spot
+        mode: User
+        priority: Spot
+        vm_size: Standard_D2ds_v5
+        min_count: 0
+        max_count: 2
+        workload_class: interruptible-only
+    availability:
+      sli_signals:
+        - node-readiness
+        - pod-availability
+        - deployment-availability
+        - restart-rate
+      error_budget_policy: approval-before-shared-node-pool-change
+  governance:
+    required_reviews: 1

@@ -130,10 +130,9 @@ Typical gates:
 ## Repo-Bezug
 
 - `.github/workflows/validate.yml` zeigt automatische Validierung.
-- `terraform/stacks/*/config/testing.yaml` zeigt Konfiguration als
-  versionierte Quelle.
-- `kubernetes/` und `helm/` zeigen Kubernetes-Konfiguration als versionierte
-  Quelle.
+- `environments/nonproduction/nonproduction.yaml` zeigt die zentrale
+  Konfiguration als versionierte Quelle.
+- `kubernetes/` zeigt Kubernetes-Konfiguration als versionierte Quelle.
 - `terraform/stacks/configuration-management` zeigt Terraform Outputs als
   Inventory-Quelle für Ansible.
 - `CHANGELOG.md` dokumentiert die Entwicklung dieses Repositories.
@@ -143,9 +142,9 @@ Typical gates:
 ## Repository Mapping
 
 - `.github/workflows/validate.yml` shows automatic validation.
-- `terraform/stacks/*/config/testing.yaml` shows configuration as versioned
-  source.
-- `kubernetes/` and `helm/` show Kubernetes configuration as versioned source.
+- `environments/nonproduction/nonproduction.yaml` shows the central
+  configuration as versioned source.
+- `kubernetes/` shows Kubernetes configuration as versioned source.
 - `terraform/stacks/configuration-management` shows Terraform outputs as an
   inventory source for Ansible.
 - `CHANGELOG.md` documents the evolution of this repository.

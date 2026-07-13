@@ -1,9 +1,10 @@
 locals {
-  config_path = coalesce(var.config_file, "${path.module}/config/${var.environment}.yaml")
-  config      = yamldecode(file(local.config_path))
+  config_path        = coalesce(var.config_file, "${path.module}/../../../environments/${var.environment}/${var.environment}.yaml")
+  environment_config = yamldecode(file(local.config_path))
+  config             = local.environment_config.application_gateway
 
-  application_gateway = merge(local.config.application_gateway, {
-    subnet_id = data.terraform_remote_state.network.outputs.subnet_ids[local.config.application_gateway.subnet_key]
+  application_gateway = merge(local.config, {
+    subnet_id = data.terraform_remote_state.network.outputs.subnet_ids[local.config.subnet_key]
   })
 }
 

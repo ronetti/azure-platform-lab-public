@@ -107,6 +107,35 @@ For these workloads the edge design should consider:
 - validation in a test environment before high-availability changes
 - explicit support boundaries where the application vendor has limitations
 
+## Optionale Interne Hochverfügbarkeit
+
+Das zentrale Application Gateway wird nicht pauschal pro Workload kopiert.
+Wenn eine stateful Applikation mehrere interne Knoten benötigt, aber selbst
+keine unterstützte Lastverteilung bietet, kann eine interne Layer-7-Komponente
+mit Cookie- oder Header-Affinity geprüft werden. Diese zusätzliche Schicht ist
+nur sinnvoll, wenn eine konkrete Hochverfügbarkeitsanforderung ihre Kosten und
+Betriebskomplexität rechtfertigt.
+
+Vor einer Umsetzung müssen Vendor-Support, Session-Verhalten, Failover und
+Health Checks in einer geeigneten Testumgebung validiert werden. Ein reiner
+Layer-4-Load-Balancer darf nicht als ausreichend angenommen werden, wenn die
+Applikation sessionspezifisches Routing benötigt. Diese optionale interne
+Schicht ist im Repository bewusst nicht implementiert.
+
+## Optional Internal High Availability
+
+The central Application Gateway is not duplicated for every workload by
+default. If a stateful application needs multiple internal nodes but offers no
+supported native load balancing, an internal Layer 7 component with cookie or
+header affinity can be evaluated. This additional layer is justified only by a
+specific availability requirement that outweighs its cost and operational
+complexity.
+
+Vendor support, session behavior, failover and health checks must be validated
+in a suitable test environment first. A Layer 4 load balancer should not be
+assumed sufficient where the application requires session-aware routing. This
+optional internal layer is intentionally not implemented in the repository.
+
 ## Logging und Reaktion
 
 Ein Application Gateway/WAF ist erst dann betrieblich brauchbar, wenn seine
@@ -268,8 +297,9 @@ step comes before it.
 
 ## Repo-Bezug
 
-- `terraform/stacks/application-gateway/config/testing.yaml` modelliert
-  Listener, Backends und Probe-Pfade.
+- `application_gateway` in
+  `environments/nonproduction/nonproduction.yaml` modelliert Listener,
+  Backends und Probe-Pfade.
 - `terraform/stacks/application-gateway/remote-state.tf` konsumiert den
   Network Stack.
 - `terraform/stacks/shared-services` stellt Monitoring und Log Analytics als
@@ -278,8 +308,9 @@ step comes before it.
 
 ## Repository Mapping
 
-- `terraform/stacks/application-gateway/config/testing.yaml` models listeners,
-  backends and probe paths.
+- `application_gateway` in
+  `environments/nonproduction/nonproduction.yaml` models listeners, backends
+  and probe paths.
 - `terraform/stacks/application-gateway/remote-state.tf` consumes the network
   stack.
 - `terraform/stacks/shared-services` provides monitoring and Log Analytics as

@@ -10,5 +10,5 @@ output "firewall_subnet_id" {
 
 output "network_rule_collections" {
   description = "Firewall network rule collections loaded from YAML."
-  value       = local.config.firewall.network_rule_collections
+  value       = local.config.network_rule_collections
 }

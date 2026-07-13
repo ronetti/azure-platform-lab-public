@@ -1,0 +1,33 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: workload-staging
+resources:
+  - ../../../blueprint-templates/platform-baseline
+  - ../../../blueprint-templates/web-workload
+  - ingress.yaml
+labels:
+  - pairs:
+      environment: staging
+      platform-environment: nonproduction
+    includeSelectors: true
+replicas:
+  - name: web-workload
+    count: 2
+patches:
+  - target:
+      version: v1
+      kind: Namespace
+      name: platform-workload
+    path: namespace-patch.yaml
+  - target:
+      group: policy
+      version: v1
+      kind: PodDisruptionBudget
+      name: web-workload
+    path: pdb-patch.yaml
+  - target:
+      group: autoscaling
+      version: v2
+      kind: HorizontalPodAutoscaler
+      name: web-workload
+    path: hpa-patch.yaml

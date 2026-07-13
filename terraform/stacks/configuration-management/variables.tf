@@ -1,7 +1,12 @@
 variable "environment" {
-  description = "Environment name used to select config/<environment>.yaml."
+  description = "Environment used to select environments/<environment>/<environment>.yaml."
   type        = string
-  default     = "testing"
+  default     = "nonproduction"
+
+  validation {
+    condition     = contains(["nonproduction", "production"], var.environment)
+    error_message = "Environment must be nonproduction or production."
+  }
 }
 
 variable "config_file" {

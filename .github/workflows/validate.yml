@@ -11,10 +11,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4.3.1
+
+      - name: Security exception contract
+        id: security-exceptions
+        uses: ./.github/actions/security-exceptions
+
+      - name: Set up Go
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff  # v5.6.0
+        with:
+          go-version: stable
+          cache: false
+
+      - name: GitHub Actions lint
+        run: >-
+          go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.7
+          .github/workflows/validate.yml
+          .github/workflows/terraform-blueprint.yml
+          pipeline-blueprints/terraform/github-actions.example.yml
+
+      - name: Immutable external action references
+        run: >-
+          bash .github/scripts/action-pins.sh
+          .github/workflows/validate.yml
+          .github/workflows/terraform-blueprint.yml
 
       - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd  # v3.1.2
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@776406bce94f63e41d621b960d78ee25c8b76ede  # v4.0.1
 
       - name: Terraform fmt
         run: terraform -chdir=terraform fmt -check -recursive
@@ -39,17 +65,121 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y yamllint
-          curl -sL https://github.com/yannh/kubeconform/releases/download/v0.6.7/kubeconform-linux-amd64.tar.gz | tar xz
-          sudo mv kubeconform /usr/local/bin/kubeconform
+          curl --fail --silent --show-error --location \
+            --output /tmp/kubeconform.tar.gz \
+            https://github.com/yannh/kubeconform/releases/download/v0.6.7/kubeconform-linux-amd64.tar.gz
+          echo "95f14e87aa28c09d5941f11bd024c1d02fdc0303ccaa23f61cef67bc92619d73  /tmp/kubeconform.tar.gz" \
+            | sha256sum --check
+          tar -xzf /tmp/kubeconform.tar.gz -C /tmp kubeconform
+          sudo install -m 0755 /tmp/kubeconform /usr/local/bin/kubeconform
 
       - name: YAML lint
-        run: yamllint environments kubernetes helm terraform/stacks .github/workflows
+        run: >-
+          yamllint environments kubernetes terraform/stacks
+          pipeline-blueprints .github
 
       - name: Configuration-management guardrail contract
         run: |
-          grep -q "ansible-lint" terraform/stacks/configuration-management/config/testing.yaml
-          grep -q "check-mode" terraform/stacks/configuration-management/config/testing.yaml
-          grep -q "approval-before-production" terraform/stacks/configuration-management/config/testing.yaml
+          grep -q "ansible-lint" environments/nonproduction/nonproduction.yaml
+          grep -q "check-mode" environments/nonproduction/nonproduction.yaml
+          grep -q "approval-before-production" environments/nonproduction/nonproduction.yaml
+
+      - name: Environment and delivery contract
+        run: |
+          grep -q "environment: nonproduction" environments/nonproduction/nonproduction.yaml
+          grep -q "testing:" environments/nonproduction/nonproduction.yaml
+          grep -q "staging:" environments/nonproduction/nonproduction.yaml
+          grep -q "deployment: blue-green" environments/nonproduction/nonproduction.yaml
+          grep -q "implementation: requires-rollout-controller" environments/nonproduction/nonproduction.yaml
+          grep -q "environment: production" environments/production/production.yaml
+          grep -q "deployment: blue-green" environments/production/production.yaml
+          grep -q "implementation: requires-rollout-controller" environments/production/production.yaml
+          grep -q "mode: Prevention" environments/nonproduction/nonproduction.yaml
+          grep -q "mode: Prevention" environments/production/production.yaml
+          test ! -e environments/testing/platform.yaml
+          test ! -e environments/staging/platform.yaml
+          test ! -e environments/production/platform.yaml
+
+      - name: Terraform environment contract
+        run: |
+          test -f environments/nonproduction/nonproduction.yaml
+          test -f environments/production/production.yaml
+          test -f environments/nonproduction/nonproduction.azurerm.tfbackend.example
+          test -f environments/production/production.azurerm.tfbackend.example
+          grep -q "sttfstateplatformnonprod" \
+            environments/nonproduction/nonproduction.azurerm.tfbackend.example
+          grep -q "sttfstateplatformprod" \
+            environments/production/production.azurerm.tfbackend.example
+          grep -q "storage_account_name: sttfstateplatformnonprod" \
+            environments/nonproduction/nonproduction.yaml
+          grep -q "storage_account_name: sttfstateplatformprod" \
+            environments/production/production.yaml
+          grep -q "use_azuread_auth: true" \
+            environments/nonproduction/nonproduction.yaml
+          grep -q "use_azuread_auth: true" \
+            environments/production/production.yaml
+
+          for stack in \
+            network \
+            shared-services \
+            routing \
+            firewall \
+            application-gateway \
+            compute \
+            configuration-management \
+            aks
+          do
+            grep -q "../../../environments" "terraform/stacks/${stack}/main.tf"
+            test -f "terraform/stacks/${stack}/README.md"
+            test ! -e "terraform/stacks/${stack}/config"
+            test ! -e "terraform/stacks/${stack}/backend"
+          done
+
+          test -f .github/workflows/terraform-blueprint.yml
+          test -f pipeline-blueprints/terraform/github-actions.example.yml
+          test -f pipeline-blueprints/terraform/README.md
+          test -f pipeline-blueprints/terraform/product-readme-template.md
+          grep -q "workflow_call:" \
+            .github/workflows/terraform-blueprint.yml
+          grep -q "id-token: write" \
+            pipeline-blueprints/terraform/github-actions.example.yml
+          grep -q "terraform-blueprint.yml@v" \
+            pipeline-blueprints/terraform/github-actions.example.yml
+          grep -q "allowed_apply_ref" \
+            .github/workflows/terraform-blueprint.yml
+          test ! -e pipeline-blueprints/terraform/complete.yaml
+          test ! -e pipeline-blueprints/terraform/azure-pipeline.example.yml
+          test -f scripts/README.md
+          test -f kubernetes/blueprint-templates/platform-baseline/README.md
+          test -f kubernetes/blueprint-templates/web-workload/README.md
+
+      - name: Production isolation contract
+        run: |
+          grep -q "rg-tfstate-platform-production" \
+            environments/production/production.azurerm.tfbackend.example
+          grep -q "rg-tfstate-platform-nonproduction" \
+            environments/nonproduction/nonproduction.azurerm.tfbackend.example
+          if grep -R -E \
+            "sttfstateplatformprod|sttfstateplatformnonprod|rg-tfstate-platform" \
+            terraform/stacks
+          then
+            exit 1
+          fi
 
       - name: Kubernetes schema validation
-        run: kubeconform -summary -strict kubernetes
+        run: |
+          mkdir -p /tmp/rendered
+          for environment in nonproduction production
+          do
+            kubectl kustomize "kubernetes/environments/${environment}" \
+              > "/tmp/rendered/${environment}.yaml"
+            kubeconform -summary -strict \
+              "/tmp/rendered/${environment}.yaml"
+          done
+
+          if grep -E \
+            "platform-environment: nonproduction|workload-testing|workload-staging" \
+            /tmp/rendered/production.yaml
+          then
+            exit 1
+          fi

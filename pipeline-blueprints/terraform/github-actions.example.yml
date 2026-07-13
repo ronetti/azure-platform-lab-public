@@ -1,0 +1,40 @@
+name: Terraform
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  nonproduction:
+    name: Nonproduction
+    uses: ronetti/azure-platform-lab-public/.github/workflows/terraform-blueprint.yml@v1.0.0
+    with:
+      terraform_root: terraform/stacks/network
+      environment: nonproduction
+      backend_config: environments/nonproduction/nonproduction.azurerm.tfbackend
+      state_key: products/example/network/nonproduction.tfstate
+      plan_environment: platform-nonproduction-plan
+      apply_environment: platform-nonproduction
+      enable_plan: ${{ github.event_name != 'pull_request' }}
+      enable_apply: ${{ github.event_name != 'pull_request' }}
+
+  production:
+    name: Production
+    needs: nonproduction
+    uses: ronetti/azure-platform-lab-public/.github/workflows/terraform-blueprint.yml@v1.0.0
+    with:
+      terraform_root: terraform/stacks/network
+      environment: production
+      backend_config: environments/production/production.azurerm.tfbackend
+      state_key: products/example/network/production.tfstate
+      plan_environment: platform-production-plan
+      apply_environment: platform-production
+      enable_plan: ${{ github.event_name != 'pull_request' }}
+      enable_apply: ${{ github.event_name != 'pull_request' }}

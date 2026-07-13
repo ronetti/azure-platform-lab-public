@@ -1,4 +1,0 @@
-resource_group_name  = "rg-az-platform-lab-production-tfstate"
-storage_account_name = "stazplatformlabproductiontf"
-container_name       = "tfstate"
-key                  = "production/platform.tfstate"

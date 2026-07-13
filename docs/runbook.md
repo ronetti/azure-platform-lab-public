@@ -28,9 +28,15 @@ kubectl get events -A --sort-by=.lastTimestamp
 
 ```bash
 terraform -chdir=terraform fmt -check -recursive
-terraform -chdir=terraform validate
-terraform -chdir=terraform plan
+
+for stack in network shared-services routing firewall \
+  application-gateway compute configuration-management aks; do
+  ./scripts/terraform-stack.sh validate "${stack}" nonproduction
+done
 ```
+
+Ein `plan` wird anschließend nur für den betroffenen Stack und mit dessen
+Environment-Backend ausgeführt.
 
 Prüfen auf:
 
@@ -49,9 +55,15 @@ Nach einem Restore zusätzlich prüfen:
 
 ```bash
 terraform -chdir=terraform fmt -check -recursive
-terraform -chdir=terraform validate
-terraform -chdir=terraform plan
+
+for stack in network shared-services routing firewall \
+  application-gateway compute configuration-management aks; do
+  ./scripts/terraform-stack.sh validate "${stack}" nonproduction
+done
 ```
+
+A `plan` is then run only for the affected stack with its environment
+backend.
 
 Look for:
 
@@ -98,11 +110,25 @@ Check:
 
 ## Kubernetes-Workload Nicht Bereit
 
+Vor der Clusterdiagnose zuerst prüfen, welcher gewünschte Zustand für die
+Umgebung gerendert wird:
+
 ```bash
-kubectl get deployment -n demo
-kubectl get pods -n demo -l app=sample-app
-kubectl describe pod -n demo -l app=sample-app
-kubectl logs -n demo -l app=sample-app --tail=100
+kubectl kustomize kubernetes/environments/nonproduction/testing > /tmp/testing.yaml
+kubectl diff -f /tmp/testing.yaml
+```
+
+`kubectl kustomize` entspricht in diesem Ablauf der Vorschau. `kubectl diff`
+vergleicht den gewünschten Zustand mit dem verbundenen Cluster und verändert
+nichts.
+
+```bash
+kubectl get deployment -n workload-testing
+kubectl get pods -n workload-testing -l app.kubernetes.io/name=web-workload
+kubectl describe deployment -n workload-testing web-workload
+kubectl get events -n workload-testing --sort-by=.lastTimestamp
+kubectl logs -n workload-testing \
+  -l app.kubernetes.io/name=web-workload --tail=100
 ```
 
 Häufige Ursachen:
@@ -115,11 +141,18 @@ Häufige Ursachen:
 
 ## Kubernetes Workload Not Ready
 
+Render the intended environment before investigating the live cluster:
+
 ```bash
-kubectl get deployment -n demo
-kubectl get pods -n demo -l app=sample-app
-kubectl describe pod -n demo -l app=sample-app
-kubectl logs -n demo -l app=sample-app --tail=100
+kubectl kustomize kubernetes/environments/nonproduction/testing > /tmp/testing.yaml
+kubectl diff -f /tmp/testing.yaml
+```
+
+```bash
+kubectl get deployment -n workload-testing
+kubectl get pods -n workload-testing -l app.kubernetes.io/name=web-workload
+kubectl describe deployment -n workload-testing web-workload
+kubectl get events -n workload-testing --sort-by=.lastTimestamp
 ```
 
 Common causes:

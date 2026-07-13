@@ -1,0 +1,5 @@
+- op: add
+  path: /metadata/annotations
+  value:
+    platform.azure-lab.io/cost-profile: availability-first-rightsized
+    platform.azure-lab.io/ownership: platform-team

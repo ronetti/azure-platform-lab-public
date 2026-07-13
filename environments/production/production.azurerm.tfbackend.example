@@ -1,0 +1,4 @@
+resource_group_name  = "rg-tfstate-platform-production"
+storage_account_name = "sttfstateplatformprod"
+container_name       = "tfstate"
+use_azuread_auth     = true

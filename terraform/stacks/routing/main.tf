@@ -1,6 +1,7 @@
 locals {
-  config_path = coalesce(var.config_file, "${path.module}/config/${var.environment}.yaml")
-  config      = yamldecode(file(local.config_path))
+  config_path        = coalesce(var.config_file, "${path.module}/../../../environments/${var.environment}/${var.environment}.yaml")
+  environment_config = yamldecode(file(local.config_path))
+  config             = local.environment_config.routing
 
   route_tables = {
     for table in local.config.route_tables : table.name => merge(table, {

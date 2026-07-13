@@ -1,3 +1,0 @@
-environment   = "staging"
-location      = "westeurope"
-platform_name = "az-platform-lab"
