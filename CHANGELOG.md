@@ -5,7 +5,7 @@ hier dokumentiert.
 
 All notable changes to this anonymized Azure Platform Lab are documented here.
 
-## Unreleased / Unveröffentlicht
+## 1.0.0 - 2026-07-13
 
 ### Hinzugefügt
 
