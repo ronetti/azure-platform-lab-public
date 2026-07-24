@@ -26,6 +26,10 @@ Production Subscription
 Testing und Staging teilen kostenintensive Ressourcen innerhalb von
 Nonproduction. Production ist eine eigene Sicherheits-, Berechtigungs-,
 Kosten- und Fehlergrenze und konsumiert keine Nonproduction-Runtime-Ressourcen.
+Diese beiden Subscriptions bilden die aktuelle Workload-Grenze. Das
+tenantweite [Landing-Zone-Denkmodell](docs/landing-zone-thinking.md) ordnet sie
+darüber in Management Groups, Platform- und Application-Landing-Zone-
+Verantwortungen ein, ohne diese Ebene als bereits implementiert auszugeben.
 
 ```text
 Environment-Auswahl
@@ -127,6 +131,7 @@ States zu geben. Production und Nonproduction teilen keinen State-Storage.
 | Compute | VM-Vertrag und Ansible-Übergabe | vollständiger VM-Lifecycle |
 | AKS | Environment-, Security-, Node-Pool- und Kosten-Intent | Cluster-Provisionierung |
 | Kubernetes | Blueprints, Testing/Staging/Production-Overlays, Guardrails | Rollout-Controller für Blue-Green |
+| Landing Zone Governance | begründeter Denkweg, ALZ-Core-Vertrag und stufenweise Verifikation | Management Groups, Policy-Lifecycle, Platform-Subscriptions und Subscription Vending |
 | CI | Terraform-, YAML-, Schema-, Isolation- und Security-Ausnahmevertrag | reale Deployment- und Scanner-Pipelines |
 | Pipeline Blueprint | GitHub Actions Check, Validate, Plan-Artefakt und geschützter Apply | reale Entra-OIDC-Federation und Environment-Approvals |
 
@@ -175,6 +180,8 @@ AKS-Ingress und anschließend zum Workload-Service.
 | --- | --- |
 | Praxiserfahrung und technische Denkweise | [Platform Engineering Experience](docs/platform-engineering-experience.md) |
 | Anonymisierte Fallstudie mit überprüfbaren Ergebnissen | [Platform Case Study](docs/anonymized-platform-case-study.md) |
+| Landing-Zone-Denkweg, Management Groups und Subscription Vending | [Landing Zone Thinking](docs/landing-zone-thinking.md) |
+| Kleinster verantwortbarer Tenant-Governance-Slice | [ALZ Core Contract](docs/alz-core-contract.md) |
 | Gesamtarchitektur und Datenfluss | [Architecture](docs/architecture.md) |
 | Nonproduction/Production-Modell | [Environments](environments/README.md) |
 | Terraform-Root-Stacks | [Terraform Stacks](terraform/stacks/README.md) |
