@@ -16,6 +16,32 @@ create resources, but also model an operating foundation: networking, security,
 edge, monitoring, storage, compute, remote state, environment configuration and
 Kubernetes target structures.
 
+## Übergeordnete Landing-Zone-Ebene
+
+Die in diesem Repository sichtbaren Nonproduction- und
+Production-Subscriptions bilden Workload-Grenzen. In einer vollständigen Azure
+Landing Zone liegen darüber Management Groups, tenantweite Policy-Verträge,
+Platform-Subscriptions und ein kontrollierter Subscription-Vending-Prozess.
+
+Diese übergeordnete Ebene ist hier als
+[Landing-Zone-Denkweg](landing-zone-thinking.md) dokumentiert, aber noch nicht
+implementiert. Management Groups werden dabei aus gemeinsamen Governance-,
+Compliance- und Konnektivitätsanforderungen abgeleitet, nicht aus den Namen
+Testing, Staging und Production.
+
+## Higher-Level Landing Zone
+
+The nonproduction and production subscriptions visible in this repository
+represent workload boundaries. A complete Azure Landing Zone adds management
+groups, tenant-wide policy contracts, platform subscriptions and controlled
+subscription vending above those boundaries.
+
+This higher level is documented as a
+[Landing Zone reasoning path](landing-zone-thinking.md), but it is not yet
+implemented. Management groups are derived from shared governance, compliance
+and connectivity requirements rather than from the names testing, staging and
+production.
+
 ## Logische Architektur
 
 ```text

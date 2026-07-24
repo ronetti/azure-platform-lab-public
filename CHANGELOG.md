@@ -5,6 +5,26 @@ hier dokumentiert.
 
 All notable changes to this anonymized Azure Platform Lab are documented here.
 
+## Unveröffentlicht / Unreleased
+
+### Hinzugefügt / Added
+
+- Begründetes Azure-Landing-Zone-Denkmodell mit Management-Group-
+  Entscheidungslogik, Einordnung der bestehenden Workload-Subscriptions,
+  gestuftem Policy-Lifecycle, Subscription-Vending-Vertrag und expliziter
+  Trennung zwischen dokumentiertem Zielbild und noch nicht implementierter
+  Tenant-Governance.
+- Reasoned Azure Landing Zone model covering management-group decisions,
+  placement of the existing workload subscriptions, staged policy lifecycle,
+  subscription vending and the explicit boundary between the documented target
+  state and tenant governance that has not yet been implemented.
+- Kleinster verantwortbarer ALZ-Core-Vertrag mit explizitem Scope, eigenem
+  State, nicht erzwingendem Policy-Einstieg, Review-Gates, Rücknahmepfad und
+  offenen Entscheidungen vor einer späteren Terraform-Implementierung.
+- Smallest responsible ALZ Core contract with explicit scope, independent
+  state, non-enforcing policy entry point, review gates, rollback path and open
+  decisions before a later Terraform implementation.
+
 ## 1.0.0 - 2026-07-13
 
 ### Hinzugefügt
