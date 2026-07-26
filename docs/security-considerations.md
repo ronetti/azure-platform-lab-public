@@ -79,4 +79,6 @@ Security is treated as a platform responsibility in this repository:
 - restricted Pod Security, default-deny network policies and disabled
   automatic service-account tokens
 
-In a real environment, Azure Policy, Defender for Cloud, private endpoints, managed identities and central logging/SIEM integration would also be evaluated.
+A real environment also requires evaluation of Azure Policy, Defender for
+Cloud, private endpoints, managed identities and central logging or SIEM
+integration.

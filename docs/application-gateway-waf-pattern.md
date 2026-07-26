@@ -56,7 +56,7 @@ in YAML. Der vollständige produktive Kundencode ist hier bewusst nicht
 enthalten.
 
 Der zweite Vorschlag, eine gemeinsame URL mit zusätzlicher Routing-Logik, ist
-bewusst als nächster Ausbauschritt beschrieben. Ich würde ihn erst angehen,
+bewusst als nächster Ausbauschritt beschrieben. Ich gehe ihn erst an,
 wenn der einfache Hostname-pro-Solution-Ansatz stabil läuft und die
 Fehlerfälle ausreichend getestet sind.
 
@@ -75,7 +75,7 @@ workload, and clearly separated listeners, backends and probe paths in YAML.
 The full production customer implementation is intentionally not included here.
 
 The second proposal, a shared URL with additional routing logic, is documented
-as the next possible step. I would only move there once the simpler
+as the next possible step. I only move there once the simpler
 hostname-per-solution approach is stable and the failure cases have been tested
 well enough.
 

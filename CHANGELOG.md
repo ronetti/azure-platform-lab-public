@@ -48,6 +48,27 @@ All notable changes to this anonymized Azure Platform Lab are documented here.
 - Verified update of the reusable workflow's pinned default Terraform version
   from `1.10.5` to `1.15.8`.
 
+### Geändert / Changed
+
+- Die Ansible-Dokumentation präzisiert den Übergabevertrag zwischen Terraform
+  Outputs beziehungsweise Remote State und getrennten
+  Configuration-Management-Pipelines einschließlich ihrer Guardrails.
+- The Ansible documentation now clarifies the handover contract between
+  Terraform outputs or remote state and separate configuration-management
+  pipelines, including their guardrails.
+- Die Solution-weite Recovery-Automatisierung wird als integrierter
+  Betriebsablauf aus VM-spezifischen Restore-/Rebuild-Pfaden, Validierungen,
+  Logging und kontrollierter Terraform-Re-Adoption beschrieben.
+- Solution-wide recovery automation is now described as an integrated
+  operating flow with VM-specific restore or rebuild paths, validation,
+  logging and controlled Terraform re-adoption.
+- Landing-Zone-, Application-Gateway-, Security- und Guardrail-Dokumentation
+  verwendet aktive Entscheidungs- und Prüfsprache, ohne modellierte oder noch
+  nicht implementierte Plattformteile als produktiv auszugeben.
+- Landing Zone, Application Gateway, security and guardrail documentation now
+  uses active decision and verification language without presenting modeled or
+  not-yet-implemented platform parts as production deployments.
+
 ## 1.0.0 - 2026-07-13
 
 ### Hinzugefügt

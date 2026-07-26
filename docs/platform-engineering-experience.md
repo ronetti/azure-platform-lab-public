@@ -21,7 +21,7 @@ selbst vorzugeben. Fachleute sollen ihre Bereiche innerhalb vereinbarter
 Leitplanken eigenständig gestalten können. Sobald eine Lösung gemeinsame
 Schnittstellen, Betrieb, Wartbarkeit oder die Single Source of Truth betrifft,
 muss sie in den Gesamtweg passen und anhand gemeinsamer Kriterien überprüfbar
-sein. Einen nachweislich besseren Ansatz würde ich übernehmen.
+sein. Einen nachweislich besseren Ansatz übernehme ich.
 
 Zu Platform Engineering gehört für mich deshalb auch technische Führung:
 Risiken sichtbar machen, Entscheidungen nachvollziehbar erklären und Wissen so
@@ -37,6 +37,11 @@ funktioniert.
 
 ## Praktische Muster
 
+Die folgenden Muster habe ich in meiner beruflichen Plattformarbeit umgesetzt
+oder daraus als anonymisierte Architektur- und Betriebsverträge abgeleitet.
+Welche Teile im öffentlichen Repository selbst ausführbar sind, steht getrennt
+im Abschnitt zum Umsetzungsstand.
+
 - Terraform-basierte Azure-Infrastruktur mit Environment-Trennung
 - YAML- oder konfigurationsgetriebene Beschreibung von Plattform- und Solution-Parametern
 - Remote-State- und Backend-Strukturen für nachvollziehbare Deployments
@@ -44,12 +49,17 @@ funktioniert.
 - Application Gateway und WAF als zentraler Edge- und Reverse-Proxy-Baustein
 - Firewall-Integration für kontrollierte Netzwerkpfade und Monitoring-Anbindung
 - RBAC- und IAM-Überlegungen für Plattform- und Automatisierungszugriffe
-- Azure DevOps Pipelines und Agent Pools für wiederholbare Bereitstellung
-- Ansible-basiertes Konfigurationsmanagement für Multi-Tier-VM-Workloads
+- Azure DevOps Pipelines und Agent Pools für Terraform-, Ansible- und
+  Restore-Automatisierung
+- modulares Ansible-Konfigurationsmanagement für Multi-Tier-VM-Workloads in
+  containerisierten, ephemeren Ausführungsumgebungen
 - Terraform Outputs als Inventory-Quelle für getrennte Ansible-Pipelines
+- Linting, Syntax Check, Check Mode, Reviews und Approvals als Guardrails für
+  Ansible-Ausführungen
 - Azure VM Backup Policies und automatische Sicherungen nach definierten
   Regeln als dokumentiertes Betriebsmuster
-- Python-basierte Restore-Automatisierung für stateful Solutions als
+- modularer Recovery-Orchestrator für den gemeinsamen technischen
+  Wiederherstellungsstand mehrstufiger stateful Solutions, hier als
   anonymisiertes Pattern
 - Logging von Restore-Abläufen zur Ableitung von RTO und RPO
 - Behebung von Terraform Drift nach Restore-Abläufen
@@ -119,8 +129,8 @@ For me, technical ownership does not mean prescribing every implementation.
 Specialists should be able to design their areas independently within agreed
 guardrails. Once a solution affects shared interfaces, operations,
 maintainability or the single source of truth, it must fit the overall path and
-be reviewable against shared criteria. I would adopt an approach that is
-demonstrably better.
+be reviewable against shared criteria. I adopt an approach that is demonstrably
+better.
 
 For me, platform engineering therefore also includes technical leadership:
 making risks visible, explaining decisions in a way others can follow and
@@ -134,6 +144,11 @@ bureaucracy. It is the foundation for automation that works in a team.
 
 ## Practical Patterns
 
+I implemented the following patterns in my professional platform work or
+derived them as anonymized architecture and operating contracts. The separate
+implementation-status section states which parts are executable in this public
+repository itself.
+
 - Terraform-based Azure infrastructure with environment separation
 - YAML- or configuration-driven platform and solution parameters
 - Remote-state and backend structures for understandable deployments
@@ -141,13 +156,17 @@ bureaucracy. It is the foundation for automation that works in a team.
 - Application Gateway and WAF as central edge and reverse-proxy building blocks
 - Firewall integration for controlled network paths and monitoring connectivity
 - RBAC and IAM considerations for platform and automation access
-- Azure DevOps pipelines and agent pools for repeatable delivery
-- Ansible-based configuration management for multi-tier VM workloads
+- Azure DevOps pipelines and agent pools for Terraform, Ansible and restore
+  automation
+- modular Ansible configuration management for multi-tier VM workloads in
+  containerized ephemeral execution environments
 - Terraform outputs as inventory source for separate Ansible pipelines
+- linting, syntax checks, check mode, reviews and approvals as guardrails for
+  Ansible execution
 - Azure VM Backup policies and automatic backups based on defined rules as a
   documented operating pattern
-- Python-based restore automation for stateful solutions as an anonymized
-  pattern
+- modular recovery orchestration for the shared technical recovery state of
+  multi-tier stateful solutions, represented here as an anonymized pattern
 - logging of restore flows to derive RTO and RPO
 - fixing Terraform drift after restore flows
 - Monitoring and observability strategies with Azure Monitor, Log Analytics, PRTG experience and Prometheus/Grafana target patterns
