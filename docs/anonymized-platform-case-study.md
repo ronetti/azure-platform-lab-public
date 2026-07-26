@@ -1,9 +1,10 @@
 # Anonymisierte Fallstudie: Vom Einzelaufbau Zum Plattformvertrag
 
-Diese Fallstudie abstrahiert eine wiederkehrende Plattformaufgabe, die ich aus
-meiner Praxis kenne. Sie ist neu formuliert und bildet keine konkrete
-Organisation oder Kundenumgebung 1:1 ab. Entscheidend sind die technische
-Methode und die im Repository überprüfbaren Ergebnisse.
+Diese Fallstudie bündelt wiederkehrende Fragestellungen aus meiner
+Infrastruktur- und Automatisierungspraxis in einem eigenständig entwickelten
+Portfoliomodell. Sie bildet keine konkrete Organisation oder Kundenumgebung
+1:1 ab. Entscheidend sind die technische Methode und die im Repository
+überprüfbaren Ergebnisse.
 
 ## Ausgangslage
 

@@ -34,6 +34,34 @@ Die Microsoft-Referenzarchitektur ist dabei mein Ausgangspunkt, aber nicht
 meine Entscheidung. Die konkrete Struktur muss aus Anforderungen und
 Verantwortungsgrenzen ableitbar bleiben.
 
+## Verbindliche Regeln Für Dieses Portfolio
+
+- Die Referenzarchitektur liefert Begriffe und einen prüfbaren Ausgangspunkt;
+  die konkrete Hierarchie wird aus Anforderungen abgeleitet.
+- Management Groups entstehen aus gemeinsamen Policy-, Compliance-,
+  Konnektivitäts- oder Ownership-Anforderungen, nicht aus SDLC-Namen oder
+  einem Organigramm.
+- Testing, Staging und Production werden nicht allein wegen ihrer
+  Environment-Namen zu eigenen Management Groups.
+- Die vorhandenen Nonproduction- und Production-Grenzen sind
+  Workload-Subscriptions. Sie werden nicht nachträglich als Management Groups
+  dargestellt.
+- Nonproduction und Production können demselben Workload-Archetyp zugeordnet
+  sein und bleiben trotzdem getrennte Subscription-, State-, Identity-,
+  Secret-, Netzwerk-, Cluster- und Betriebsgrenzen.
+- `corp` oder `online` bleibt für das Beispiel offen, bis Konnektivität,
+  Exposition und Betriebsverantwortung belegt sind.
+- Dieses Dokument und der ALZ-Core-Vertrag sind modellierte Zielbilder. Sie
+  sind kein Nachweis eines Tenant-Deployments.
+- Terraform wird nicht allein für Vollständigkeit ergänzt. Vor Code wird
+  entschieden, ob ein ausführbarer Governance-Slice genügend Lern- und
+  Portfoliowert besitzt.
+- Ein späterer erster Slice hält die Grenzen aus
+  [ALZ Core](alz-core-contract.md) ein: eigener State, kleine Hierarchie,
+  höchstens ein nicht erzwingender Policy-Test und keine Subscription-Moves,
+  Workload-RBAC- oder Platform-Ressourcen.
+- Statusangaben bleiben explizit: implementiert, modelliert oder Roadmap.
+
 ## Von Der Anforderung Zur Grenze
 
 Ich trenne die Entscheidungen in dieser Reihenfolge:

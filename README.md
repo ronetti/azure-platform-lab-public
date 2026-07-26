@@ -1,16 +1,33 @@
-# Azure Platform Lab
+# Azure Platform Engineering Portfolio
 
-**Annett Berlinger · Platform Engineering · DevOps · Azure Infrastructure**
+**Annett Berlinger · Azure Platform Engineering · Terraform · Governance · Technical Ownership**
 
-Anonymisiertes Architektur- und Codebeispiel dafür, wie ich Azure-Plattformen
-strukturiere: klare Verantwortungsgrenzen, datengetriebene Terraform-Stacks,
-getrennte Subscriptions, Kubernetes-Guardrails und nachvollziehbarer Betrieb.
+Dieses anonymisierte Portfolio zeigt, wie ich Azure-Plattformen als
+zusammenhängendes System strukturiere: von Governance- und
+Subscription-Grenzen über Terraform- und Pipeline-Verträge bis zu Security,
+Betrieb und Recovery.
 
-An anonymized architecture and code example showing how I structure Azure
-platforms: clear ownership boundaries, configuration-driven Terraform stacks,
-separate subscriptions, Kubernetes guardrails and operational readiness.
+Im Mittelpunkt stehen begründete Architekturentscheidungen, klare Ownership
+und ein Plattformweg, den Teams gemeinsam prüfen und weiterentwickeln können.
+Der Umsetzungsstand trennt transparent zwischen ausführbarem Code,
+modellierten Verträgen, Zielbild und noch notwendiger realer Integration.
 
-## In 60 Sekunden
+## Mein Plattformansatz In 60 Sekunden
+
+- **Gesamtsystem statt Einzellösung:** Governance, Infrastruktur,
+  Configuration Management, Delivery und Betrieb werden über dokumentierte
+  Schnittstellen verbunden.
+- **Freiheit innerhalb klarer Grenzen:** Fachbereiche besitzen eigene
+  Root-Stacks und States; gemeinsame Verträge schützen Security, Ownership und
+  die Single Source of Truth.
+- **Änderungen kontrolliert liefern:** Environment-Daten, geprüfte
+  Terraform-Pläne, versionierte Pipeline-Blueprints und Approvals machen
+  Änderungen reviewbar und wiederholbar.
+- **Betrieb von Anfang an mitdenken:** Monitoring, Backup, Restore,
+  Fehlergrenzen und Runbooks gehören zum Plattformvertrag und nicht erst zur
+  späteren Nacharbeit.
+
+### Workload- Und Environment-Grenze
 
 ```text
 Nonproduction Subscription
@@ -50,17 +67,18 @@ Environment-Auswahl
   eigene Root-Stacks und stabile Übergabepunkte.
 - **Daten statt Copy-Paste:** Environment-YAML, Maps und Locals steuern
   routinemäßige Änderungen.
-- **Wiederverwendbare Delivery:** Produkt-Repositories konsumieren ein
-  versionsgepinntes Terraform-Pipeline-Blueprint mit eigenen Parametern.
-- **Betriebsfähigkeit:** Guardrails, Reviews, Diagnostics, Availability
-  Engineering, Backup-/Restore- und Configuration-Management-Patterns.
+- **Wiederverwendbare Delivery:** Das Terraform-Pipeline-Blueprint ist für die
+  versionsgepinnte Nutzung durch Produkt-Repositories mit eigenen Parametern
+  ausgelegt.
+- **Betriebsdenken:** Guardrails, Reviews, Diagnostics, Availability
+  Engineering sowie Backup-/Restore- und Configuration-Management-Patterns.
 
-Das Repository ist dabei ein ausführbarer Denkansatz für Bewerbungen. Es soll
-nicht behaupten, eine reale Organisation, Subscription-Landschaft oder
-Deployment-Strecke vollständig abzubilden. Sichtbar werden sollen die Fragen,
+Das Repository ist ein ausführbarer, anonymisierter Denkansatz und keine
+Behauptung über eine vollständig provisionierte Organisation,
+Subscription-Landschaft oder Deployment-Strecke. Sichtbar werden die Fragen,
 die ich vor einer Umsetzung kläre, die Grenzen, die ich bewusst ziehe, und die
-Struktur, mit der andere Menschen meine Entscheidungen schnell prüfen und
-weiterführen können.
+Struktur, mit der andere Menschen meine Entscheidungen prüfen und weiterführen
+können.
 
 ## Methode Und Gezielte Wirkung
 
@@ -114,11 +132,11 @@ seinen Abschnitt aus dem konsolidierten Environment-Vertrag. Upstream-Stacks
 veröffentlichen Outputs; abhängige Stacks konsumieren ausschließlich diese
 Verträge über `terraform_remote_state`.
 
-Das zugrundeliegende Multi-Team-Modell betreibt den Terraform-State zentral je
-Subscription- und Environment-Grenze in Azure Storage. Jedes Team oder Produkt
-besitzt einen eigenen Container mit Entra-RBAC auf Container-Scope; jedes
-Fach-Repository verwendet darin einen eindeutigen State-Key. So bleibt der
-Backend-Service zentral betreibbar, ohne anderen Teams Zugriff auf fremde
+Im dargestellten Multi-Team-Betriebsmodell ist der Terraform-State zentral je
+Subscription- und Environment-Grenze in Azure Storage vorgesehen. Jedes Team
+oder Produkt erhält einen eigenen Container mit Entra-RBAC auf Container-Scope;
+jedes Fach-Repository verwendet darin einen eindeutigen State-Key. So bleibt
+der Backend-Service zentral betreibbar, ohne anderen Teams Zugriff auf fremde
 States zu geben. Production und Nonproduction teilen keinen State-Storage.
 
 ## Umsetzungsstand
@@ -180,6 +198,7 @@ AKS-Ingress und anschließend zum Workload-Service.
 | --- | --- |
 | Praxiserfahrung und technische Denkweise | [Platform Engineering Experience](docs/platform-engineering-experience.md) |
 | Anonymisierte Fallstudie mit überprüfbaren Ergebnissen | [Platform Case Study](docs/anonymized-platform-case-study.md) |
+| Betriebs-, Review- und Verantwortungsmodell | [Operating Model](docs/operating-model.md) |
 | Landing-Zone-Denkweg, Management Groups und Subscription Vending | [Landing Zone Thinking](docs/landing-zone-thinking.md) |
 | Kleinster verantwortbarer Tenant-Governance-Slice | [ALZ Core Contract](docs/alz-core-contract.md) |
 | Gesamtarchitektur und Datenfluss | [Architecture](docs/architecture.md) |
@@ -189,6 +208,7 @@ AKS-Ingress und anschließend zum Workload-Service.
 | Kubernetes und Blueprints | [Kubernetes](kubernetes/README.md) |
 | Security und Subscription-Trennung | [Security](docs/security-considerations.md) |
 | Guardrails und Pipeline-Gates | [Guardrails](docs/guardrails.md) |
+| Change-, Release- und Tag-Governance | [Change Governance](docs/change-governance.md) |
 | Availability Engineering | [Availability](docs/availability-engineering.md) |
 | Betrieb und Verifikation | [Runbook](docs/runbook.md) |
 | Kostenentscheidungen | [Cost Notes](docs/cost-notes.md) |

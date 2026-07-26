@@ -1,24 +1,30 @@
-# Platform Engineering Experience / Plattform-Erfahrung
+# Plattform-Erfahrung / Platform Engineering Experience
 
 ## Deutsch
 
 Dieses Dokument beschreibt die Plattformmuster, die dieses Repository als
 bereinigtes Beispiel abbildet. Es ist kein 1:1-Abbild einer produktiven
-Kundenumgebung. Es zeigt, welche Fragen ich bei Infrastrukturarbeit wichtig
-finde: Wo liegt die Grenze zwischen Plattform und Workload? Was kann ein Team
+Kundenumgebung. Es zeigt die Fragen, die ich vor einer Infrastrukturumsetzung
+kläre: Wo liegt die Grenze zwischen Plattform und Workload? Was kann ein Team
 selbst ändern? Welche Änderung braucht Review? Und wie bleibt eine Umgebung
 auch später noch erklärbar?
 
-Ich möchte mit diesem Repo nicht behaupten, dass jede Komponente fertig
-produktreif implementiert ist. Einige Teile sind bewusst als Schnittstellen
-oder Rahmen-Stacks modelliert. Für mich ist das ein wichtiger Teil von
-Plattformarbeit: nicht nur Ressourcen bauen, sondern Verantwortung sauber
-schneiden.
+Der Umsetzungsstand macht sichtbar, welche Komponenten ausführbar sind und
+welche bewusst als Schnittstellen, Verträge oder Rahmen-Stacks modelliert
+bleiben. Für mich ist das ein wichtiger Teil von Plattformarbeit: nicht nur
+Ressourcen bauen, sondern Verantwortung sauber schneiden.
 
-## Technische Führung
+## Fachliche Verantwortung Und Technische Führung
 
-Für mich gehört zu Platform Engineering auch technische Führung: Risiken
-sichtbar machen, Entscheidungen nachvollziehbar erklären und Wissen so
+Technische Gesamtverantwortung bedeutet für mich nicht, jede Implementierung
+selbst vorzugeben. Fachleute sollen ihre Bereiche innerhalb vereinbarter
+Leitplanken eigenständig gestalten können. Sobald eine Lösung gemeinsame
+Schnittstellen, Betrieb, Wartbarkeit oder die Single Source of Truth betrifft,
+muss sie in den Gesamtweg passen und anhand gemeinsamer Kriterien überprüfbar
+sein. Einen nachweislich besseren Ansatz würde ich übernehmen.
+
+Zu Platform Engineering gehört für mich deshalb auch technische Führung:
+Risiken sichtbar machen, Entscheidungen nachvollziehbar erklären und Wissen so
 ablegen, dass Betrieb nicht an einzelnen Personen hängt. Eine gute Plattform
 hilft nicht nur beim Deployment. Sie hilft einem Team, Änderungen zu prüfen,
 Fehler einzugrenzen, Verantwortung zu übernehmen und später sicher
@@ -107,13 +113,20 @@ Some parts are intentionally modeled as interfaces or stack frames. For me,
 that is part of platform work: not only building resources, but also drawing
 responsibility boundaries clearly.
 
-## Technical Leadership
+## Technical Ownership And Leadership
 
-For me, platform engineering also includes technical leadership: making risks
-visible, explaining decisions in a way others can follow and storing knowledge
-so operations do not depend on individual people. A good platform does not only
-help with deployment. It helps a team review changes, narrow down incidents,
-take responsibility and safely continue the work later.
+For me, technical ownership does not mean prescribing every implementation.
+Specialists should be able to design their areas independently within agreed
+guardrails. Once a solution affects shared interfaces, operations,
+maintainability or the single source of truth, it must fit the overall path and
+be reviewable against shared criteria. I would adopt an approach that is
+demonstrably better.
+
+For me, platform engineering therefore also includes technical leadership:
+making risks visible, explaining decisions in a way others can follow and
+storing knowledge so operations do not depend on individual people. A good
+platform does not only help with deployment. It helps a team review changes,
+narrow down incidents, take responsibility and safely continue the work later.
 
 That is why I care about clear handover points, runbooks, reviews, approvals,
 changelogs and a single source of truth in the repository. For me, this is not
