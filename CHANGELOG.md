@@ -24,6 +24,29 @@ All notable changes to this anonymized Azure Platform Lab are documented here.
 - Smallest responsible ALZ Core contract with explicit scope, independent
   state, non-enforcing policy entry point, review gates, rollback path and open
   decisions before a later Terraform implementation.
+- Verbindliche Projektregeln für Landing-Zone-Entscheidungen sowie ein
+  belegtes Release- und Tag-Prinzip: Semantic Versioning bezieht sich primär
+  auf den öffentlichen Workflow-Vertrag; reine Dokumentationsänderungen
+  erzwingen keinen Release und Tag-Unveränderlichkeit wird nur bei technisch
+  geprüfter Durchsetzung behauptet.
+- Binding project rules for Landing Zone decisions and an evidence-based
+  release and tag principle: Semantic Versioning primarily applies to the
+  public workflow contract, documentation-only changes do not force a release,
+  and tag immutability is claimed only when technically enforced and verified.
+- GitHub-Workflow-Härtung durch explizite minimale Token-Rechte und deaktivierte
+  persistierte Checkout-Anmeldedaten, wenn keine authentifizierten Git-Befehle
+  benötigt werden.
+- GitHub workflow hardening through explicit minimum token permissions and
+  disabled persisted checkout credentials where authenticated Git commands are
+  not required.
+- Aktualisierung und Verifikation der vollständigen Action-SHAs für
+  `actions/checkout` `v7.0.1` und `actions/setup-go` `v7.0.0`.
+- Updated and verified full action SHAs for `actions/checkout` `v7.0.1` and
+  `actions/setup-go` `v7.0.0`.
+- Geprüfte Aktualisierung der gepinnten Terraform-Standardversion des
+  reusable Workflows von `1.10.5` auf `1.15.8`.
+- Verified update of the reusable workflow's pinned default Terraform version
+  from `1.10.5` to `1.15.8`.
 
 ## 1.0.0 - 2026-07-13
 

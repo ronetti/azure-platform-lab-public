@@ -69,9 +69,14 @@ Security-Ausnahmen und Betrieb. Dafür dient
 
 ## Verwenden
 
-Der Produkt-Workflow pinnt ein Release-Tag oder einen vollständigen Commit-SHA.
-`main` ist keine stabile Schnittstelle. Das vollständige Beispiel liegt in
-[github-actions.example.yml](github-actions.example.yml).
+Der Produkt-Workflow pinnt ein bewusst freigegebenes Release-Tag oder einen
+vollständigen Commit-SHA. `main` ist keine stabile Schnittstelle. Ein
+vollständiger Commit-SHA bietet laut GitHub die stärkste Stabilitäts- und
+Sicherheitsbindung; das Release-Tag bleibt die besser lesbare, explizit zu
+aktualisierende Variante. Das vollständige Beispiel liegt in
+[github-actions.example.yml](github-actions.example.yml). Das
+[Release- und Tag-Prinzip](../../docs/change-governance.md)
+definiert die Projektregeln.
 
 ```yaml
 permissions:
@@ -171,7 +176,9 @@ den Terraform-Aufrufen eingebunden.
 ## Für eine reale Übertragung nötig
 
 - GitHub Actions erlaubt den Zugriff auf das Blueprint-Repository
-- geschützte, unveränderliche Tags oder Commit-SHAs
+- vollständige Commit-SHAs oder bewusst freigegebene Release-Tags; technische
+  Unveränderlichkeit nur dann behaupten, wenn sie durch GitHub-Einstellungen
+  tatsächlich erzwungen und geprüft ist
 - vier GitHub Environments pro Produkt bei Nonproduction und Production
 - OIDC Federation zwischen GitHub und Microsoft Entra ID
 - getrennte Azure-Rollen für Plan und Apply
