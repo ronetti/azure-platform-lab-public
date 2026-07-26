@@ -7,10 +7,13 @@ besonderen Recovery-Anforderungen. Das Ziel war nicht nur, Ressourcen wieder
 hochzufahren. Die Solution musste so wiederhergestellt werden, dass Zustand,
 Konfiguration und Zuordnung wieder wie vorher nachvollziehbar zusammenpassen.
 
-In der praktischen Umsetzung habe ich dafür ein Python-Modul gebaut, das den
-Restore-Ablauf orchestriert und ausführlich loggt. Der konkrete Code ist hier
-nicht veröffentlicht. Das Pattern zeigt die Struktur, die Betriebslogik und die
-Fragen, die dadurch prüfbar wurden.
+In der praktischen Umsetzung habe ich dafür einen modularen
+Recovery-Orchestrator mit Bash-Einstieg, Python-Modulen, Azure CLI, Terraform
+und Pipeline-Anbindung entwickelt. Er behandelt die mehrstufige Solution als
+zusammengehöriges System und führt sie auf einen gemeinsam freigegebenen,
+technisch vollständigen Wiederherstellungsstand zurück. Der konkrete Code ist
+hier nicht veröffentlicht. Das Pattern zeigt die Struktur, die Betriebslogik
+und die Fragen, die dadurch prüfbar wurden.
 
 Gerade dieses Logging war wichtig: Damit konnte ich später sehen, welche
 Schritte wie lange dauern, wo Risiken liegen und wie realistische RTO- und
@@ -23,10 +26,12 @@ requirements. The goal was not only to bring resources back. The solution had
 to be restored so that state, configuration and assignment matched the previous
 shape in an understandable way.
 
-In the practical implementation, I built a Python module to orchestrate the
-restore flow and log the steps in detail. The concrete code is not published
-here. This pattern shows the structure, operating logic and questions that
-became checkable through that work.
+In the practical implementation, I developed a modular recovery orchestrator
+with a Bash entry point, Python modules, Azure CLI, Terraform and pipeline
+integration. It treats the multi-tier solution as one connected system and
+returns it to a jointly approved, technically complete recovery state. The
+concrete code is not published here. This pattern shows the structure,
+operating logic and questions that became checkable through that work.
 
 That logging mattered: it made it possible to see how long individual steps
 took, where the risks were and how realistic RTO and RPO targets could be
@@ -110,7 +115,8 @@ Terraform.
 
 ## Technisches Muster
 
-Das Python-Modul war für die Orchestrierung zuständig, nicht für die
+Der Recovery-Orchestrator war für den zeitlich begrenzten Ablauf zuständig,
+nicht für die
 dauerhafte Beschreibung der Infrastruktur. Diese Grenze war wichtig:
 
 - Terraform beschreibt die Infrastruktur und ihre gewünschten Eigenschaften.
@@ -121,6 +127,15 @@ dauerhafte Beschreibung der Infrastruktur. Diese Grenze war wichtig:
   kann.
 - RTO und RPO werden nicht geraten, sondern aus gemessenen Restore-Abläufen
   abgeleitet.
+
+In der beruflichen Umsetzung wählte der Orchestrator je VM den passenden
+Classic-, Full-Disk-, Terraform-Rebuild- oder Ad-hoc-Snapshot-Pfad. Er
+behandelte auch gemischte VM-Zustände innerhalb derselben Solution und führte
+Netzwerkzuordnung, statische IPs, OS- und Data-Disks, LUN-Zuordnungen,
+Service-Kontext, Monitoring-Anbindung und Terraform-Lifecycle kontrolliert
+zusammen. Dry-Run, exakte Recovery-Point-Auswahl, Pre-/Post-Checks,
+Disk-/IP-Prüfungen, definierte Reihenfolgen, Stop-Kriterien und
+VM-spezifisches Logging sicherten den Ablauf ab.
 
 Für fehlgeschlagene Patches oder Updates muss der Restore die Solution als
 Multi-Tier-System behandeln. Es reicht nicht, nur eine einzelne VM
@@ -143,8 +158,8 @@ Ein sinnvoller Pipeline-Ablauf ist:
 
 ## Technical Pattern
 
-The Python module handled orchestration, not the long-term description of the
-infrastructure. That line mattered:
+The recovery orchestrator handled the time-bound flow, not the long-term
+description of the infrastructure. That line mattered:
 
 - Terraform describes the infrastructure and its intended shape.
 - Azure Backup policies protect the affected VMs according to defined rules.
@@ -153,6 +168,15 @@ infrastructure. That line mattered:
 - After the restore, Terraform is checked again as the source for explaining
   the environment.
 - RTO and RPO are not guessed; they are derived from measured restore runs.
+
+In the professional implementation, the orchestrator selected the appropriate
+classic, full-disk, Terraform rebuild or ad-hoc snapshot path for each VM. It
+also handled mixed VM states within one solution and brought network
+assignment, static IPs, OS and data disks, LUN mappings, service context,
+monitoring integration and Terraform lifecycle back together in a controlled
+way. Dry runs, exact recovery-point selection, pre- and post-checks, disk and
+IP validation, defined execution order, stop criteria and VM-specific logging
+protected the flow.
 
 For failed patches or updates, restore has to treat the solution as a
 multi-tier system. Resetting only one VM is not enough. The flow has to detect

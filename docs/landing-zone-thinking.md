@@ -3,7 +3,7 @@
 ## Status Und Ergebnisgrenze
 
 Dieses Dokument ist ein begründetes Zielbild. Es zeigt, wie ich eine Azure
-Landing Zone analysieren und schrittweise aufbauen würde. Es behauptet nicht,
+Landing Zone analysiere und schrittweise aufbaue. Es behauptet nicht,
 dass in diesem Repository bereits Management Groups, Plattform-Subscriptions,
 Azure-Policy-Zuweisungen oder ein Subscription-Vending-Prozess provisioniert
 sind.
@@ -109,7 +109,7 @@ Tenant Root Group
     └── Decommissioned               kontrollierte Stilllegung
 ```
 
-Ich würde diese Struktur bewusst flach halten. Eine neue Management Group
+Ich halte diese Struktur bewusst flach. Eine neue Management Group
 braucht einen nachvollziehbaren Unterschied bei Policy, Compliance,
 Konnektivität oder Plattform-Ownership. Tags und Resource-Graph-Abfragen sind
 für reine Such- und Berichtssichten geeigneter als zusätzliche Hierarchie.
@@ -151,8 +151,8 @@ Die übergeordnete Platform Landing Zone besitzt einen anderen Lifecycle:
 - Die vorhandenen Fach-Stacks verantworten die Ressourcen innerhalb der
   jeweiligen Workload-Subscription.
 
-Diese Grenzen würden in einer realen Organisation eigenständige Root-States,
-Pipelines, Freigaben und möglicherweise eigene Repositories besitzen. Das
+In einer realen Organisation besitzen diese Grenzen eigenständige Root-States,
+Pipelines, Freigaben und möglicherweise eigene Repositories. Das
 Portfolio darf sie kompakt darstellen, aber nicht als einen gemeinsamen
 Terraform-State modellieren.
 
@@ -236,7 +236,7 @@ Review und eine ausdrückliche Freigabe.
 ## Verifikation
 
 Eine Landing Zone ist für mich nicht durch ein erfolgreiches `terraform
-apply` bewiesen. Ich würde zusätzlich prüfen:
+apply` bewiesen. Zusätzlich prüfe ich:
 
 - Liegt jede Subscription unter der beabsichtigten Management Group?
 - Werden die erwarteten Policies vererbt und unerwartete Zuweisungen

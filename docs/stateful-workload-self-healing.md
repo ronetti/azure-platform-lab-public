@@ -91,11 +91,13 @@ Required mitigations may include:
 ## Restore-Automatisierung
 
 Für eine Solution mit besonderen Recovery-Anforderungen habe ich in der Praxis
-einen Restore-Ablauf als Python-Modul umgesetzt. In diesem Repository ist der
+einen modularen Recovery-Orchestrator mit Bash-Einstieg, Python-Modulen, Azure
+CLI, Terraform und Pipeline-Anbindung umgesetzt. In diesem Repository ist der
 Ablauf als Pattern dokumentiert, weil der konkrete Code nicht veröffentlicht
-wird. Wichtig war dabei, dass die Solution nach dem Restore nicht nur wieder
-läuft, sondern wieder in denselben nachvollziehbaren Zustand kommt: Daten,
-Zuordnung, Zugriff und Konfiguration müssen zusammenpassen.
+wird. Wichtig war dabei, dass die mehrstufige Solution nach dem Restore nicht
+nur wieder läuft, sondern als Gesamtsystem in einen gemeinsam freigegebenen,
+technisch vollständigen Zustand zurückkehrt: Daten, Zuordnung, Zugriff und
+Konfiguration müssen zusammenpassen.
 
 Die Grundlage dafür waren automatische Azure-Backups der betroffenen VMs nach
 definierten Policies. Auch das ist hier als Betriebslogik dokumentiert, nicht
@@ -112,12 +114,13 @@ bleibt.
 
 ## Restore Automation
 
-For a solution with specific recovery requirements, I implemented the restore
-flow as a Python module in practice. In this repository, the flow is documented
+For a solution with specific recovery requirements, I implemented a modular
+recovery orchestrator with a Bash entry point, Python modules, Azure CLI,
+Terraform and pipeline integration. In this repository, the flow is documented
 as a pattern because the concrete code is not published. The important point
-was that the solution should not only run again after restore, but return to
-the same understandable shape: data, assignment, access and configuration have
-to fit together.
+was that the multi-tier solution did not merely run again after restore, but
+returned as one system to a jointly approved, technically complete state:
+data, assignment, access and configuration had to fit together.
 
 The foundation for this was automatic Azure backups of the affected VMs based
 on defined policies. This is documented here as operating logic, not as

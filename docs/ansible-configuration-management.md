@@ -7,10 +7,10 @@ und Betriebssystem-/Applikationskonfiguration. Terraform stellt Infrastruktur
 bereit und veröffentlicht Inventory-relevante Outputs. Ansible nutzt diese
 Outputs als Quelle für die Konfiguration von VMs.
 
-Ich würde VM-Konfiguration nicht in Terraform verstecken. Terraform soll die
-Infrastruktur und die nötigen Outputs liefern. Was auf einer VM installiert,
-konfiguriert oder regelmäßig angepasst wird, gehört für mich in eine eigene
-Configuration-Management-Pipeline.
+In meiner beruflichen Umsetzung habe ich VM-Konfiguration bewusst nicht in
+Terraform versteckt. Terraform liefert die Infrastruktur und die nötigen
+Outputs. Was auf einer VM installiert, konfiguriert oder regelmäßig angepasst
+wird, liegt in einer eigenen Configuration-Management-Pipeline.
 
 Der wichtige Punkt ist der Übergabepunkt dazwischen: Terraform veröffentlicht die
 Host-Daten, Ansible konsumiert sie. So muss niemand Hosts doppelt pflegen, und
@@ -22,12 +22,12 @@ Infrastrukturänderung mit.
 This pattern describes the separation between infrastructure provisioning and
 operating-system or application configuration. Terraform provisions
 infrastructure and publishes inventory-relevant outputs. Ansible consumes these
-outputs as the single source of truth for VM configuration.
+outputs as the inventory source for VM configuration.
 
-I would not hide VM configuration inside Terraform. Terraform should provide
-the infrastructure and the required outputs. What gets installed, configured or
-changed regularly on a VM belongs in a separate configuration-management
-pipeline.
+In my professional implementation, I deliberately kept VM configuration out of
+Terraform. Terraform provides the infrastructure and the required outputs.
+What gets installed, configured or changed regularly on a VM belongs in a
+separate configuration-management pipeline.
 
 The important part is the handover point between both sides: Terraform publishes host
 data, Ansible consumes it. Hosts do not need to be maintained twice, and
@@ -61,8 +61,8 @@ infrastructure changes.
 
 ## Terraform Als Inventory-Quelle
 
-Terraform sollte nicht nur VMs erzeugen, sondern die relevanten Daten für
-Configuration Management veröffentlichen:
+Terraform erzeugt nicht nur VMs, sondern veröffentlicht die relevanten Daten
+für Configuration Management:
 
 - VM-Name
 - private IP
@@ -72,18 +72,25 @@ Configuration Management veröffentlichen:
 - Monitoring- oder Log-Analytics-Bezug
 - optionale Gruppen wie `management`, `app`, `data`, `runner`
 
-Ansible kann daraus dynamisches Inventory ableiten. Dadurch müssen Hosts nicht
-manuell gepflegt werden.
+Ansible leitet daraus das Inventory ab. Dadurch müssen Hosts nicht manuell
+parallel gepflegt werden.
 
-In diesem Repository ist das bewusst als Übergabepunkt modelliert, nicht als
-vollständige Ansible-Landschaft. Der nächste sinnvolle Schritt wäre ein kleines
-`ansible/`-Beispiel mit Inventory-Generierung, Rolle, Playbook und
-`ansible-lint`. Für dieses Repository ist zuerst wichtig, dass die Grenze sauber
-sichtbar ist.
+Beruflich habe ich diese Trennung mit modularen Rollen und Playbooks,
+containerisierten ephemeren Ausführungsumgebungen, Azure-DevOps-Pipelines und
+Agent Pools umgesetzt. Inventory-Daten kamen aus Terraform Outputs
+beziehungsweise Remote State; Linting, Syntax Check, Check Mode, Reviews und
+Approvals sicherten die Abläufe ab.
+
+Dieses öffentliche Repository bildet davon bewusst nur den anonymisierten
+Übergabevertrag ab, nicht den privaten Ansible-Code. Ein späteres
+`ansible/`-Portfolio-Beispiel kann Inventory-Generierung, eine eigenständig
+geschriebene Demo-Rolle, ein Playbook und `ansible-lint` zeigen. Die
+berufliche Umsetzung und die öffentlich sichtbare Demo-Tiefe bleiben dabei
+bewusst getrennt.
 
 ## Terraform as Inventory Source
 
-Terraform should not only create VMs, but publish the relevant data for
+Terraform does not only create VMs. It also publishes the relevant data for
 configuration management:
 
 - VM name
@@ -94,27 +101,33 @@ configuration management:
 - monitoring or Log Analytics reference
 - optional groups such as `management`, `app`, `data`, `runner`
 
-Ansible can derive dynamic inventory from this. Hosts do not need to be managed
-manually.
+Ansible derives its inventory from this data. Hosts do not need to be
+maintained manually in parallel.
 
-In this repository, this is intentionally modeled as a handover point, not as a full
-Ansible implementation. A useful next step would be a small `ansible/` example
-with inventory generation, a role, a playbook and `ansible-lint`. For this
-repository, the first important part is making the line between Terraform and
-Ansible visible.
+I implemented this separation professionally with modular roles and playbooks,
+containerized ephemeral execution environments, Azure DevOps pipelines and
+agent pools. Inventory data came from Terraform outputs or remote state;
+linting, syntax checks, check mode, reviews and approvals protected the flows.
 
-## Azure DevOps Managed Pools
+This public repository intentionally represents only the anonymized handover
+contract, not the private Ansible code. A later `ansible/` portfolio example can
+show inventory generation, an independently written demo role, a playbook and
+`ansible-lint`. Professional implementation and the depth of the public demo
+remain deliberately separate.
 
-Ein sinnvolles Betriebsmodell ist die Ausführung von Ansible über eigene Azure
-DevOps Pipelines und Managed DevOps Pools. Dadurch bleibt Configuration
-Management getrennt, wiederholbar und nachvollziehbar.
+## Azure DevOps Pipelines Und Agent Pools
+
+Ich habe Ansible über eigene Azure DevOps Pipelines auf Agent Pools ausgeführt.
+Containerisierte, ephemere Ausführungsumgebungen hielten Abhängigkeiten
+reproduzierbar und trennten Configuration Management von Terraform-
+Provisionierung.
 
 Mir ist diese Trennung wichtig, weil Terraform-Pläne sonst schnell zu viel
 Verantwortung bekommen. Ein Plan soll Infrastrukturänderungen sichtbar machen.
 Ein Ansible-Lauf soll Konfigurationsänderungen sichtbar machen. Beides braucht
 Reviews, aber nicht zwingend denselben Ablauf.
 
-Typische Pipeline-Schritte:
+Die Pipeline-Struktur umfasste:
 
 - Linting für YAML und Ansible Playbooks
 - Syntax Check
@@ -124,18 +137,18 @@ Typische Pipeline-Schritte:
 - Ausführung gegen definierte Host-Gruppen
 - Changelog oder Deployment-Notiz
 
-## Azure DevOps Managed Pools
+## Azure DevOps Pipelines And Agent Pools
 
-A useful operating model is running Ansible through dedicated Azure DevOps
-pipelines and managed DevOps pools. This keeps configuration management
-separate, repeatable and understandable later.
+I ran Ansible through dedicated Azure DevOps pipelines on agent pools.
+Containerized ephemeral execution environments kept dependencies reproducible
+and separated configuration management from Terraform provisioning.
 
 This separation matters because Terraform plans can otherwise take on too much
 responsibility. A plan should make infrastructure changes visible. An Ansible
 run should make configuration changes visible. Both need reviews, but not
 necessarily the same workflow.
 
-Typical pipeline steps:
+The pipeline structure included:
 
 - linting for YAML and Ansible playbooks
 - syntax check

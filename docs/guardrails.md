@@ -157,7 +157,7 @@ In a production-like platform, additional gates could be added:
 - drift detection
 - manual approval stages for production-like environments
 
-Alert-driven Ansible, update or restore pipelines would need additional rules:
+Alert-driven Ansible, update or restore pipelines require additional rules:
 
 - Alerts do not start uncontrolled repairs.
 - Pipeline parameters such as solution, environment, failure type and recovery

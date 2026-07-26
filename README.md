@@ -1,6 +1,6 @@
 # Azure Platform Engineering Portfolio
 
-**Annett Berlinger · Azure Platform Engineering · Terraform · Governance · Technical Ownership**
+**Annett Berlinger · Senior Azure Platform Engineer · Terraform · Governance · Technical Ownership**
 
 Dieses anonymisierte Portfolio zeigt, wie ich Azure-Plattformen als
 zusammenhängendes System strukturiere: von Governance- und
@@ -26,6 +26,30 @@ modellierten Verträgen, Zielbild und noch notwendiger realer Integration.
 - **Betrieb von Anfang an mitdenken:** Monitoring, Backup, Restore,
   Fehlergrenzen und Runbooks gehören zum Plattformvertrag und nicht erst zur
   späteren Nacharbeit.
+
+## Berufliche Umsetzung Hinter Der Arbeitsprobe
+
+Die gezeigten Prinzipien sind nicht nur theoretisch. Seit Ende 2023 habe ich in
+meiner beruflichen Plattformarbeit unter anderem Azure-Infrastruktur mit
+Terraform und getrennten Environment-Verträgen, Azure DevOps Pipelines und
+Agent Pools sowie modulares Ansible-Konfigurationsmanagement umgesetzt.
+Containerisierte, ephemere Ansible-Ausführungsumgebungen, Terraform Outputs
+beziehungsweise Remote State als Inventory-Quelle sowie Linting, Syntax Check,
+Check Mode, Reviews und Approvals gehörten dabei zum Delivery-Modell.
+
+Bei der Recovery einer mehrstufigen stateful Solution orchestrierte ich nicht
+nur einzelne VM-Restores, sondern den gemeinsamen technischen
+Wiederherstellungsstand der gesamten Solution. VM-spezifische Restore- oder
+Rebuild-Pfade, Pre-/Post-Checks, Stop-Kriterien, Logging und kontrollierte
+Terraform-Re-Adoption verbanden Recovery und Infrastructure as Code zu einem
+nachvollziehbaren Betriebsablauf.
+
+Der private Arbeitgebercode wird hier nicht veröffentlicht. Dieses Repository
+formuliert die dahinterliegenden Architektur-, Übergabe- und Betriebsprinzipien
+unabhängig und anonymisiert neu. Die genaue Abgrenzung zeigen
+[Plattform-Erfahrung](docs/platform-engineering-experience.md),
+[Ansible Configuration Management](docs/ansible-configuration-management.md)
+und [Restore-Automatisierung](docs/restore-automation-pattern.md).
 
 ### Workload- Und Environment-Grenze
 
