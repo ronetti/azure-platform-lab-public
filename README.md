@@ -16,6 +16,9 @@ Im Mittelpunkt stehen begründete Architekturentscheidungen, klare Ownership
 und ein Plattformweg, den Teams gemeinsam prüfen und weiterentwickeln können.
 Der Umsetzungsstand trennt transparent zwischen ausführbarem Code,
 modellierten Verträgen, Zielbild und noch notwendiger realer Integration.
+Ich zeige hier bewusst, wie ich denke und strukturiere: nicht nur einzelne
+Ressourcen, sondern Zusammenhänge, Abhängigkeiten, Risiken, Betrieb und
+Rückwege. Genau diese Gesamtsicht ist meine Stärke.
 
 ## Mein Plattformansatz In 60 Sekunden
 
@@ -30,6 +33,9 @@ modellierten Verträgen, Zielbild und noch notwendiger realer Integration.
   nachvollziehbar, bevor sie im Betrieb ankommen.
 - **Betrieb beginnt nicht nach dem Deployment:** Observability, Backup,
   Restore, Fehlergrenzen und Runbooks gehören für mich zum Plattformvertrag.
+- **Automatisierung reduziert Fehlerquellen:** Was zuverlässig als Code,
+  Pipeline oder Runbook beschrieben werden kann, sollte nicht dauerhaft von
+  manueller Erinnerung abhängen.
 
 ## Berufliche Umsetzung Hinter Der Arbeitsprobe
 

@@ -5,6 +5,20 @@
 Die Monitoring-Basis kombiniert Azure Monitor / Log Analytics mit VM-,
 Kubernetes- und Prometheus/Grafana-Denken.
 
+Ich habe Monitoring und Logs bewusst als Plattformbestandteil modelliert und
+nicht als etwas, das jedes Workload-Team irgendwann selbst nachzieht. Natürlich
+kann und soll ein Workload-Team eigene Metriken, Dashboards oder fachliche
+Alerts ergänzen. Dafür braucht es aber eine gemeinsame Basis: einheitliche
+Diagnostic Settings, zentrale Log-Ziele, nachvollziehbare Alert-Regeln und
+gemeinsame Begriffe für Verfügbarkeit, Fehler, Latenz und Sättigung.
+
+Ohne diese Basis entstehen schnell unterschiedliche Einzellösungen. Dann misst
+jedes Team anders, Logs liegen an verschiedenen Orten, Alerts sind nicht
+vergleichbar und im Fehlerfall beginnt die Suche erst bei der Frage, wo die
+Daten überhaupt sind. Für mich verhindert eine Plattformbasis genau diese
+uneinheitlichen Einzellösungen. Sie gibt Standards vor, ohne den Teams ihre
+eigenen fachlichen Metriken wegzunehmen.
+
 Wichtige Signale:
 
 - Ressourcenverfügbarkeit
@@ -53,6 +67,17 @@ ausgeliefert werden kann oder ob zuerst Stabilisierung notwendig ist.
 
 The monitoring baseline combines Azure Monitor / Log Analytics with VM,
 Kubernetes and Prometheus/Grafana thinking.
+
+I model monitoring and logs as a platform capability, not as something every
+workload team should add later on its own. Workload teams can still define
+their own metrics, dashboards and domain-specific alerts. The platform provides
+the common baseline: diagnostic settings, central log targets, alerting
+patterns and shared language for availability, errors, latency and saturation.
+
+Without that baseline, every team measures differently, logs end up in
+different places and incident analysis starts with finding the data. A common
+platform baseline prevents inconsistent one-off solutions while still leaving
+room for workload-specific observability.
 
 Important signals:
 

@@ -24,6 +24,14 @@ Terraform bleibt für Infrastruktur und Remote-State-Outputs verantwortlich.
 Ansible wird getrennt ausgeführt und nutzt veröffentlichte Terraform Outputs
 als Inventory-Quelle.
 
+Für mich gehört dazu auch eine proaktive Fehlerkultur. Möglichst viel sollte
+prüfbar, wiederholbar und automatisierbar sein, weil manuelle Arbeit gerade in
+komplexen Plattformen schnell fehleranfällig wird. Wenn trotzdem etwas
+schiefgeht, braucht es RCA und blameless RCA: nicht um Schuld zu suchen,
+sondern um zu verstehen, welche Annahme, welcher Prozess oder welche technische
+Grenze verbessert werden muss. Diese Zeit lohnt sich, weil jedes gute Learning
+die Plattform später stabiler und leichter betreibbar macht.
+
 ## English
 
 A platform is not only a collection of Azure resources. It needs a clear
@@ -48,3 +56,10 @@ understandable.
 Terraform remains responsible for infrastructure and remote-state outputs.
 Ansible runs separately and consumes published Terraform outputs as its
 inventory source.
+
+That also includes a proactive learning culture. As much as possible should be
+checkable, repeatable and automatable, because manual work becomes error-prone
+in complex platforms. When something still goes wrong, RCA and blameless RCA
+are used to understand which assumption, process or technical boundary needs
+improvement, not to assign blame. Those learnings make the platform more stable
+and easier to operate over time.

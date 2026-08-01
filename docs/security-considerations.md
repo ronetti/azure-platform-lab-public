@@ -36,6 +36,21 @@ Secret-Werte. Environment-Overlays dürfen nur nicht-sensitive Referenzen
 enthalten. Die konkrete Verbindung zwischen Kubernetes Service Account und
 Managed Identity wird erst in einer freigegebenen Umgebung aufgebaut.
 
+Ich habe Secrets bewusst nicht in Blueprints, YAML-Dateien oder
+Environment-Overlays abgelegt, weil sie dort aus meiner Sicht nicht
+hingehören. Konfiguration beschreibt den gewünschten Plattformzustand.
+Passwörter, Zertifikate und Tokens sind dagegen vertrauliche Betriebsdaten und
+brauchen einen eigenen Schutzraum. Dafür ist ein Secret Store wie Azure Key
+Vault der richtige Ort: verschlüsselte Ablage, zentrale Verwaltung, gezielte
+RBAC-Berechtigungen und kontrollierte Bereitstellung über Managed Identities
+oder Workload Identities.
+
+Diese Trennung reduziert das Risiko, Secrets versehentlich in Git zu
+versionieren. Gleichzeitig können Zugriffe begrenzt und Secrets rotiert werden,
+ohne Blueprints oder Environment-Konfigurationen umzuschreiben. Für mich ist
+das eine klare Verantwortungsgrenze: Das Repository beschreibt die Plattform,
+der Secret Store verwaltet vertrauliche Daten.
+
 ## Environment-Trennung
 
 Testing und Staging dürfen innerhalb von Nonproduction kostenintensive
@@ -87,3 +102,9 @@ Security is treated as a platform responsibility in this repository:
 A real environment also requires evaluation of Azure Policy, Defender for
 Cloud, private endpoints, managed identities and central logging or SIEM
 integration.
+
+The blueprints do not contain client IDs, tokens, certificates or secret
+values. Environment overlays may contain only non-sensitive references. Secrets
+are operational data, not platform configuration. They belong in a protected
+secret store such as Azure Key Vault, where encryption, RBAC, managed identity
+access and rotation can be controlled without changing the repository.

@@ -1,5 +1,33 @@
 # Plattform-Runbook / Platform Runbook
 
+## Warum Runbooks Dazu Gehören
+
+Ich habe Runbooks und Rollback-Gedanken bewusst aufgenommen, weil sie für
+mich zu SRE und Betriebs-Readiness gehören. Infrastruktur ist nicht fertig,
+wenn Ressourcen erzeugt wurden. Ein Team muss auch wissen, welchen Weg es geht,
+wenn ein Fehler auftritt, ein Zustand unklar ist oder eine Entscheidung schnell
+vorbereitet werden muss.
+
+Ein Runbook macht diesen Weg sichtbar: zuerst Kontext prüfen, dann die
+betroffene Schicht eingrenzen, danach gezielt Logs, Events, Drift,
+Abhängigkeiten und Recovery-Optionen ansehen. Dadurch kann man im Fall nicht
+nur schneller handeln, sondern später auch prüfen, welche Teile davon
+automatisiert werden können. Für mich ist das ein Schritt von reiner
+Infrastruktur hin zu einem betreibbaren Plattformmodell.
+
+## Why Runbooks Are Included
+
+I include runbooks and rollback thinking because they are part of SRE and
+operational readiness. Infrastructure is not finished when resources have been
+created. A team also needs a clear path when an incident happens, a state is
+unclear or a decision has to be prepared quickly.
+
+A runbook makes that path visible: check context first, identify the affected
+layer, then inspect logs, events, drift, dependencies and recovery options in a
+targeted way. This helps teams act faster and later decide which steps can be
+automated. For me, that is the move from infrastructure to an operable platform
+model.
+
 ## Erste Prüfung
 
 Zuerst wird eingegrenzt, welche Schicht betroffen ist: Azure-Ressourcen, Netzwerk, Kubernetes, Anwendung oder Monitoring.

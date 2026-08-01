@@ -143,6 +143,13 @@ geschützte Muster infrage:
 - AKS Workload Identity oder Managed Identity für Laufzeit-Zugriffe
 - getrennte Berechtigungen für Flux-System, Platform Baseline und Workloads
 
+Ich trenne hier bewusst Plattformkonfiguration von vertraulichen
+Betriebsdaten. Git beschreibt, welcher Secret-Name, welcher Zugriffspfad oder
+welche Identity gebraucht wird. Das eigentliche Geheimnis liegt nicht im
+Blueprint, nicht im Overlay und nicht in einer unverschlüsselten YAML-Datei,
+sondern in einem dafür vorgesehenen Secret Store. So kann ein Team Rotation,
+Zugriff und Bereitstellung steuern, ohne den Plattformvertrag zu verändern.
+
 Wichtig ist die gleiche Frage wie bei Terraform State: Wer darf welche
 Wahrheit lesen oder verändern? Flux braucht nur die Rechte, die für den
 jeweiligen Scope notwendig sind. Ein GitOps-Controller darf nicht aus
@@ -159,6 +166,20 @@ wertvoll:
 - Flux sieht fortlaufend, ob der Clusterzustand zum Git-Zustand passt.
 - GitHub Actions kann Rendern und Schema validieren.
 - Flux kann Health, Drift, Events und Abhängigkeiten im Cluster auswerten.
+
+Ich habe Flux deshalb nicht als Ersatz für GitHub Actions ergänzt, sondern als
+zweite Verantwortung. GitHub Actions beantwortet vor dem Merge die Frage: Ist
+diese Änderung technisch korrekt, geprüft und freigegeben? Mit einem reinen
+`kubectl apply` endet der Prozess nach dem Deployment. Ob der Cluster Stunden
+oder Tage später noch dem freigegebenen Zustand entspricht, überwacht die
+Pipeline nicht dauerhaft.
+
+Flux beantwortet die andere Betriebsfrage: Entspricht der tatsächliche
+Clusterzustand noch dem gewünschten Zustand aus Git? Wenn jemand manuell im
+Cluster ändert oder Drift entsteht, erkennt Flux diese Abweichung und führt
+den Zustand je nach Vertrag zurück oder macht den Unterschied sichtbar. Für
+mich entsteht genau dadurch ein sauberes Modell: Delivery und kontinuierliche
+Reconciliation sind getrennt, arbeiten aber zusammen.
 
 Ich würde deshalb beides kombinieren:
 
@@ -223,6 +244,11 @@ Flux is the GitOps layer that connects approved Kubernetes desired state in Git
 with the running cluster. CI validates Kustomize overlays and policy checks
 before merge; Flux then pulls the approved source, applies Kustomization or
 HelmRelease objects and exposes status, events, health and drift.
+
+GitHub Actions and Flux have different responsibilities. GitHub Actions answers
+whether a change is valid, reviewed and allowed to be delivered. Flux answers
+whether the cluster still matches the approved Git state hours or days later.
+That separates delivery from continuous reconciliation.
 
 I keep the responsibility boundary explicit: Terraform defines the AKS
 platform foundation, while Flux manages Kubernetes state after the cluster

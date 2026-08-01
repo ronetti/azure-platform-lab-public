@@ -21,6 +21,12 @@ welche bewusst als Schnittstellen, Verträge oder Rahmen-Stacks modelliert
 bleiben. Für mich ist das ein wichtiger Teil von Plattformarbeit: nicht nur
 Ressourcen bauen, sondern Verantwortung sauber schneiden.
 
+Ich nutze dieses Portfolio deshalb bewusst, um meine Denkweise sichtbar zu
+machen. Mir geht es nicht darum, möglichst viele einzelne Dateien zu zeigen,
+sondern wie ich eine Plattform als Ganzes strukturiere: Abhängigkeiten,
+Ownership, Sicherheit, Betrieb, Kosten, Rückwege und spätere Automatisierung
+gehören für mich zusammen. Das ist eine meiner Stärken.
+
 ## Fachliche Verantwortung Und Technische Führung
 
 Technische Gesamtverantwortung bedeutet für mich nicht, jede Implementierung
@@ -41,6 +47,15 @@ Deshalb lege ich Wert auf klare Übergabepunkte, Runbooks, Reviews, Approvals,
 Changelogs und eine Single Source of Truth im Repository. Das ist für mich
 keine Bürokratie, sondern die Grundlage dafür, dass Automatisierung im Team
 funktioniert.
+
+Mein Ziel ist, Plattformen so zu bauen, dass sie nach dem Aufbau möglichst
+wenig unnötige Handarbeit brauchen und trotzdem weiter optimiert werden
+können. Code, Pipelines, Checks und Runbooks machen nicht alles automatisch
+richtig, aber sie reduzieren die Fehlerquellen, die durch manuelle Arbeit,
+Zeitdruck oder fehlenden Kontext entstehen. Kein Mensch kann in jedem Moment an
+alle Abhängigkeiten denken. Deshalb sind proaktive Standards, vorausschauende
+Checks und klare Rückwege für mich keine Zusatzarbeit, sondern gute
+Ingenieursarbeit.
 
 Mein Anspruch ist, Azure-Infrastruktur so zu schneiden, dass ein Team damit
 arbeiten kann. Einzelne Tools sind wichtig, aber der eigentliche Wert liegt in

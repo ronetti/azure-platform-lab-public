@@ -90,12 +90,34 @@ Das Repository trennt zwei Ebenen:
 und Staging teilen `nonproduction/nonproduction.yaml`; Production nutzt
 `production/production.yaml` allein.
 Blue-Green ist eine Deployment-Strategie und keine zusätzliche Umgebung.
+Die Entscheidung verbindet Kostenbewusstsein mit Sicherheitsgrenze: Testing
+und Staging teilen teure Plattformbasis, Production bleibt eine eigene
+Subscription-, State-, Identity-, Secret-, Netzwerk- und Betriebsdatengrenze.
 
 Das zugrundeliegende Plattformmodell führt Network, Firewall, Application
 Gateway, Compute und weitere Bereiche als eigenständige Repositories. Jedes
 besitzt eigene Multi-Environment-YAMLs, Pipeline, Security-Assets, README und
 State-Grenze. In diesem Lab liegen die Repräsentanten zusammen, damit die
 Architektur an einem Ort geprüft werden kann.
+
+Ich habe mich bewusst gegen ein großes gemeinsames Terraform-Projekt
+entschieden. Es wäre am Anfang vielleicht einfacher zu überblicken, würde aber
+später zu viele Verantwortungen, Abhängigkeiten und State-Änderungen in einem
+Ort bündeln. Wenn ich eine VM-Konfiguration ändere, möchte ich nicht
+gleichzeitig Netzwerk, Firewall oder Kubernetes neu planen müssen. Getrennte
+Root-Stacks verkleinern den Fehlerbereich, machen Reviews gezielter und geben
+Teams eine klare Ownership-Grenze. Jeder Bereich veröffentlicht nur die
+benötigten Outputs und konsumiert andere Plattformteile über definierte
+Schnittstellen.
+
+Dieselbe Logik gilt für Kubernetes. Ich habe mich bewusst gegen kopierte
+YAML-Dateien pro Umgebung entschieden. Gemeinsame Plattformstandards wie
+Security Defaults, Labels, Network Policies oder Resource Limits sollen nur an
+einer Stelle gepflegt werden. Kustomize-Bases bilden deshalb die gemeinsame
+Plattformbasis, Overlays beschreiben nur die echten Unterschiede zwischen
+Testing, Staging und Production. Dadurch bleiben Guardrails konsistent, und
+Änderungen sind zentral nachvollziehbar statt über mehrere fast gleiche Dateien
+verteilt.
 
 Terraform State ist dabei eine zentral betriebene Plattformfähigkeit je
 Subscription- und Environment-Grenze. Teams oder Produkte erhalten eigene
@@ -150,12 +172,31 @@ In addition, `environments/` keeps the operating model in two visible
 boundaries. Testing and staging share `nonproduction/nonproduction.yaml`;
 production uses `production/production.yaml`.
 Blue-green is a delivery strategy, not another environment.
+This decision balances cost and isolation: testing and staging share expensive
+platform baseline services, while production keeps its own subscription,
+state, identity, secret, network and operational-data boundary.
 
 The underlying platform model keeps network, firewall, Application Gateway,
 compute and other domains in separate repositories. Each repository owns
 multi-environment YAML, pipeline, security assets, README and a state boundary.
 Their representatives live together in this lab so the architecture can be
 reviewed in one place.
+
+I deliberately avoid one large shared Terraform project. It may look simpler
+at the beginning, but it collects too many responsibilities, dependencies and
+state changes in one place. A VM configuration change should not require
+planning network, firewall or Kubernetes changes at the same time. Separate
+root stacks reduce the blast radius, make reviews more focused and give teams
+a clear ownership boundary. Each domain publishes only the outputs others need
+and consumes platform dependencies through defined interfaces.
+
+The same decision applies to Kubernetes. I deliberately avoid copied YAML files
+per environment. Shared platform standards such as security defaults, labels,
+NetworkPolicies or resource limits should be maintained in one place.
+Kustomize bases define the common platform baseline, while overlays describe
+only the real differences between testing, staging and production. This keeps
+guardrails consistent and makes changes traceable instead of spreading them
+across several almost identical files.
 
 Terraform state is operated as a central platform capability within each
 subscription and environment boundary. Teams or products receive dedicated
@@ -334,11 +375,36 @@ Monitoring, Diagnoseeinstellungen, Runbooks, Rollback-Gedanken,
 Kostenbewusstsein, Security-Grenzen und klare Ownership gehören deshalb zur
 Architektur.
 
+Runbooks sind deshalb mehr als Dokumentation. Sie zeigen im Fehlerfall den
+nächsten sinnvollen Schritt: Kontext prüfen, Schicht eingrenzen, Signale
+auswerten, Rückweg bewerten und erst dann handeln. Damit wird sichtbar,
+welche Betriebsabläufe später gezielt automatisiert werden können.
+
+Monitoring und Logs sind dabei bewusst Plattformbasis und keine spätere
+Einzelaufgabe jedes Workload-Teams. Teams können eigene fachliche Metriken,
+Dashboards und Alerts ergänzen, aber Diagnostic Settings, zentrale Log-Ziele,
+Alert-Grundmuster und gemeinsame Begriffe für Verfügbarkeit, Fehler, Latenz
+und Sättigung müssen aus der Plattform kommen. Sonst entstehen getrennte
+Einzellösungen, die im Fehlerfall zuerst die Frage offenlassen, wo die
+relevanten Daten überhaupt liegen.
+
 ## Operating Model
 
 A platform is only useful when operations are included from the beginning.
 Monitoring, diagnostic settings, runbooks, rollback thinking, cost awareness,
 security boundaries and clear ownership are therefore part of the architecture.
+
+Runbooks are more than documentation. During an incident they show the next
+useful step: check context, identify the affected layer, evaluate signals,
+assess the rollback path and only then act. That also shows which operational
+steps can later be automated safely.
+
+Monitoring and logs are deliberately part of the platform baseline, not a late
+task for each workload team. Teams can add domain-specific metrics, dashboards
+and alerts, while diagnostic settings, central log targets, alerting patterns
+and shared language for availability, errors, latency and saturation come from
+the platform. Without that baseline, incident response starts by searching for
+the relevant data.
 
 ## Anonymisierung
 

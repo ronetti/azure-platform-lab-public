@@ -38,6 +38,15 @@ vorbelegte Berechtigungen, ResourceQuotas und NetworkPolicies getrennt.
 Zusätzliche RBAC-Bindings müssten je Namespace explizit ergänzt werden. Das
 spart die doppelte Grundlast der teuren Plattformdienste.
 
+Ich habe Testing und Staging bewusst innerhalb einer gemeinsamen
+Nonproduction-Grenze modelliert, weil sie viele Basisdienste gemeinsam
+benötigen: Netzwerk, Key Vault, Log Analytics, Storage, Registry, Edge und
+Monitoring. Diese Dienste verursachen laufende Kosten und sollen für
+Nicht-Produktivumgebungen nicht ohne Grund doppelt aufgebaut werden. Wichtig
+ist dabei, dass die gemeinsame Plattformbasis keine gemeinsame Verantwortung
+für Workloads bedeutet. Namespaces, Quotas, NetworkPolicies und explizite RBAC-
+Bindings halten Testing und Staging logisch getrennt.
+
 ## Production
 
 [`production/production.yaml`](production/production.yaml) beschreibt die eigene
@@ -48,6 +57,12 @@ Monitoring und Pipeline-Berechtigungen bleiben getrennt.
 Production liest ausschließlich Production-Remote-State. Ein Release übernimmt
 nur ein geprüftes, unveränderliches Artefakt in den Production-Bereich; daraus
 entsteht keine Runtime-Abhängigkeit zu Nonproduction.
+
+Production ist bewusst eine eigene Subscription-, State-, Identity-, Secret-,
+Netzwerk- und Betriebsdatengrenze. Damit wird Kostenoptimierung in
+Nonproduction nicht zur Sicherheits- oder Fehlerabhängigkeit für Production.
+Fehlkonfigurationen, Tests oder Deployment-Proben in Nonproduction dürfen die
+produktive Umgebung nicht direkt beeinflussen.
 
 ## Deployments
 
@@ -61,3 +76,16 @@ nicht die gesamte Infrastruktur. Der Traffic-Wechsel benötigt noch eine
 Deployment-Pipeline oder einen Rollout-Controller.
 
 Merksatz: **Zwei Infrastrukturgrenzen, drei Deployment-Stages.**
+
+## English Summary
+
+Testing and staging share one nonproduction platform boundary because they need
+the same expensive baseline services: network, Key Vault, Log Analytics,
+storage, registry, edge and monitoring. They stay separated through
+namespaces, quotas, NetworkPolicies and explicit RBAC bindings.
+
+Production is intentionally separate. It has its own subscription, state,
+identities, secrets, network and operational data. This keeps nonproduction
+cost optimization from becoming a security or failure dependency for
+production. A release promotes only an approved artifact, not a runtime
+dependency on nonproduction.

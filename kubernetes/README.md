@@ -56,6 +56,13 @@ auf demselben Nonproduction-Cluster; Production läuft in einer eigenen
 Umgebung. Production teilt weder Cluster, Netzwerk, Identitäten, Secrets,
 Registry noch Monitoring mit Nonproduction.
 
+Ich habe mich bewusst gegen einzelne kopierte YAML-Dateien pro Umgebung
+entschieden. Die gemeinsame Basis ist die Single Source of Truth für
+Plattformstandards. Security Defaults, Labels, Network Policies und Resource
+Limits sollen zentral geändert werden können; die Overlays beschreiben nur,
+was Testing, Staging oder Production wirklich unterscheidet. So entstehen
+konsistente Guardrails ohne Copy-and-Paste.
+
 ## Kosten- und Verfügbarkeitsprofil
 
 | Umgebung | Nutzung | Grundlast | Spot | Absicht |
@@ -99,6 +106,11 @@ abgleichen. Genau das ist für mich der wichtige Punkt: Git ist nicht nur
 Ablage, sondern die Source of Truth. Der Cluster muss zeigen, ob er diesen
 Zustand erreichen kann.
 
+GitHub Actions beantwortet dabei die Delivery-Frage: Ist die Änderung korrekt
+und darf sie ausgeliefert werden? Flux beantwortet die Betriebsfrage danach:
+Entspricht der Cluster auch später noch dem freigegebenen Zustand aus Git? Ein
+reines `kubectl apply` würde diese dauerhafte Prüfung nicht übernehmen.
+
 ## Prüfen
 
 ```bash
@@ -126,6 +138,7 @@ Merksätze:
 - `get` zeigt den Überblick, `describe` erklärt Abweichungen, Logs zeigen die
   Anwendungsperspektive.
 - Secrets gehören nicht in Blueprints oder Environment-Overlays.
+- Git beschreibt die Plattform und nicht vertrauliche Betriebsdaten.
 - Die Ingress-Dateien referenzieren TLS-Secrets nur namentlich. Zertifikate und
   Secret-Inhalte werden über einen freigegebenen externen Prozess geliefert.
 - Testing und Staging sparen durch gemeinsam genutzte Plattformdienste,
@@ -166,8 +179,15 @@ security, quota, limit, probe, HPA and PDB defaults. Testing and staging are
 rendered as separate namespaces in nonproduction, while production keeps its
 own platform boundary.
 
+The model deliberately uses Kustomize bases and overlays instead of copied YAML
+per environment. The base is the Single Source of Truth for shared platform
+standards; overlays only describe the real environment differences.
+
 CI renders and validates the desired state before merge. Flux is the planned
 GitOps layer after merge: it pulls the approved Git state into the cluster and
 shows whether the cluster can reach that state through status, events, health
 and drift signals. AKS is modeled as Terraform intent; the cluster deployment
 itself remains a separate integration step.
+
+GitHub Actions answers whether a change is valid and allowed to be delivered.
+Flux answers whether the cluster still matches the approved Git state later.

@@ -42,6 +42,15 @@ Blueprints:
 - Environment-Overlays konfigurieren Testing, Staging und Production, ohne die
   Blueprint-Logik zu kopieren.
 
+Ich habe mich bewusst gegen kopierte YAML-Dateien pro Umgebung entschieden.
+Der wichtigste Grund ist die Single Source of Truth: Gemeinsame Standards
+sollen nur an einer Stelle gepflegt werden. Wenn sich Security Defaults,
+Labels, Network Policies oder Resource Limits ändern, soll diese Änderung
+einmal in der gemeinsamen Basis passieren und nicht mehrfach in fast gleichen
+Dateien nachgezogen werden. Kustomize macht genau diese Trennung sichtbar:
+Bases beschreiben den Plattformstandard, Overlays nur die notwendigen
+Unterschiede der jeweiligen Umgebung.
+
 Flux ist die GitOps-Schicht, die in dieses Modell gehört, sobald ein Cluster
 den freigegebenen Zustand selbst abgleichen soll. CI rendert und prüft die
 Overlays vor dem Merge. Flux liest danach die freigegebenen Quellen aus Git
@@ -57,6 +66,10 @@ Zonenverteilung; Kostenoptimierung erfolgt dort über Messwerte, Autoscaling und
 später gegebenenfalls Reservierungen statt über den Abbau notwendiger
 Verfügbarkeit.
 
+Monitoring ist dabei Teil der Plattformbasis. Workload-Teams können eigene
+Metriken und fachliche Alerts ergänzen, aber Diagnostic Settings, Log-Ziele und
+grundlegende Betriebsstandards sollen nicht pro Team neu erfunden werden.
+
 Blue-Green gehört zur Delivery, nicht zur Plattformtopologie. Staging soll den
 parallelen Slot und den Traffic-Switch proben; dasselbe freigegebene Image wird
 anschließend in Production mit zusätzlicher Freigabe ausgerollt. Während des
@@ -70,6 +83,12 @@ Traffic-Wechsel, progressive Delivery oder automatisierte Promotion braucht es
 zusätzlich einen bewusst gewählten Rollout-Mechanismus und klare Approval-
 Regeln.
 
+GitHub Actions und Flux lösen dabei unterschiedliche Aufgaben. GitHub Actions
+prüft vor dem Merge, ob eine Änderung technisch korrekt ist und freigegeben
+werden darf. Flux prüft danach fortlaufend, ob der Cluster noch dem
+freigegebenen Git-Zustand entspricht. Ein einmaliges `kubectl apply` würde
+diese dauerhafte Drift-Frage nicht beantworten.
+
 ## Purpose
 
 This pattern describes Kubernetes as part of a platform, not as an isolated
@@ -82,6 +101,12 @@ runtime verification. That is the Kubernetes skill I want to make visible here:
 not collecting YAML files, but understanding desired state, ownership
 boundaries, network paths, storage, RBAC, Helm, rollout behavior and
 troubleshooting as one operating model.
+
+The blueprint model deliberately avoids copied YAML files per environment.
+The reason is Single Source of Truth: shared standards should be maintained in
+one place. Security defaults, labels, NetworkPolicies and resource limits live
+in the common base; overlays only carry the real differences between testing,
+staging and production.
 
 ## Plattformprinzipien
 
@@ -143,6 +168,14 @@ Changes go through pull requests, validation and approvals.
 After merge, Flux adds the cluster-side reconciliation loop: the cluster pulls
 the approved state from Git or OCI sources, applies Kustomize or Helm
 configuration and exposes status, events and health information for operations.
+
+GitHub Actions validates whether a change may be delivered. Flux validates
+continuously whether the cluster still matches the approved Git state. A single
+`kubectl apply` would not answer that drift question later.
+
+Secrets are intentionally outside the blueprints and overlays. Git describes
+the platform contract and non-sensitive references; a protected secret store
+manages passwords, certificates and tokens.
 
 ## Availability Engineering
 
