@@ -52,8 +52,7 @@ testbar und gut erklärbar.
 In diesem Repository ist der erste Vorschlag als Lab-Pattern modelliert: ein
 Application Gateway als zentrale Edge-Schicht mit WAF, eigenem Hostnamen pro
 Solution oder Workload und klar getrennten Listenern, Backends und Probe-Pfaden
-in YAML. Der vollständige produktive Kundencode ist hier bewusst nicht
-enthalten.
+in YAML. Nicht veröffentlichte Originalimplementierungen sind hier bewusst nicht enthalten.
 
 Der zweite Vorschlag, eine gemeinsame URL mit zusätzlicher Routing-Logik, ist
 bewusst als nächster Ausbauschritt beschrieben. Ich gehe ihn erst an,
@@ -72,7 +71,7 @@ This keeps the routing decision visible, testable and easy to reason about.
 This repository models the first proposal as a lab pattern: an Application
 Gateway as the central edge layer with WAF, one hostname per solution or
 workload, and clearly separated listeners, backends and probe paths in YAML.
-The full production customer implementation is intentionally not included here.
+The original non-public implementation is intentionally not included here.
 
 The second proposal, a shared URL with additional routing logic, is documented
 as the next possible step. I only move there once the simpler

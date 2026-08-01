@@ -1,11 +1,16 @@
 # Azure Platform Engineering Portfolio
 
-**Annett Berlinger · Senior Azure Platform Engineer · Terraform · Governance · Technical Ownership**
+**Annett Berlinger · Senior Azure Platform Engineer · Terraform · Secure Delivery · Platform Operations**
 
-Dieses anonymisierte Portfolio zeigt, wie ich Azure-Plattformen als
-zusammenhängendes System strukturiere: von Governance- und
-Subscription-Grenzen über Terraform- und Pipeline-Verträge bis zu Security,
-Betrieb und Recovery.
+Ich baue Azure-Plattformen so, dass Teams Änderungen nicht nur deployen,
+sondern später auch verstehen, prüfen und im Fehlerfall wiederherstellen
+können.
+
+Dieses anonymisierte Portfolio ist keine isolierte Übungsumgebung. Es
+übersetzt reale Azure-Plattformarbeit in eine prüfbare Arbeitsprobe:
+Terraform-Stacks, Environment-Verträge, Netzwerk- und Security-Grenzen,
+Application Gateway/WAF, Firewall-Integration, Delivery-Pipelines,
+Configuration Management, Monitoring, Backup/Restore und Runbook-Denken.
 
 Im Mittelpunkt stehen begründete Architekturentscheidungen, klare Ownership
 und ein Plattformweg, den Teams gemeinsam prüfen und weiterentwickeln können.
@@ -14,18 +19,17 @@ modellierten Verträgen, Zielbild und noch notwendiger realer Integration.
 
 ## Mein Plattformansatz In 60 Sekunden
 
-- **Gesamtsystem statt Einzellösung:** Governance, Infrastruktur,
-  Configuration Management, Delivery und Betrieb werden über dokumentierte
-  Schnittstellen verbunden.
-- **Freiheit innerhalb klarer Grenzen:** Fachbereiche besitzen eigene
-  Root-Stacks und States; gemeinsame Verträge schützen Security, Ownership und
-  die Single Source of Truth.
-- **Änderungen kontrolliert liefern:** Environment-Daten, geprüfte
-  Terraform-Pläne, versionierte Pipeline-Blueprints und Approvals machen
-  Änderungen reviewbar und wiederholbar.
-- **Betrieb von Anfang an mitdenken:** Monitoring, Backup, Restore,
-  Fehlergrenzen und Runbooks gehören zum Plattformvertrag und nicht erst zur
-  späteren Nacharbeit.
+- **Ich denke Infrastruktur als Betriebsmodell:** Governance, Netzwerk,
+  Security, Delivery, Configuration Management, Monitoring und Recovery müssen
+  über klare Schnittstellen zusammenpassen.
+- **Teams brauchen Freiheit innerhalb klarer Grenzen:** Fachbereiche besitzen
+  eigene Root-Stacks und States; gemeinsame Verträge schützen Ownership,
+  Security und die Single Source of Truth.
+- **Changes müssen prüfbar bleiben:** Environment-Daten, Terraform-Pläne,
+  Pipeline-Blueprints und Approvals machen Infrastrukturveränderungen
+  nachvollziehbar, bevor sie im Betrieb ankommen.
+- **Betrieb beginnt nicht nach dem Deployment:** Observability, Backup,
+  Restore, Fehlergrenzen und Runbooks gehören für mich zum Plattformvertrag.
 
 ## Berufliche Umsetzung Hinter Der Arbeitsprobe
 
@@ -44,9 +48,9 @@ Rebuild-Pfade, Pre-/Post-Checks, Stop-Kriterien, Logging und kontrollierte
 Terraform-Re-Adoption verbanden Recovery und Infrastructure as Code zu einem
 nachvollziehbaren Betriebsablauf.
 
-Der private Arbeitgebercode wird hier nicht veröffentlicht. Dieses Repository
-formuliert die dahinterliegenden Architektur-, Übergabe- und Betriebsprinzipien
-unabhängig und anonymisiert neu. Die genaue Abgrenzung zeigen
+Nicht freigegebener Originalcode wird hier nicht veröffentlicht. Dieses
+Repository formuliert die dahinterliegenden Architektur-, Übergabe- und
+Betriebsprinzipien unabhängig und anonymisiert neu. Die genaue Abgrenzung zeigen
 [Plattform-Erfahrung](docs/platform-engineering-experience.md),
 [Ansible Configuration Management](docs/ansible-configuration-management.md)
 und [Restore-Automatisierung](docs/restore-automation-pattern.md).
@@ -83,6 +87,9 @@ Environment-Auswahl
 
 ## Was Das Zeigt
 
+- **Platform Engineering mit Delivery-Fokus:** Infrastruktur wird nicht nur
+  provisioniert. Entscheidend ist, ob ein Team die Änderung später prüfen,
+  betreiben und im Fehlerfall verstehen kann.
 - **Kostenbewusstsein:** Testing und Staging teilen eine kleine
   Nonproduction-Grundlast; Production bleibt verfügbarkeitsorientiert.
 - **Security by design:** getrennte Subscriptions, State-Accounts, Netzwerke,
@@ -96,6 +103,10 @@ Environment-Auswahl
   ausgelegt.
 - **Betriebsdenken:** Guardrails, Reviews, Diagnostics, Availability
   Engineering sowie Backup-/Restore- und Configuration-Management-Patterns.
+- **Technische Urteilskraft mit KI-Unterstützung:** KI kann Analyse und
+  Umsetzung beschleunigen. Die Verantwortung bleibt bei der Frage: Was ist
+  richtig, was ist riskant, was ist nur plausibel formuliert und was wurde
+  wirklich geprüft?
 
 Das Repository ist ein ausführbarer, anonymisierter Denkansatz und keine
 Behauptung über eine vollständig provisionierte Organisation,
@@ -177,8 +188,10 @@ States zu geben. Production und Nonproduction teilen keinen State-Storage.
 | CI | Terraform-, YAML-, Schema-, Isolation- und Security-Ausnahmevertrag | reale Deployment- und Scanner-Pipelines |
 | Pipeline Blueprint | GitHub Actions Check, Validate, Plan-Artefakt und geschützter Apply | reale Entra-OIDC-Federation und Environment-Approvals |
 
-Die Trennung ist absichtlich sichtbar: Das Repository behauptet nicht,
-modellierte Schnittstellen seien bereits produktiv provisioniert.
+Die Trennung ist absichtlich sichtbar: Direkt prüfbarer Code, modellierte
+Verträge und nächste Integrationsschritte bleiben getrennt, damit ein Review
+erkennen kann, was heute ausführbar ist und was bewusst als Plattformvertrag
+vorbereitet wurde.
 
 ## Kubernetes
 
@@ -207,6 +220,24 @@ Production-Ressourcen und wird in CI auf Cross-Environment-Verweise geprüft.
 Der sichtbare Request-Pfad führt über Application Gateway/WAF zum internen
 AKS-Ingress und anschließend zum Workload-Service.
 
+Kubernetes/AKS ist in diesem Portfolio eine echte Plattformschicht. Aus der
+praktischen Kubernetes-Lab-Arbeit bringe ich Verständnis für Desired State,
+Namespaces, Ingress, Storage, RBAC, Helm, Troubleshooting und den Unterschied
+zwischen gewünschtem und tatsächlichem Clusterzustand mit. In diesem
+öffentlichen Repository übersetze ich dieses Verständnis in AKS-Intent,
+Kustomize-Blueprints, Security Defaults, NetworkPolicies, Ressourcensteuerung,
+Rollout-Verhalten und CI-Validierung.
+Damit ist Kubernetes ein sichtbarer Teil meiner Plattformarbeit: nicht als
+isolierte YAML-Sammlung, sondern als Betriebsmodell mit klaren Grenzen,
+Validierung und überprüfbarem gewünschtem Zustand.
+
+Flux ergänzt dieses Modell als GitOps-Schicht. Für mich beantwortet Flux eine
+einfache Betriebsfrage: Wenn Git die Source of Truth ist, wer sorgt später im
+Cluster dafür, dass dieser Zustand wirklich ankommt und sichtbar bleibt? CI
+prüft vor dem Merge. Flux gleicht danach Kustomize- oder Helm-basierte
+Konfiguration im Cluster ab und macht Status, Events, Health und Drift
+sichtbar.
+
 ## Verantwortungen
 
 | Verantwortung | Beispiele im Lab |
@@ -230,6 +261,7 @@ AKS-Ingress und anschließend zum Workload-Service.
 | Terraform-Root-Stacks | [Terraform Stacks](terraform/stacks/README.md) |
 | Wiederverwendbare Terraform-Pipeline | [Pipeline Blueprint](pipeline-blueprints/terraform/README.md) |
 | Kubernetes und Blueprints | [Kubernetes](kubernetes/README.md) |
+| Flux GitOps und Reconciliation | [Flux GitOps Pattern](docs/flux-gitops-pattern.md) |
 | Security und Subscription-Trennung | [Security](docs/security-considerations.md) |
 | Guardrails und Pipeline-Gates | [Guardrails](docs/guardrails.md) |
 | Change-, Release- und Tag-Governance | [Change Governance](docs/change-governance.md) |

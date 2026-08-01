@@ -29,8 +29,7 @@ als getrennte Ausbaustufen.
 Die folgenden Informationen und externen Voraussetzungen müssen zuerst
 auflösbar sein:
 
-- freigegebener persönlicher Lern-Tenant oder ausdrücklich autorisierter
-  Ziel-Tenant
+- autorisierte Lern- oder Zielumgebung
 - ID der vorhandenen Parent Management Group
 - Berechtigung, die bestehende Hierarchie, Policy-Zuweisungen und
   Rollenbindungen vollständig zu lesen
@@ -161,7 +160,7 @@ hartcodieren. Der erste Vertrag benötigt logisch folgende Eingaben:
 | `common_metadata` | nicht-sensitive Ownership- und Zweckangaben |
 
 Sicherheitsrelevante IDs und Identitäten werden aus geschützten Pipeline-
-Variablen oder einem freigegebenen privaten Konfigurationspfad bezogen. Die
+Variablen oder einem autorisierten geschützten Konfigurationspfad bezogen. Die
 öffentliche Beispielkonfiguration enthält nur synthetische logische Werte.
 
 ## Output-Vertrag
@@ -223,7 +222,7 @@ Pipeline-Grenzen:
 - keine gleichzeitigen Schreibläufe gegen denselben State
 - genau das geprüfte Plan-Artefakt anwenden
 
-## Policy-Auswahl Für Den Lern-Slice
+## Policy-Auswahl Für Den Governance-Slice
 
 Der Vertrag legt noch keine konkrete Built-in-Policy-ID fest. Vor der Auswahl
 muss die aktuell veröffentlichte Definition geprüft werden:
@@ -307,10 +306,9 @@ Rücknahme braucht eine eigene Prüfung und ausdrückliche Freigabe.
 
 Vor Terraform-Code müssen noch diese Fragen beantwortet werden:
 
-1. Wird ein persönlicher Lern-Tenant oder eine andere freigegebene Umgebung
-   verwendet?
+1. Wird eine autorisierte Lern- oder Zielumgebung verwendet?
 2. Welche vorhandene Parent Management Group ist der sichere Einstiegspunkt?
-3. Werden im Lern-Slice `corp`, `online` oder beide Archetypen erzeugt?
+3. Werden im Governance-Slice `corp`, `online` oder beide Archetypen erzeugt?
 4. Welche eine Built-in-Policy eignet sich nach aktueller Prüfung für den
    nicht erzwingenden Test?
 5. Welche Azure-Verified-Module-Version wird nach Prüfung vollständig gepinnt?
@@ -324,8 +322,9 @@ Implementierungsvertrag**.
 ## English Summary
 
 This document defines the smallest responsible `alz-core` implementation
-contract. It intentionally does not create an empty Terraform stack or claim
-that tenant-level resources exist.
+contract. I keep the contract separate from Terraform code until tenant
+context, parent management group, permissions, backend, review and rollback
+path are clear.
 
 The first slice proves only that a small management-group hierarchy and one
 non-enforcing policy example can be planned, applied and verified from

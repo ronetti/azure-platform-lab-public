@@ -19,6 +19,7 @@ are not acceptable.
 - Terraform- und Kubernetes-Validierung in Pipelines
 - zentrale, toolbezogene Security-Check-Ausnahmen unter `assets/`
 - Security Defaults in Kubernetes-Manifests
+- Flux GitOps-Reconciliation für freigegebene Kubernetes-Zustände
 - WAF-Regeln, Exclusions und Managed-Rule-Overrides als Konfiguration, die im
   Review sichtbar bleibt
 - Ansible Playbooks, Rollen und Inventory-Mapping mit eigenen Pipeline-Gates
@@ -32,6 +33,7 @@ are not acceptable.
 - Terraform and Kubernetes validation in pipelines
 - centralized, tool-specific security-check exceptions under `assets/`
 - security defaults in Kubernetes manifests
+- Flux GitOps reconciliation for approved Kubernetes desired state
 - WAF rules, exclusions and managed-rule overrides as configuration that stays
   visible in review
 - Ansible playbooks, roles and inventory mapping with dedicated pipeline gates
@@ -66,6 +68,11 @@ Environment-
 Overlays konsumiert. Änderungen am Blueprint wirken damit kontrolliert auf
 Testing, Staging und Production.
 
+Flux ergänzt diese Guardrails nach dem Merge. Ein freigegebener Zustand wird
+nicht manuell im Cluster nachgebaut, sondern über GitOps abgeglichen. Damit
+werden Drift, Reconcile-Fehler und Health-Probleme als Betriebszustand
+sichtbar.
+
 ## Kubernetes Guardrails
 
 Examples of Kubernetes guardrails:
@@ -93,6 +100,7 @@ Dieses Repository nutzt bewusst einfache, nachvollziehbare Gates:
 - Terraform stack validation
 - YAML linting
 - Kubernetes schema validation
+- Flux source and kustomization status checks
 - getrennte Ansible-Pipeline mit Linting, Syntax Check und Check Mode
 - validierter Security-Ausnahmevertrag für IaC-Scanner
 - versionsgepinntes Terraform-Pipeline-Blueprint für Produkt-Repositories
@@ -143,6 +151,7 @@ This repository intentionally uses simple, understandable gates:
 - Terraform stack validation
 - YAML linting
 - Kubernetes schema validation
+- Flux source and kustomization status checks
 - environment and delivery-contract validation
 - separate Ansible pipeline with linting, syntax check and check mode
 - validated security-exception contract for IaC scanners
@@ -203,6 +212,8 @@ Alert-driven Ansible, update or restore pipelines require additional rules:
   network and resource guardrails.
 - `kubernetes/blueprint-templates/web-workload` contains shared workload security and
   availability defaults.
+- `docs/flux-gitops-pattern.md` describes Flux as the GitOps reconciliation
+  layer between approved Git state and runtime cluster state.
 - `platform.azure-lab.io/guardrails` labels mark the intended guardrail profile
   on example Kubernetes resources.
 - `docs/change-governance.md` describes reviews, approvals and changelog.

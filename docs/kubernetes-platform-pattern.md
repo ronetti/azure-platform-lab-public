@@ -6,10 +6,13 @@ Dieses Pattern beschreibt Kubernetes als Teil einer Plattform, nicht als
 isolierten Cluster. Workloads sollen wiederholbar, sicher, beobachtbar und
 über Konfiguration steuerbar sein.
 
-Die Darstellung folgt bewusst meiner Arbeitsweise aus dem k3s-Lab: Ich baue
+Die Darstellung folgt bewusst meiner Kubernetes-Lab-Arbeit: Ich baue
 Schichten nacheinander auf, prüfe Voraussetzungen vor der Automatisierung und
 trenne den gewünschten Zustand von der späteren Verifikation im laufenden
-System.
+System. Genau daraus entsteht mein Kubernetes-Verständnis: nicht einzelne
+YAML-Dateien sammeln, sondern Desired State, Verantwortungsgrenzen,
+Netzwerkpfade, Storage, RBAC, Helm, Rollout-Verhalten und Troubleshooting als
+zusammenhängendes Betriebsmodell sehen.
 
 ## Meine Plattformfragen
 
@@ -21,6 +24,10 @@ System.
 - Wie werden Kosten, Verfügbarkeit und Betrieb gegeneinander abgewogen?
 
 Diese Fragen sind wichtiger als die Anzahl vorhandener Kubernetes-Manifeste.
+Ein Cluster ist für mich erst dann sinnvoll modelliert, wenn ein Team sehen
+kann, was die Plattform vorgibt, was ein Workload-Team ändern darf, wie eine
+Änderung vor dem Apply gerendert wird und woran man später erkennt, ob der
+tatsächliche Zustand noch zum gewünschten Zustand passt.
 
 ## Blueprint-Modell
 
@@ -34,6 +41,13 @@ Blueprints:
   Workload-Vertrag.
 - Environment-Overlays konfigurieren Testing, Staging und Production, ohne die
   Blueprint-Logik zu kopieren.
+
+Flux ist die GitOps-Schicht, die in dieses Modell gehört, sobald ein Cluster
+den freigegebenen Zustand selbst abgleichen soll. CI rendert und prüft die
+Overlays vor dem Merge. Flux liest danach die freigegebenen Quellen aus Git
+oder OCI, gleicht `Kustomization`- und `HelmRelease`-Objekte ab und macht über
+Status, Events und Health Checks sichtbar, ob der Cluster den gewünschten
+Zustand erreicht.
 
 Testing und Staging laufen getrennt in einer gemeinsamen
 Nonproduction-Umgebung. Namespaces, RBAC, Quotas und Network Policies halten ihre
@@ -51,11 +65,23 @@ nicht kopiert. Die vorhandenen Kubernetes-Overlays nutzen noch RollingUpdate;
 für den echten Traffic-Switch fehlt bewusst noch eine Pipeline oder ein
 Rollout-Controller.
 
+Flux löst Blue-Green nicht allein. Es liefert den Reconciliation-Vertrag. Für
+Traffic-Wechsel, progressive Delivery oder automatisierte Promotion braucht es
+zusätzlich einen bewusst gewählten Rollout-Mechanismus und klare Approval-
+Regeln.
+
 ## Purpose
 
 This pattern describes Kubernetes as part of a platform, not as an isolated
 cluster. Workloads should be reproducible, secure, observable and controlled
 through configuration.
+
+This follows my practical Kubernetes lab work: build layers step by step,
+check prerequisites before automation and keep desired state separate from
+runtime verification. That is the Kubernetes skill I want to make visible here:
+not collecting YAML files, but understanding desired state, ownership
+boundaries, network paths, storage, RBAC, Helm, rollout behavior and
+troubleshooting as one operating model.
 
 ## Plattformprinzipien
 
@@ -95,6 +121,11 @@ Form liegt in Git:
 
 Änderungen laufen über Pull Requests, Validierung und Approvals.
 
+Nach dem Merge ergänzt Flux den Cluster-seitigen Reconcile-Loop: Der Cluster
+holt den freigegebenen Zustand aus Git oder OCI, wendet Kustomize- oder
+Helm-Konfiguration an und zeigt Status, Events und Health-Informationen für
+den Betrieb.
+
 ## Configuration In Git
 
 Kubernetes configuration should not be created manually in the cluster. The
@@ -108,6 +139,10 @@ desired shape lives in Git:
 - guardrails and policy requirements
 
 Changes go through pull requests, validation and approvals.
+
+After merge, Flux adds the cluster-side reconciliation loop: the cluster pulls
+the approved state from Git or OCI sources, applies Kustomize or Helm
+configuration and exposes status, events and health information for operations.
 
 ## Availability Engineering
 

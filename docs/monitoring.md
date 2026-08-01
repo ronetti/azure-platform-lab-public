@@ -18,6 +18,8 @@ Wichtige Signale:
 - Kubernetes Pod Restarts und Deployment Availability
 - Readiness- und Liveness-Probe-Fehler
 - Kubernetes-Ressourcenverbrauch gegen Requests und Limits
+- Flux Source-, Kustomization- und HelmRelease-Reconcile-Status
+- Flux Events, Health-Fehler und ausbleibende erfolgreiche Reconciliations
 - Firewall-, Routing- und Netzwerkereignisse
 - Fehlende oder fehlerhafte Diagnostic Settings
 - SLI-relevante Signale wie Erfolgsrate, Latenz, Fehlerrate und
@@ -65,6 +67,8 @@ Important signals:
 - Kubernetes pod restarts and deployment availability
 - readiness and liveness probe failures
 - Kubernetes resource usage compared to requests and limits
+- Flux source, Kustomization and HelmRelease reconciliation status
+- Flux events, health failures and missing successful reconciliations
 - Firewall, routing and network events
 - Missing or broken diagnostic settings
 - SLI-relevant signals such as success rate, latency, error rate and

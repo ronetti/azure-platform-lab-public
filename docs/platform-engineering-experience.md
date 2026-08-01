@@ -9,6 +9,13 @@ kläre: Wo liegt die Grenze zwischen Plattform und Workload? Was kann ein Team
 selbst ändern? Welche Änderung braucht Review? Und wie bleibt eine Umgebung
 auch später noch erklärbar?
 
+Die Grundlage dafür ist reale Azure-Plattformarbeit. Dieses Repository zeigt
+keine nicht veröffentlichten Originalimplementierungen, sondern die anonymisierte, neu
+formulierte Arbeitsprobe dahinter. Es geht nicht nur um einzelne Terraform-Dateien,
+sondern um das Zusammenspiel: Environment-Verträge, Netzwerk- und
+Security-Grenzen, Application Gateway/WAF, Firewall-Integration, Pipelines,
+Configuration Management, Monitoring, Backup/Restore und Runbook-Denken.
+
 Der Umsetzungsstand macht sichtbar, welche Komponenten ausführbar sind und
 welche bewusst als Schnittstellen, Verträge oder Rahmen-Stacks modelliert
 bleiben. Für mich ist das ein wichtiger Teil von Plattformarbeit: nicht nur
@@ -34,6 +41,12 @@ Deshalb lege ich Wert auf klare Übergabepunkte, Runbooks, Reviews, Approvals,
 Changelogs und eine Single Source of Truth im Repository. Das ist für mich
 keine Bürokratie, sondern die Grundlage dafür, dass Automatisierung im Team
 funktioniert.
+
+Mein Anspruch ist, Azure-Infrastruktur so zu schneiden, dass ein Team damit
+arbeiten kann. Einzelne Tools sind wichtig, aber der eigentliche Wert liegt in
+der technischen Urteilskraft: Welche Grenze braucht einen eigenen State? Welche
+Änderung braucht Review? Wo liegt die Source of Truth? Was ist nur plausibel
+formuliert und was ist verifiziert? Wie sieht der Rückweg aus?
 
 ## Praktische Muster
 
@@ -66,6 +79,9 @@ im Abschnitt zum Umsetzungsstand.
 - Monitoring- und Observability-Strategien mit Azure Monitor, Log Analytics, PRTG-Erfahrung sowie Prometheus/Grafana-Zielbildern
 - Self-Healing- und Recovery-Gedanken für zustandsbehaftete Workloads
 - Kosten-, Risiko- und Betriebsbewertung als Teil technischer Architekturentscheidungen
+- Kubernetes- und AKS-Plattformdenken aus praktischer Kubernetes-Lab-Arbeit mit
+  Desired State, Namespaces, Ingress, Storage, RBAC, Helm, Troubleshooting,
+  Security-Guardrails, Ressourcensteuerung und CI-validierte Blueprints
 
 ## Architekturprinzipien
 
@@ -82,6 +98,9 @@ im Abschnitt zum Umsetzungsstand.
   Testaufwand abgewogen werden.
 - Ein Diagramm ist noch kein Betrieb. Entscheidend ist, ob ein Team die
   Änderung später prüfen, deployen und im Fehlerfall verstehen kann.
+- KI kann Analyse, Recherche und Umsetzung beschleunigen. Die Verantwortung
+  bleibt aber bei mir: Annahmen prüfen, Risiken erkennen, Tests auswählen und
+  entscheiden, was sicher automatisiert werden kann.
 
 ## Übertragbarkeit
 
@@ -118,10 +137,17 @@ environment. It shows the questions I care about in infrastructure work: where
 does the platform end and the workload begin? What can a team change by itself?
 Which change needs review? And how does an environment stay explainable later?
 
-I do not use this repository to claim that every component is production-ready.
-Some parts are intentionally modeled as interfaces or stack frames. For me,
-that is part of platform work: not only building resources, but also drawing
-responsibility boundaries clearly.
+The foundation is real Azure platform engineering work. This repository does
+not publish original non-public source code. It translates the underlying work
+into an anonymized, reviewable sample. The point is not a collection of isolated
+Terraform files, but the system around them: environment contracts, network and
+security boundaries, Application Gateway/WAF, firewall integration, pipelines,
+configuration management, monitoring, backup/restore and runbook thinking.
+
+Some parts are executable, while others are intentionally modeled as
+interfaces, contracts or stack frames. For me, that is part of platform work:
+not only building resources, but also drawing responsibility boundaries
+clearly.
 
 ## Technical Ownership And Leadership
 
@@ -141,6 +167,12 @@ narrow down incidents, take responsibility and safely continue the work later.
 That is why I care about clear handover points, runbooks, reviews, approvals,
 changelogs and a single source of truth in the repository. For me, this is not
 bureaucracy. It is the foundation for automation that works in a team.
+
+My focus is shaping Azure infrastructure so a team can actually work with it.
+Tools matter, but the engineering value is judgment: which boundary needs its
+own state, which change needs review, where the source of truth lives, what is
+only plausible and what is verified, and what the rollback or recovery path
+looks like.
 
 ## Practical Patterns
 
@@ -172,6 +204,10 @@ repository itself.
 - Monitoring and observability strategies with Azure Monitor, Log Analytics, PRTG experience and Prometheus/Grafana target patterns
 - Self-healing and recovery thinking for stateful workloads
 - Cost, risk and operational assessment as part of technical architecture decisions
+- Kubernetes and AKS platform thinking backed by practical Kubernetes lab work
+  with desired state, namespaces, ingress, storage, RBAC, Helm,
+  troubleshooting, security guardrails, resource controls and CI-validated
+  blueprints
 
 ## Architecture Principles
 
@@ -183,6 +219,9 @@ repository itself.
 - More complex routing or IAM designs must be weighed against operational risk and test effort.
 - A diagram is not operations yet. What matters is whether a team can review,
   deploy and understand the change later, including during an incident.
+- AI can accelerate analysis, research and implementation. The responsibility
+  remains mine: validating assumptions, identifying risks, choosing tests and
+  deciding what is safe to automate.
 
 ## Transferability
 

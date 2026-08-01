@@ -13,6 +13,9 @@ Security wird in diesem Repository als Plattformaufgabe verstanden:
 - Keine Secrets in Git
 - TLS am Edge und am internen Kubernetes-Ingress; Zertifikate und Secret-Werte
   werden außerhalb des Repositories bereitgestellt
+- Flux darf nur den freigegebenen GitOps-Scope abgleichen. Secrets bleiben
+  verschlüsselt oder werden über externe Secret-Provider wie Azure Key Vault
+  bereitgestellt.
 - Least Privilege für Workloads und Automatisierung
 - Getrennte Berechtigungen für Terraform- und Ansible-Pipelines
 - Pipeline-Gates für Terraform, YAML, Kubernetes und
@@ -68,6 +71,8 @@ Security is treated as a platform responsibility in this repository:
 - No secrets in Git
 - TLS at the edge and internal Kubernetes ingress; certificates and secret
   values are delivered outside the repository
+- Flux may only reconcile the approved GitOps scope. Secrets stay encrypted or
+  are provided through external secret providers such as Azure Key Vault.
 - Least privilege for workloads and automation
 - Separate permissions for Terraform and Ansible pipelines
 - Pipeline gates for Terraform, YAML, Kubernetes and configuration-management

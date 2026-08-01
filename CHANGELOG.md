@@ -47,6 +47,14 @@ All notable changes to this anonymized Azure Platform Lab are documented here.
   reusable Workflows von `1.10.5` auf `1.15.8`.
 - Verified update of the reusable workflow's pinned default Terraform version
   from `1.10.5` to `1.15.8`.
+- Flux-GitOps-Pattern als Reconciliation-Schicht zwischen freigegebenem
+  Git-Zustand und laufendem Kubernetes-Cluster, einschließlich Sources,
+  Kustomizations, Helm Releases, Health, Events, Drift-Sichtbarkeit,
+  Secret-Grenzen und Betriebsfragen.
+- Flux GitOps pattern as the reconciliation layer between approved Git state
+  and the running Kubernetes cluster, including sources, kustomizations, Helm
+  releases, health, events, drift visibility, secret boundaries and operating
+  questions.
 
 ### Geändert / Changed
 

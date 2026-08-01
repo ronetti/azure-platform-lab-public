@@ -138,6 +138,20 @@ Häufige Ursachen:
 - Fehlende Config oder Secrets
 - Zu wenig CPU oder Memory
 - Probleme beim Volume Mount
+- Flux hat den freigegebenen Git-Zustand noch nicht erfolgreich abgeglichen
+
+Wenn Flux den Workload verwaltet, zusätzlich prüfen:
+
+```bash
+flux get sources git
+flux get kustomizations
+flux get helmreleases --all-namespaces
+kubectl describe kustomization workload-testing -n flux-system
+```
+
+Wichtig ist die Reihenfolge: zuerst Quelle und Reconcile-Status prüfen, dann
+den gerenderten Kubernetes-Zustand und erst danach Pod-, Service- oder
+Anwendungslogs interpretieren.
 
 ## Kubernetes Workload Not Ready
 
@@ -162,6 +176,16 @@ Common causes:
 - Missing config or secrets
 - Insufficient CPU or memory
 - Volume mount problems
+- Flux has not successfully reconciled the approved Git state yet
+
+If Flux manages the workload, also check:
+
+```bash
+flux get sources git
+flux get kustomizations
+flux get helmreleases --all-namespaces
+kubectl describe kustomization workload-testing -n flux-system
+```
 
 ## Kubernetes-Guardrails Prüfen
 

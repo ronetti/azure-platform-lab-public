@@ -82,7 +82,8 @@ beziehungsweise Remote State; Linting, Syntax Check, Check Mode, Reviews und
 Approvals sicherten die Abläufe ab.
 
 Dieses öffentliche Repository bildet davon bewusst nur den anonymisierten
-Übergabevertrag ab, nicht den privaten Ansible-Code. Ein späteres
+Übergabevertrag ab. Nicht veröffentlichte Originalimplementierungen bleiben
+außen vor. Ein späteres
 `ansible/`-Portfolio-Beispiel kann Inventory-Generierung, eine eigenständig
 geschriebene Demo-Rolle, ein Playbook und `ansible-lint` zeigen. Die
 berufliche Umsetzung und die öffentlich sichtbare Demo-Tiefe bleiben dabei
@@ -110,7 +111,7 @@ agent pools. Inventory data came from Terraform outputs or remote state;
 linting, syntax checks, check mode, reviews and approvals protected the flows.
 
 This public repository intentionally represents only the anonymized handover
-contract, not the private Ansible code. A later `ansible/` portfolio example can
+contract, not original non-public source code. A later `ansible/` portfolio example can
 show inventory generation, an independently written demo role, a playbook and
 `ansible-lint`. Professional implementation and the depth of the public demo
 remain deliberately separate.

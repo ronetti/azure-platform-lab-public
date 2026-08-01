@@ -8,6 +8,12 @@ nur Ressourcen erzeugen, sondern einen Betriebsrahmen abbilden: Netzwerk,
 Security, Edge, Monitoring, Storage, Compute, Remote State,
 Umgebungskonfiguration und Kubernetes-Zielstrukturen.
 
+Mir ist dabei wichtig, dass Architektur nicht als Schaubild stehen bleibt. Die
+entscheidenden Fragen sind: Wo liegt die Source of Truth? Welche Grenze braucht
+einen eigenen State? Welche Änderung ist Konfiguration und welche verändert
+das Betriebsmodell? Wie erkennt ein Team später, ob der Ist-Zustand noch zum
+gewünschten Zustand passt?
+
 ## Target State
 
 The goal is an Azure platform baseline for enterprise workloads that can be
@@ -15,6 +21,11 @@ reproduced, checked in review and extended modularly. The platform should not on
 create resources, but also model an operating foundation: networking, security,
 edge, monitoring, storage, compute, remote state, environment configuration and
 Kubernetes target structures.
+
+Architecture should not stop at a diagram. The important questions are where
+the source of truth lives, which boundary needs its own state, which change is
+configuration and which one changes the operating model, and how a team later
+checks whether actual state still matches desired state.
 
 ## Übergeordnete Landing-Zone-Ebene
 
@@ -69,7 +80,7 @@ Abhängiger Stack
 Das Repository trennt zwei Ebenen:
 
 - `terraform/modules/` enthält unabhängig geschriebene Demo-Bausteine und
-  keinen privaten oder beruflichen Modulcode.
+  keine übernommenen Originalmodule.
 - `terraform/stacks/` modelliert deploybare Root-Module mit eigenem
   State-Key und klaren Übergabepunkten.
 - `environments/` konsolidiert die Konfigurations- und Backend-Verträge für
@@ -96,9 +107,11 @@ State-Storage-Grenzen.
 
 Nicht jeder Stack ist in diesem Repository gleich tief implementiert. `network`
 und `shared-services` zeigen konkrete Basisressourcen. Andere Stacks zeigen
-bewusst die Schnittstelle, die Konfigurationsform und die Betriebsgrenze. Diese
-Unterscheidung ist wichtig: Eine saubere Schnittstelle ist nützlich, aber sie
-ist noch nicht dasselbe wie eine produktionsreife Implementierung.
+bewusst die Schnittstelle, die Konfigurationsform und die Betriebsgrenze. Das
+ist kein Platzhalter ohne Inhalt: Genau diese Verträge entscheiden später, ob
+Teams unabhängig arbeiten können, ob Remote State sauber konsumiert wird und
+ob eine Änderung vor dem Apply verständlich bleibt. Wo eine reale Ressource
+noch nicht provisioniert wird, ist das kenntlich gemacht.
 
 ## Logical Architecture
 
@@ -127,7 +140,7 @@ Dependent stack
 The repository keeps two layers separate:
 
 - `terraform/modules/` contains independently written demonstration building
-  blocks, not private or professional module code.
+  blocks, not original non-public module code.
 - `terraform/stacks/` models deployable root modules with independent state
   keys and clear handover points.
 - `environments/` consolidates configuration and backend contracts for this
@@ -154,8 +167,10 @@ Production and nonproduction use separate state-storage boundaries.
 Not every stack is implemented at the same depth in this repository. `network`
 and `shared-services` show concrete baseline resources. Other stacks
 intentionally show the interface, configuration shape and operational
-line of responsibility. That distinction matters: a clear interface is useful, but it is not
-the same thing as a production-ready implementation.
+responsibility boundary. That is not empty placeholder work: these contracts
+decide whether teams can work independently, whether remote state is consumed
+cleanly and whether a change remains understandable before apply. Where a real
+resource is not provisioned yet, the repository says so explicitly.
 
 ## Stack-Abhängigkeiten
 
@@ -182,6 +197,22 @@ veröffentlichte Outputs, nicht die interne Implementierung der Upstream-Stacks.
 veröffentlicht VM-Metadaten, und Ansible-Pipelines nutzen diese Metadaten als
 Inventory-Quelle.
 
+Für Kubernetes ergänzt Flux den Abhängigkeitsfluss nach dem AKS-Intent. Das
+ist für mich die saubere Grenze: AKS beschreibt die Plattformbasis, Flux
+verbindet den freigegebenen Git-Zustand mit dem laufenden Cluster.
+
+```text
+aks intent
+  -> kubernetes blueprints
+  -> flux sources
+  -> flux kustomizations / helm releases
+  -> reconciled cluster state
+```
+
+Damit bleibt Git die Source of Truth. CI prüft den gewünschten Zustand vor dem
+Merge; Flux gleicht danach den freigegebenen Zustand im Cluster ab. Wenn etwas
+nicht passt, muss es über Status, Events, Health oder Drift sichtbar werden.
+
 ## Stack Dependency Flow
 
 The dependency flow keeps shared foundations separate from consuming workload
@@ -190,6 +221,20 @@ internal implementation of upstream stacks.
 `configuration-management` is deliberately downstream of `compute`: Terraform
 publishes VM metadata, and Ansible pipelines consume that metadata as their
 inventory source.
+
+For Kubernetes, Flux extends the dependency flow after AKS intent:
+
+```text
+aks intent
+  -> kubernetes blueprints
+  -> flux sources
+  -> flux kustomizations / helm releases
+  -> reconciled cluster state
+```
+
+Git remains the source of truth. CI validates desired state before merge; Flux
+then reconciles the approved state in the cluster and exposes status, events,
+health and drift.
 
 ## Modulgrenzen
 

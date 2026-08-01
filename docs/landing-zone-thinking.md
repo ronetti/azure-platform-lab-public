@@ -3,10 +3,10 @@
 ## Status Und Ergebnisgrenze
 
 Dieses Dokument ist ein begründetes Zielbild. Es zeigt, wie ich eine Azure
-Landing Zone analysiere und schrittweise aufbaue. Es behauptet nicht,
-dass in diesem Repository bereits Management Groups, Plattform-Subscriptions,
-Azure-Policy-Zuweisungen oder ein Subscription-Vending-Prozess provisioniert
-sind.
+Landing Zone analysiere und schrittweise aufbaue. Management Groups,
+Plattform-Subscriptions, Azure-Policy-Zuweisungen und Subscription Vending
+sind hier als nächster Governance-Layer beschrieben; die Umsetzung gehört in
+eine autorisierte Lern- oder Zielumgebung mit eigenem Plan, Review und Rückweg.
 
 Die bestehende Nonproduction-/Production-Struktur bildet
 Workload-Subscription-Grenzen ab. Eine tenantweite Platform Landing Zone ist
@@ -51,8 +51,8 @@ Verantwortungsgrenzen ableitbar bleiben.
   Secret-, Netzwerk-, Cluster- und Betriebsgrenzen.
 - `corp` oder `online` bleibt für das Beispiel offen, bis Konnektivität,
   Exposition und Betriebsverantwortung belegt sind.
-- Dieses Dokument und der ALZ-Core-Vertrag sind modellierte Zielbilder. Sie
-  sind kein Nachweis eines Tenant-Deployments.
+- Dieses Dokument und der ALZ-Core-Vertrag sind modellierte Zielbilder für
+  den nächsten Governance-Layer.
 - Terraform wird nicht allein für Vollständigkeit ergänzt. Vor Code wird
   entschieden, ob ein ausführbarer Governance-Slice genügend Lern- und
   Portfoliowert besitzt.
@@ -228,7 +228,7 @@ Wahrheit bleiben.
 | 4 – Platform Landing Zone | Management-, Security- und Connectivity-Fähigkeiten nach Bedarf ergänzen | Plattform-Outputs, Diagnostics und Runbooks |
 | 5 – Application Landing Zone | vorhandene Nonproduction-/Production-Stacks unter dem passenden Archetyp konsumieren | isolierte States, Policies, Deployments und Betriebschecks |
 
-Der Aufbau beginnt in einer persönlichen oder ausdrücklich freigegebenen
+Der Aufbau beginnt in einer freigegebenen oder ausdrücklich autorisierten
 Lernumgebung. Tenantweite Änderungen, Management-Group-Verschiebungen und
 Policy-Enforcement benötigen einen eigenen Plan, geeignete Berechtigungen,
 Review und eine ausdrückliche Freigabe.
@@ -276,10 +276,10 @@ Erst diese Prüfungen verbinden Governance-Code mit realem Plattformbetrieb.
 
 ## English Summary
 
-This document is a reasoned target model, not a claim that a tenant-wide Azure
-Landing Zone has already been deployed. The existing nonproduction and
-production boundaries represent workload subscriptions. A Platform Landing
-Zone is the next architectural layer above them.
+This document is my reasoned target model for the next governance layer. The
+existing nonproduction and production boundaries represent workload
+subscriptions. A Platform Landing Zone is the architectural layer above them
+and needs its own tenant context, review, plan and rollback path.
 
 I do not start by copying a finished management-group hierarchy. I start with
 the boundaries required by governance, ownership, security and operations:
