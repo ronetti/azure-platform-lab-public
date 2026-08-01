@@ -55,6 +55,20 @@ All notable changes to this anonymized Azure Platform Lab are documented here.
   and the running Kubernetes cluster, including sources, kustomizations, Helm
   releases, health, events, drift visibility, secret boundaries and operating
   questions.
+- AI-assisted Platform-Governance-Pattern als zusätzliche Review-Schicht für
+  Terraform, Kubernetes, YAML, Pipelines, Security-Hinweise und
+  Betriebsstandards mit klarer Grenze: AI erzeugt Findings und Kontext, ersetzt
+  aber keine Verantwortung, Approvals oder Production-Validierung.
+- AI-assisted platform governance pattern as an additional review layer for
+  Terraform, Kubernetes, YAML, pipelines, security signals and operational
+  standards with a clear boundary: AI creates findings and context but does not
+  replace accountability, approvals or production validation.
+- Schneller README-Einstieg mit CI-Badge, kompakten Portfolio-Signalen,
+  empfohlenen Deep-Dive-Links und englischem Snapshot für bessere
+  Erstbewertung durch Recruiter und Hiring Manager.
+- Faster README entry with CI badge, compact portfolio signals, recommended
+  deep-dive links and an English snapshot for quicker evaluation by recruiters
+  and hiring managers.
 
 ### Geändert / Changed
 

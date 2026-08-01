@@ -20,6 +20,8 @@ are not acceptable.
 - zentrale, toolbezogene Security-Check-Ausnahmen unter `assets/`
 - Security Defaults in Kubernetes-Manifests
 - Flux GitOps-Reconciliation für freigegebene Kubernetes-Zustände
+- AI-assisted Reviews als zusätzliche Risiko- und Konsistenzprüfung vor dem
+  Merge
 - WAF-Regeln, Exclusions und Managed-Rule-Overrides als Konfiguration, die im
   Review sichtbar bleibt
 - Ansible Playbooks, Rollen und Inventory-Mapping mit eigenen Pipeline-Gates
@@ -34,6 +36,7 @@ are not acceptable.
 - centralized, tool-specific security-check exceptions under `assets/`
 - security defaults in Kubernetes manifests
 - Flux GitOps reconciliation for approved Kubernetes desired state
+- AI-assisted reviews as an additional risk and consistency check before merge
 - WAF rules, exclusions and managed-rule overrides as configuration that stays
   visible in review
 - Ansible playbooks, roles and inventory mapping with dedicated pipeline gates
@@ -121,6 +124,8 @@ Identitäten.
 In einer produktionsnahen Plattform könnten weitere Gates ergänzt werden:
 
 - Policy-as-Code, zum Beispiel OPA Gatekeeper, Kyverno oder Azure Policy
+- AI-assisted Review für Terraform, Kubernetes, YAML, Pipelines,
+  Security-Hinweise und Betriebsstandards
 - Container Image Scanning
 - Secret Scanning
 - Terraform Security Scanning
@@ -160,6 +165,8 @@ This repository intentionally uses simple, understandable gates:
 In a production-like platform, additional gates could be added:
 
 - policy as code, for example OPA Gatekeeper, Kyverno or Azure Policy
+- AI-assisted review for Terraform, Kubernetes, YAML, pipelines, security
+  signals and operational standards
 - container image scanning
 - secret scanning
 - Terraform security scanning
@@ -195,6 +202,8 @@ Alert-driven Ansible, update or restore pipelines require additional rules:
 - `kubernetes/blueprint-templates/web-workload` enthält gemeinsame Security-
   und Availability-Defaults für Workloads.
 - `docs/change-governance.md` beschreibt Reviews, Approvals und Changelog.
+- `docs/ai-assisted-platform-governance.md` beschreibt AI als zusätzliche
+  Review- und Governance-Schicht ohne automatische Verantwortungsübernahme.
 - `docs/availability-engineering.md` verbindet Guardrails mit Error Budgets.
 
 ## Repository Mapping
@@ -217,4 +226,6 @@ Alert-driven Ansible, update or restore pipelines require additional rules:
 - `platform.azure-lab.io/guardrails` labels mark the intended guardrail profile
   on example Kubernetes resources.
 - `docs/change-governance.md` describes reviews, approvals and changelog.
+- `docs/ai-assisted-platform-governance.md` describes AI as an additional
+  review and governance layer without automatic accountability transfer.
 - `docs/availability-engineering.md` connects guardrails with error budgets.

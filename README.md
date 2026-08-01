@@ -1,10 +1,41 @@
 # Azure Platform Engineering Portfolio
 
+[![Validate](https://github.com/ronetti/azure-platform-lab-public/actions/workflows/validate.yml/badge.svg)](https://github.com/ronetti/azure-platform-lab-public/actions/workflows/validate.yml)
+
 **Annett Berlinger · Senior Azure Platform Engineer · Terraform · Secure Delivery · Platform Operations**
 
 Ich baue Azure-Plattformen so, dass Teams Änderungen nicht nur deployen,
 sondern später auch verstehen, prüfen und im Fehlerfall wiederherstellen
 können.
+
+## Schneller Einstieg
+
+| Signal | Was sichtbar ist |
+| --- | --- |
+| Azure Platform Engineering | Terraform-Root-Stacks, Environment-Verträge, Remote-State-Übergaben und Landing-Zone-Denkmodell |
+| Secure Delivery | GitHub-Actions-Validierung, gepinnte Actions, Security-Ausnahmen mit Owner und Ablaufdatum |
+| Kubernetes / AKS | Kustomize-Blueprints, Nonproduction-/Production-Overlays, Pod Security, NetworkPolicies, Quotas, HPA und PDB |
+| GitOps / Flux | Reconciliation-Pattern zwischen freigegebenem Git-Zustand und laufendem Cluster |
+| Betriebsmodell | Monitoring, Runbooks, Restore-Automatisierung, RCA-Denken und klare Rückwege |
+| AI-assisted Governance | AI als zusätzliche Review-Schicht für Risiken, Konsistenz und wiederkehrende Plattformregeln |
+
+Die beste kurze Prüfung beginnt hier:
+
+- [Platform Engineering Experience](docs/platform-engineering-experience.md)
+- [Architecture](docs/architecture.md)
+- [Kubernetes Platform Pattern](docs/kubernetes-platform-pattern.md)
+- [AI-assisted Platform Governance](docs/ai-assisted-platform-governance.md)
+
+## English Snapshot
+
+This repository is an anonymized Azure Platform Engineering portfolio. It
+shows how I structure platform work across Terraform root stacks, environment
+contracts, remote-state handovers, Kubernetes blueprints, GitOps reasoning,
+security guardrails, monitoring, runbooks and AI-assisted governance.
+
+It is not presented as a fully provisioned enterprise landing zone. The
+repository deliberately separates implemented code, modeled contracts, target
+architecture and later integration steps.
 
 Dieses anonymisierte Portfolio ist keine isolierte Übungsumgebung. Es
 übersetzt reale Azure-Plattformarbeit in eine prüfbare Arbeitsprobe:
@@ -36,6 +67,9 @@ Rückwege. Genau diese Gesamtsicht ist meine Stärke.
 - **Automatisierung reduziert Fehlerquellen:** Was zuverlässig als Code,
   Pipeline oder Runbook beschrieben werden kann, sollte nicht dauerhaft von
   manueller Erinnerung abhängen.
+- **AI unterstützt Governance, ersetzt sie aber nicht:** AI-assisted Reviews
+  können Risiken früher sichtbar machen; Verantwortung, Approval-Grenzen und
+  Production-Validierung bleiben menschlich und nachvollziehbar.
 
 ## Berufliche Umsetzung Hinter Der Arbeitsprobe
 
@@ -114,6 +148,10 @@ Environment-Auswahl
   Umsetzung beschleunigen. Die Verantwortung bleibt bei der Frage: Was ist
   richtig, was ist riskant, was ist nur plausibel formuliert und was wurde
   wirklich geprüft?
+- **AI-assisted Platform Governance:** Ein AI Agent kann Terraform,
+  Kubernetes, YAML, Pipelines und Security-Hinweise gegen wiederkehrende
+  Plattformregeln prüfen. Er erzeugt Findings und Kontext, aber keine blinde
+  Freigabe.
 
 Das Repository ist ein ausführbarer, anonymisierter Denkansatz und keine
 Behauptung über eine vollständig provisionierte Organisation,
@@ -267,6 +305,7 @@ sichtbar.
 | Nonproduction/Production-Modell | [Environments](environments/README.md) |
 | Terraform-Root-Stacks | [Terraform Stacks](terraform/stacks/README.md) |
 | Wiederverwendbare Terraform-Pipeline | [Pipeline Blueprint](pipeline-blueprints/terraform/README.md) |
+| AI-assisted Platform Governance | [AI Governance](docs/ai-assisted-platform-governance.md) |
 | Kubernetes und Blueprints | [Kubernetes](kubernetes/README.md) |
 | Flux GitOps und Reconciliation | [Flux GitOps Pattern](docs/flux-gitops-pattern.md) |
 | Security und Subscription-Trennung | [Security](docs/security-considerations.md) |

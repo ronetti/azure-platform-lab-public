@@ -57,6 +57,7 @@ Plattformänderungen sollten über Pull Requests laufen:
 
 - Änderung an YAML, Terraform, Kubernetes oder Doku
 - automatische Validierung über Pipeline
+- optional AI-assisted Review als zusätzliche Risiko- und Konsistenzprüfung
 - Review durch fachlich passende Personen
 - Approval für produktionsnahe Änderungen
 - Merge erst nach erfolgreicher Validierung
@@ -71,6 +72,7 @@ Platform changes should go through pull requests:
 
 - change to YAML, Terraform, Kubernetes or documentation
 - automatic validation through pipeline
+- optional AI-assisted review as an additional risk and consistency check
 - review by suitable subject-matter owners
 - approval for production-like changes
 - merge only after successful validation
