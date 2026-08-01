@@ -50,6 +50,11 @@ jedem Namespace mitgibt: Pod Security, Quotas, Limits und Network Policies.
 `blueprint-templates/web-workload` zeigt den Vertrag, den ein Team konsumiert:
 Non-Root-Ausführung, Probes, Ressourcen, PDB, HPA und interner Service.
 
+`blueprint-templates/inference-workload` modelliert einen späteren Vertrag für
+AI-Inference-Workloads: GPU-Scheduling, Tolerations, explizite Ressourcen,
+interner Service, Probes, PDB und HPA. Der Blueprint wird noch nicht von den
+Environment-Overlays konsumiert und behauptet keine produktive Modellplattform.
+
 `environments` verändert nur die Ausprägung. Testing, Staging und Production
 kopieren die Blueprints nicht. Testing und Staging sind getrennte Namespaces
 auf demselben Nonproduction-Cluster; Production läuft in einer eigenen
@@ -166,6 +171,12 @@ Betriebsfrage nach dem Merge: Was läuft im Cluster wirklich, was ist gesund,
 wo gibt es Drift und welcher Zustand kommt aus Git? Das zugehörige Muster
 steht in [Flux GitOps Pattern](../docs/flux-gitops-pattern.md).
 
+AI-Workloads sind als nächster Kubernetes-Ausbauschritt modelliert. Das
+zugehörige Muster steht in
+[AI Workload Platform Pattern](../docs/ai-workload-platform-pattern.md). Es
+trennt klar zwischen AI-assisted Governance im Delivery-Loop und AKS als
+Unterbau für spätere Inference-Workloads.
+
 Das öffentliche Beispielimage verwendet einen festen Tag. Eine reale
 Production-Pipeline müsste stattdessen ein freigegebenes Image per Digest aus
 der eigenen Production-Registry einsetzen; diese Delivery-Pipeline ist hier
@@ -182,6 +193,11 @@ own platform boundary.
 The model deliberately uses Kustomize bases and overlays instead of copied YAML
 per environment. The base is the Single Source of Truth for shared platform
 standards; overlays only describe the real environment differences.
+
+The `inference-workload` blueprint models a future contract for AI inference
+workloads with GPU scheduling, tolerations, explicit resources, internal
+service exposure, probes, PDB and HPA. It is not wired into the environment
+overlays yet and does not claim a production model-serving platform.
 
 CI renders and validates the desired state before merge. Flux is the planned
 GitOps layer after merge: it pulls the approved Git state into the cluster and

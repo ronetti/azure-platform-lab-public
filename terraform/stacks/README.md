@@ -68,6 +68,10 @@ terraform/stacks/<stack>/
 Die genaue Reihenfolge kann variieren, sobald Abhängigkeiten erfüllt sind.
 `routing`, `firewall` und `application-gateway` hängen von `network` ab,
 `compute` und `aks` hängen von `network` und `shared-services` ab.
+Der AI-/GPU-Intent ist kein eigener produktiver Stack, sondern Teil des
+AKS-Vertrags: GPU-Kapazität, Scheduling, Kosten- und Approval-Grenzen werden
+dort modelliert, bevor ein Inference-Blueprint später als Workload angebunden
+wird.
 `configuration-management` nutzt `compute`-Outputs als Inventory-Quelle
 für Ansible-Pipelines.
 
@@ -115,5 +119,8 @@ those outputs through `terraform_remote_state`.
 The exact order can vary once dependencies are satisfied. `routing`,
 `firewall` and `application-gateway` depend on `network`, while `compute` and
 `aks` depend on both `network` and `shared-services`.
+The AI/GPU intent is not a separate production stack. It belongs to the AKS
+contract: GPU capacity, scheduling, cost and approval boundaries are modeled
+there before an inference blueprint is wired in as a workload.
 `configuration-management` consumes `compute` outputs as an inventory source
 for Ansible pipelines.

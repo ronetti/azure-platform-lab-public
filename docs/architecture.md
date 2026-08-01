@@ -245,6 +245,7 @@ verbindet den freigegebenen Git-Zustand mit dem laufenden Cluster.
 ```text
 aks intent
   -> kubernetes blueprints
+  -> optional inference workload blueprint
   -> flux sources
   -> flux kustomizations / helm releases
   -> reconciled cluster state
@@ -253,6 +254,13 @@ aks intent
 Damit bleibt Git die Source of Truth. CI prüft den gewünschten Zustand vor dem
 Merge; Flux gleicht danach den freigegebenen Zustand im Cluster ab. Wenn etwas
 nicht passt, muss es über Status, Events, Health oder Drift sichtbar werden.
+
+AI-Workloads hängen an dieser Grenze bewusst hinter dem AKS-Intent. Der
+AKS-Vertrag modelliert GPU-Kapazität, Taints, Labels, Kosten- und
+Approval-Grenzen. Der Inference-Blueprint beschreibt erst danach den
+Kubernetes-Workload-Vertrag. So bleibt klar, ob ein Problem aus Cluster- und
+Kapazitätsplanung, aus dem Workload-Blueprint oder aus dem GitOps-Abgleich
+kommt.
 
 ## Stack Dependency Flow
 
@@ -268,6 +276,7 @@ For Kubernetes, Flux extends the dependency flow after AKS intent:
 ```text
 aks intent
   -> kubernetes blueprints
+  -> optional inference workload blueprint
   -> flux sources
   -> flux kustomizations / helm releases
   -> reconciled cluster state

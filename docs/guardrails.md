@@ -58,6 +58,7 @@ Beispiele für Kubernetes-Guardrails:
 - kein automatisch eingebundenes Service-Account-Token
 - definierte CPU- und Memory-Requests
 - definierte CPU- und Memory-Limits
+- GPU-Ressourcen nur in dafür vorgesehenen Inference-Blueprints
 - Readiness- und Liveness-Probes
 - Startup-Probe, PodDisruptionBudget und HorizontalPodAutoscaler
 - interne Services als `ClusterIP`
@@ -89,6 +90,7 @@ Examples of Kubernetes guardrails:
 - drop all Linux capabilities where possible
 - defined CPU and memory requests
 - defined CPU and memory limits
+- GPU resources only in dedicated inference blueprints
 - readiness and liveness probes
 - internal services as `ClusterIP`
 - namespace labels for environment and ownership
@@ -201,9 +203,15 @@ Alert-driven Ansible, update or restore pipelines require additional rules:
   Namespace-, Netzwerk- und Ressourcen-Guardrails.
 - `kubernetes/blueprint-templates/web-workload` enthält gemeinsame Security-
   und Availability-Defaults für Workloads.
+- `kubernetes/blueprint-templates/inference-workload` enthält den modellierten
+  Vertrag für spätere AI-Inference-Workloads mit GPU-Scheduling,
+  Ressourcenvertrag und interner Service-Grenze.
 - `docs/change-governance.md` beschreibt Reviews, Approvals und Changelog.
 - `docs/ai-assisted-platform-governance.md` beschreibt AI als zusätzliche
   Review- und Governance-Schicht ohne automatische Verantwortungsübernahme.
+- `docs/ai-workload-platform-pattern.md` beschreibt AKS als möglichen
+  Unterbau für AI-Workloads, ohne laufende GPU- oder Model-Serving-Plattform
+  zu behaupten.
 - `docs/availability-engineering.md` verbindet Guardrails mit Error Budgets.
 
 ## Repository Mapping
@@ -221,6 +229,9 @@ Alert-driven Ansible, update or restore pipelines require additional rules:
   network and resource guardrails.
 - `kubernetes/blueprint-templates/web-workload` contains shared workload security and
   availability defaults.
+- `kubernetes/blueprint-templates/inference-workload` contains the modeled
+  contract for future AI inference workloads with GPU scheduling, resource
+  boundaries and internal service exposure.
 - `docs/flux-gitops-pattern.md` describes Flux as the GitOps reconciliation
   layer between approved Git state and runtime cluster state.
 - `platform.azure-lab.io/guardrails` labels mark the intended guardrail profile
@@ -228,4 +239,7 @@ Alert-driven Ansible, update or restore pipelines require additional rules:
 - `docs/change-governance.md` describes reviews, approvals and changelog.
 - `docs/ai-assisted-platform-governance.md` describes AI as an additional
   review and governance layer without automatic accountability transfer.
+- `docs/ai-workload-platform-pattern.md` describes AKS as a possible
+  foundation for AI workloads without claiming a running GPU or model-serving
+  platform.
 - `docs/availability-engineering.md` connects guardrails with error budgets.

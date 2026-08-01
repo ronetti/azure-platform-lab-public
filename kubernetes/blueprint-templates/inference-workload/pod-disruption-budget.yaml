@@ -1,0 +1,12 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: inference-workload
+  labels:
+    app.kubernetes.io/name: inference-workload
+    app.kubernetes.io/part-of: azure-platform-lab
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: inference-workload

@@ -111,6 +111,13 @@ Flux referenziert diese Pfade als gewünschte Zustände. Die Blueprint-Logik
 wird nicht kopiert. Sonst entsteht wieder genau das Problem, das ich vermeiden
 will: dieselbe Wahrheit an mehreren Stellen.
 
+Für spätere AI-Inference-Workloads gilt dieselbe Regel. Flux würde nicht einen
+Sonderzustand neben dem Repository verwalten, sondern einen freigegebenen
+Inference-Blueprint oder ein freigegebenes Overlay abgleichen. Solange
+Model-Artefakte, Registry, Secrets, Observability, Kostenfreigabe und
+Rollback-Verhalten nicht entschieden sind, bleibt der Blueprint vorbereitet
+und wird nicht als aktiver Deployment-Pfad ausgegeben.
+
 ## Nonproduction Und Production
 
 Testing und Staging bleiben getrennte Namespaces in Nonproduction. Flux kann
@@ -209,6 +216,8 @@ Flux muss selbst betrieben werden. Sonst verschiebt man nur Verantwortung von
 - Wie wird ein fehlerhafter Commit zurückgenommen?
 - Wann wird eine Kustomization suspendiert?
 - Wie verhindert man, dass Image Automation ungewollt Production verändert?
+- Wie werden AI-Model-Artefakte oder Inference-Images freigegeben, ohne dass
+  Flux ungeprüfte Modelle in Production zieht?
 
 Diese Fragen sind Teil des Plattformvertrags. GitOps ist nicht „einmal Flux
 installieren“, sondern ein Betriebsmodell für gewünschten und tatsächlichen

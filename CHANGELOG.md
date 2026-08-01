@@ -69,6 +69,12 @@ All notable changes to this anonymized Azure Platform Lab are documented here.
 - Faster README entry with CI badge, compact portfolio signals, recommended
   deep-dive links and an English snapshot for quicker evaluation by recruiters
   and hiring managers.
+- AI-Workload-Platform-Pattern mit modelliertem AKS/GPU-Nodepool-Intent,
+  Inference-Workload-Blueprint, Scheduling-, Kosten-, Secret-, Observability-
+  und Approval-Grenzen als klar abgegrenzter nächster Ausbauschritt.
+- AI workload platform pattern with modeled AKS/GPU nodepool intent, inference
+  workload blueprint, scheduling, cost, secret, observability and approval
+  boundaries as a clearly separated next expansion step.
 
 ### Geändert / Changed
 

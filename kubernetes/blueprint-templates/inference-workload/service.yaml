@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: inference-workload
+  labels:
+    app.kubernetes.io/name: inference-workload
+    app.kubernetes.io/part-of: azure-platform-lab
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: inference-workload
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

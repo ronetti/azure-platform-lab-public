@@ -254,6 +254,20 @@ aks:
         min_count: 0
         max_count: 2
         workload_class: interruptible-only
+      - name: aigpu
+        mode: User
+        priority: Regular
+        vm_size: Standard_NC4as_T4_v3
+        min_count: 0
+        max_count: 1
+        workload_class: ai-inference
+        status: modeled-not-provisioned
+        accelerator: nvidia-t4
+        taints:
+          - workload.azure-lab.io/ai-inference=true:NoSchedule
+        labels:
+          workload.azure-lab.io/class: ai-inference
+          workload.azure-lab.io/accelerator: gpu
     availability:
       sli_signals:
         - node-readiness
@@ -261,5 +275,27 @@ aks:
         - deployment-availability
         - restart-rate
       error_budget_policy: approval-before-shared-node-pool-change
+    ai_workload_platform:
+      status: modeled-not-provisioned
+      scope: nonproduction-inference-validation
+      node_pool: aigpu
+      cost_controls:
+        - min-count-zero
+        - explicit-enable-before-test
+        - no-idle-gpu-baseline
+      scheduling:
+        node_selector:
+          workload.azure-lab.io/class: ai-inference
+          workload.azure-lab.io/accelerator: gpu
+        toleration: workload.azure-lab.io/ai-inference=true:NoSchedule
+      model_artifacts:
+        source: approved-registry-or-model-store
+        promotion: review-before-staging
+      observability:
+        - inference-latency
+        - error-rate
+        - gpu-utilization
+        - model-load-failures
+        - restart-rate
   governance:
     required_reviews: 1

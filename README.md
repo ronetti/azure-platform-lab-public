@@ -18,6 +18,7 @@ können.
 | GitOps / Flux | Reconciliation-Pattern zwischen freigegebenem Git-Zustand und laufendem Cluster |
 | Betriebsmodell | Monitoring, Runbooks, Restore-Automatisierung, RCA-Denken und klare Rückwege |
 | AI-assisted Governance | AI als zusätzliche Review-Schicht für Risiken, Konsistenz und wiederkehrende Plattformregeln |
+| AI Workload Platform | Modellierter AKS/GPU-Intent und Inference-Blueprint als nächster Plattformausbau |
 
 Die beste kurze Prüfung beginnt hier:
 
@@ -25,6 +26,7 @@ Die beste kurze Prüfung beginnt hier:
 - [Architecture](docs/architecture.md)
 - [Kubernetes Platform Pattern](docs/kubernetes-platform-pattern.md)
 - [AI-assisted Platform Governance](docs/ai-assisted-platform-governance.md)
+- [AI Workload Platform Pattern](docs/ai-workload-platform-pattern.md)
 
 ## English Snapshot
 
@@ -152,6 +154,10 @@ Environment-Auswahl
   Kubernetes, YAML, Pipelines und Security-Hinweise gegen wiederkehrende
   Plattformregeln prüfen. Er erzeugt Findings und Kontext, aber keine blinde
   Freigabe.
+- **AI Workload Platform:** AKS kann als Unterbau für spätere AI-Inference-
+  Workloads dienen. Dieses Repository modelliert dafür GPU-Nodepool-Intent,
+  Scheduling-, Kosten-, Secret-, Observability- und Approval-Grenzen, ohne
+  laufende GPU-Kapazität oder eine produktive Modellplattform zu behaupten.
 
 Das Repository ist ein ausführbarer, anonymisierter Denkansatz und keine
 Behauptung über eine vollständig provisionierte Organisation,
@@ -306,6 +312,7 @@ sichtbar.
 | Terraform-Root-Stacks | [Terraform Stacks](terraform/stacks/README.md) |
 | Wiederverwendbare Terraform-Pipeline | [Pipeline Blueprint](pipeline-blueprints/terraform/README.md) |
 | AI-assisted Platform Governance | [AI Governance](docs/ai-assisted-platform-governance.md) |
+| AI Workload Platform auf AKS | [AI Workload Platform](docs/ai-workload-platform-pattern.md) |
 | Kubernetes und Blueprints | [Kubernetes](kubernetes/README.md) |
 | Flux GitOps und Reconciliation | [Flux GitOps Pattern](docs/flux-gitops-pattern.md) |
 | Security und Subscription-Trennung | [Security](docs/security-considerations.md) |

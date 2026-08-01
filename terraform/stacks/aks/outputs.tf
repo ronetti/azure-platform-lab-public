@@ -17,3 +17,8 @@ output "governance" {
   description = "Review and source-of-truth contract for this environment."
   value       = local.config.governance
 }
+
+output "ai_workload_platform" {
+  description = "Modeled AI workload platform intent for GPU scheduling, cost controls and inference boundaries."
+  value       = try(local.config.cluster.ai_workload_platform, null)
+}

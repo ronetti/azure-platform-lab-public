@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inference-workload
+  labels:
+    app.kubernetes.io/name: inference-workload
+    app.kubernetes.io/part-of: azure-platform-lab
+    platform.azure-lab.io/guardrails: ai-inference
+    platform.azure-lab.io/status: modeled
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: inference-workload
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: inference-workload
+        app.kubernetes.io/part-of: azure-platform-lab
+        platform.azure-lab.io/guardrails: ai-inference
+    spec:
+      serviceAccountName: inference-workload
+      automountServiceAccountToken: false
+      nodeSelector:
+        workload.azure-lab.io/class: ai-inference
+        workload.azure-lab.io/accelerator: gpu
+      tolerations:
+        - key: workload.azure-lab.io/ai-inference
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: inference
+          image: ghcr.io/example/inference-server:replace-with-approved-digest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            failureThreshold: 24
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: "2"
+              memory: 8Gi
+              nvidia.com/gpu: "1"
+            limits:
+              cpu: "4"
+              memory: 16Gi
+              nvidia.com/gpu: "1"
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
