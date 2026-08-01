@@ -4,7 +4,7 @@
 
 Das Ziel ist eine Azure-Plattformbasis für Enterprise-Workloads, die
 wiederholbar, im Review verständlich und modular erweiterbar ist. Die Plattform soll nicht
-nur Ressourcen erzeugen, sondern einen Betriebsrahmen abbilden: Netzwerk,
+nur Ressourcen erzeugen, sondern auch den späteren Betrieb abbilden: Netzwerk,
 Security, Edge, Monitoring, Storage, Compute, Remote State,
 Umgebungskonfiguration und Kubernetes-Zielstrukturen.
 
@@ -31,7 +31,7 @@ checks whether actual state still matches desired state.
 
 Die in diesem Repository sichtbaren Nonproduction- und
 Production-Subscriptions bilden Workload-Grenzen. In einer vollständigen Azure
-Landing Zone liegen darüber Management Groups, tenantweite Policy-Verträge,
+Landing Zone liegen darüber Management Groups, tenantweite Policy-Regeln,
 Platform-Subscriptions und ein kontrollierter Subscription-Vending-Prozess.
 
 Diese übergeordnete Ebene ist hier als
@@ -44,7 +44,7 @@ Testing, Staging und Production.
 
 The nonproduction and production subscriptions visible in this repository
 represent workload boundaries. A complete Azure Landing Zone adds management
-groups, tenant-wide policy contracts, platform subscriptions and controlled
+groups, tenant-wide policy rules, platform subscriptions and controlled
 subscription vending above those boundaries.
 
 This higher level is documented as a
@@ -83,7 +83,7 @@ Das Repository trennt zwei Ebenen:
   keine übernommenen Originalmodule.
 - `terraform/stacks/` modelliert deploybare Root-Module mit eigenem
   State-Key und klaren Übergabepunkten.
-- `environments/` konsolidiert die Konfigurations- und Backend-Verträge für
+- `environments/` konsolidiert Konfiguration und Backend-Beispiele für
   diese kompakte Portfolio-Darstellung.
 
 `environments/` zeigt das Betriebsmodell in zwei sichtbaren Grenzen: Testing
@@ -107,8 +107,8 @@ Ort bündeln. Wenn ich eine VM-Konfiguration ändere, möchte ich nicht
 gleichzeitig Netzwerk, Firewall oder Kubernetes neu planen müssen. Getrennte
 Root-Stacks verkleinern den Fehlerbereich, machen Reviews gezielter und geben
 Teams eine klare Ownership-Grenze. Jeder Bereich veröffentlicht nur die
-benötigten Outputs und konsumiert andere Plattformteile über definierte
-Schnittstellen.
+benötigten Outputs und nutzt andere Plattformteile über definierte
+Übergabepunkte.
 
 Dieselbe Logik gilt für Kubernetes. Ich habe mich bewusst gegen kopierte
 YAML-Dateien pro Umgebung entschieden. Gemeinsame Plattformstandards wie
@@ -129,8 +129,8 @@ State-Storage-Grenzen.
 
 Nicht jeder Stack ist in diesem Repository gleich tief implementiert. `network`
 und `shared-services` zeigen konkrete Basisressourcen. Andere Stacks zeigen
-bewusst die Schnittstelle, die Konfigurationsform und die Betriebsgrenze. Das
-ist kein Platzhalter ohne Inhalt: Genau diese Verträge entscheiden später, ob
+bewusst die Struktur, die Konfigurationsform und die Betriebsgrenze. Das
+ist kein Platzhalter ohne Inhalt: Genau diese Übergaben entscheiden später, ob
 Teams unabhängig arbeiten können, ob Remote State sauber konsumiert wird und
 ob eine Änderung vor dem Apply verständlich bleibt. Wo eine reale Ressource
 noch nicht provisioniert wird, ist das kenntlich gemacht.
@@ -165,7 +165,7 @@ The repository keeps two layers separate:
   blocks, not original non-public module code.
 - `terraform/stacks/` models deployable root modules with independent state
   keys and clear handover points.
-- `environments/` consolidates configuration and backend contracts for this
+- `environments/` consolidates configuration and backend examples for this
   compact portfolio representation.
 
 In addition, `environments/` keeps the operating model in two visible
@@ -188,7 +188,7 @@ state changes in one place. A VM configuration change should not require
 planning network, firewall or Kubernetes changes at the same time. Separate
 root stacks reduce the blast radius, make reviews more focused and give teams
 a clear ownership boundary. Each domain publishes only the outputs others need
-and consumes platform dependencies through defined interfaces.
+and consumes platform dependencies through defined handover points.
 
 The same decision applies to Kubernetes. I deliberately avoid copied YAML files
 per environment. Shared platform standards such as security defaults, labels,
@@ -207,8 +207,8 @@ Production and nonproduction use separate state-storage boundaries.
 
 Not every stack is implemented at the same depth in this repository. `network`
 and `shared-services` show concrete baseline resources. Other stacks
-intentionally show the interface, configuration shape and operational
-responsibility boundary. That is not empty placeholder work: these contracts
+intentionally show the structure, configuration shape and operational
+responsibility boundary. That is not empty placeholder work: these handovers
 decide whether teams can work independently, whether remote state is consumed
 cleanly and whether a change remains understandable before apply. Where a real
 resource is not provisioned yet, the repository says so explicitly.
@@ -256,9 +256,9 @@ Merge; Flux gleicht danach den freigegebenen Zustand im Cluster ab. Wenn etwas
 nicht passt, muss es über Status, Events, Health oder Drift sichtbar werden.
 
 AI-Workloads hängen an dieser Grenze bewusst hinter dem AKS-Intent. Der
-AKS-Vertrag modelliert GPU-Kapazität, Taints, Labels, Kosten- und
+AKS-Intent modelliert GPU-Kapazität, Taints, Labels, Kosten- und
 Approval-Grenzen. Der Inference-Blueprint beschreibt erst danach den
-Kubernetes-Workload-Vertrag. So bleibt klar, ob ein Problem aus Cluster- und
+Kubernetes-Workload-Modell. So bleibt klar, ob ein Problem aus Cluster- und
 Kapazitätsplanung, aus dem Workload-Blueprint oder aus dem GitOps-Abgleich
 kommt.
 

@@ -1,4 +1,4 @@
-name: Security exception contract
+name: Security exception validation
 description: Validate centrally documented IaC scanner exceptions
 
 inputs:

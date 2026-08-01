@@ -37,8 +37,8 @@ Blueprints:
 
 - Der Platform Baseline Blueprint definiert Namespace-, Security-, Netzwerk-
   und Ressourcen-Guardrails.
-- Der Web Workload Blueprint definiert einen sicheren und beobachtbaren
-  Workload-Vertrag.
+- Der Web Workload Blueprint definiert sichere und beobachtbare
+  Workload-Vorgaben.
 - Environment-Overlays konfigurieren Testing, Staging und Production, ohne die
   Blueprint-Logik zu kopieren.
 
@@ -78,7 +78,7 @@ nicht kopiert. Die vorhandenen Kubernetes-Overlays nutzen noch RollingUpdate;
 für den echten Traffic-Switch fehlt bewusst noch eine Pipeline oder ein
 Rollout-Controller.
 
-Flux löst Blue-Green nicht allein. Es liefert den Reconciliation-Vertrag. Für
+Flux löst Blue-Green nicht allein. Es übernimmt die kontinuierliche Reconciliation. Für
 Traffic-Wechsel, progressive Delivery oder automatisierte Promotion braucht es
 zusätzlich einen bewusst gewählten Rollout-Mechanismus und klare Approval-
 Regeln.
@@ -174,7 +174,7 @@ continuously whether the cluster still matches the approved Git state. A single
 `kubectl apply` would not answer that drift question later.
 
 Secrets are intentionally outside the blueprints and overlays. Git describes
-the platform contract and non-sensitive references; a protected secret store
+the platform shape and non-sensitive references; a protected secret store
 manages passwords, certificates and tokens.
 
 ## Availability Engineering
@@ -243,8 +243,8 @@ stable, while the concrete shape is changed through versioned configuration.
 
 - `kubernetes/blueprint-templates/platform-baseline/` definiert
   Plattform-Guardrails.
-- `kubernetes/blueprint-templates/web-workload/` definiert den
-  Workload-Vertrag.
+- `kubernetes/blueprint-templates/web-workload/` definiert die
+  Workload-Vorgaben.
 - `kubernetes/environments/` zeigt kosten- und verfügbarkeitsbewusste
   Ausprägungen.
 - `docs/monitoring.md` beschreibt Signale und das Observability-Zielbild.
@@ -254,6 +254,6 @@ stable, while the concrete shape is changed through versioned configuration.
 - `kubernetes/blueprint-templates/platform-baseline/` defines platform
   guardrails.
 - `kubernetes/blueprint-templates/web-workload/` defines the workload
-  contract.
+  baseline.
 - `kubernetes/environments/` contains cost- and availability-aware variants.
 - `docs/monitoring.md` describes signals and the observability target model.

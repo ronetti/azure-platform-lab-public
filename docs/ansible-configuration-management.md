@@ -81,8 +81,8 @@ Agent Pools umgesetzt. Inventory-Daten kamen aus Terraform Outputs
 beziehungsweise Remote State; Linting, Syntax Check, Check Mode, Reviews und
 Approvals sicherten die Abläufe ab.
 
-Dieses öffentliche Repository bildet davon bewusst nur den anonymisierten
-Übergabevertrag ab. Nicht veröffentlichte Originalimplementierungen bleiben
+Dieses öffentliche Repository bildet davon bewusst nur die anonymisierte
+Übergabe ab. Nicht veröffentlichte Originalimplementierungen bleiben
 außen vor. Ein späteres
 `ansible/`-Portfolio-Beispiel kann Inventory-Generierung, eine eigenständig
 geschriebene Demo-Rolle, ein Playbook und `ansible-lint` zeigen. Die
@@ -111,7 +111,7 @@ agent pools. Inventory data came from Terraform outputs or remote state;
 linting, syntax checks, check mode, reviews and approvals protected the flows.
 
 This public repository intentionally represents only the anonymized handover
-contract, not original non-public source code. A later `ansible/` portfolio example can
+pattern, not original non-public source code. A later `ansible/` portfolio example can
 show inventory generation, an independently written demo role, a playbook and
 `ansible-lint`. Professional implementation and the depth of the public demo
 remain deliberately separate.

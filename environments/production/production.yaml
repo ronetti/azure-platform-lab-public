@@ -171,7 +171,7 @@ compute:
         offer: 0001-com-ubuntu-server-jammy
         sku: 22_04-lts-gen2
         version: latest
-  inventory_contract: terraform-output
+  inventory_source: terraform-output
   governance:
     required_reviews: 2
     error_budget_policy: stabilize-before-vm-change

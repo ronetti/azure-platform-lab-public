@@ -3,8 +3,8 @@
 ## Zweck
 
 Dieser Root-Stack modelliert VM-Namen, Größen, Images, private IPs und
-Subnet-Zuordnungen. Er veröffentlicht den VM-Vertrag für Configuration
-Management; der vollständige VM-Lifecycle ist noch nicht implementiert.
+Subnet-Zuordnungen. Er stellt die VM-Daten für das Configuration
+Management bereit; der vollständige VM-Lifecycle ist noch nicht implementiert.
 
 ## Konfiguration
 

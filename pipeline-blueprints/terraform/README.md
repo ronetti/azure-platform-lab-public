@@ -21,7 +21,7 @@ folgende Entscheidungen im Code sichtbar:
 - Genau der geprüfte Plan wird angewendet; ein neuer Plan entsteht nicht
   unbemerkt während des Apply.
 - Gleichzeitige Änderungen am selben State werden technisch verhindert.
-- Dokumentation liegt direkt beim wiederverwendbaren Vertrag und beim
+- Dokumentation liegt direkt beim wiederverwendbaren Blueprint und beim
   konsumierenden Produkt.
 
 ```text
@@ -40,7 +40,7 @@ GitHub verlangt wiederverwendbare Workflows direkt unter
 Consumer-Beispiel und Produkt-README-Vorlage; der ausführbare Blueprint liegt
 am von GitHub vorgegebenen Ort.
 
-## Repository-Vertrag
+## Voraussetzungen Im Produkt-Repository
 
 Ein konsumierendes Produkt-Repository stellt bereit:
 
@@ -70,7 +70,7 @@ Security-Ausnahmen und Betrieb. Dafür dient
 ## Verwenden
 
 Der Produkt-Workflow pinnt ein bewusst freigegebenes Release-Tag oder einen
-vollständigen Commit-SHA. `main` ist keine stabile Schnittstelle. Ein
+vollständigen Commit-SHA. `main` ist dafür keine stabile Referenz. Ein
 vollständiger Commit-SHA bietet laut GitHub die stärkste Stabilitäts- und
 Sicherheitsbindung; das Release-Tag bleibt die besser lesbare, explizit zu
 aktualisierende Variante. Das vollständige Beispiel liegt in
@@ -157,7 +157,7 @@ Nonproduction-State.
 
 ## Ablauf und Guardrails
 
-1. **Check:** Terraform-Format und Security-Ausnahmevertrag.
+1. **Check:** Terraform-Format und Security-Ausnahmen.
 2. **Validate:** `terraform init -backend=false` und `terraform validate`.
 3. **Plan:** OIDC-Login über das Plan-Environment und gespeicherter Plan.
 4. **Artifact:** Der Plan wird für einen Tag als Run-Artefakt gespeichert.
@@ -167,8 +167,8 @@ Nonproduction-State.
 Eine Concurrency-Gruppe pro Repository, Environment und State-Key verhindert
 gleichzeitige Läufe gegen denselben Terraform-State.
 
-Scanner-Ausnahmen brauchen Rule-ID, Begründung, Owner und Ablaufdatum. Dieses
-öffentliche Blueprint validiert den Vertrag, behauptet aber nicht, die
+Scanner-Ausnahmen brauchen Rule-ID, Begründung, Owner und Ablaufdatum. Dieser
+öffentliche Blueprint validiert die Eingaben dafür, behauptet aber nicht, die
 organisationsspezifischen Checkov-, TFLint-, Terrascan- oder tfsec-Installationen
 auszuführen. Solche Scanner werden als eigener zentraler GitHub-Workflow vor
 den Terraform-Aufrufen eingebunden.
@@ -187,4 +187,4 @@ den Terraform-Aufrufen eingebunden.
 
 Diese externen Verbindungen sind im Portfolio-Repository bewusst nicht
 eingerichtet. Namen und Werte im Consumer sind anonymisierte Platzhalter, an
-denen sich der beabsichtigte Vertrag erkennen lässt.
+denen sich das beabsichtigte Verhalten erkennen lässt.

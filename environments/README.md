@@ -19,7 +19,7 @@ ausführbare Terraform-Konfiguration dieses kompakten Labs. Jeder Root-Stack
 liest daraus nur seinen gleichnamigen Abschnitt. Die Backend-Basis steht je
 Subscription einmal daneben; nur der State-Key unterscheidet die Root-Stacks.
 
-Im zugrundeliegenden Repository-Modell ist derselbe Vertrag verteilt: Network,
+Im zugrundeliegenden Repository-Modell ist dieselbe Struktur verteilt: Network,
 Firewall, Application Gateway, Compute und weitere Fachbereiche besitzen je
 ein eigenes Repository mit eigener Multi-Environment-YAML, Backend-/State-
 Konfiguration, Pipeline, Security-Assets und README. Single Source of Truth

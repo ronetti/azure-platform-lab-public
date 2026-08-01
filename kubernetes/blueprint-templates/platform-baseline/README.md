@@ -1,6 +1,6 @@
 # Platform Baseline Blueprint
 
-Dieser Kustomize-Blueprint stellt den Plattformvertrag für jeden
+Dieser Kustomize-Blueprint stellt die gemeinsamen Plattformvorgaben für jeden
 Workload-Namespace bereit:
 
 - Namespace mit Pod Security Standard `restricted`

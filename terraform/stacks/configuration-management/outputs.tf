@@ -1,5 +1,5 @@
 output "ansible_inventory" {
-  description = "Inventory contract for Ansible pipelines derived from compute remote state."
+  description = "Inventory data for Ansible pipelines derived from compute remote state."
   value       = local.inventory_hosts
 }
 

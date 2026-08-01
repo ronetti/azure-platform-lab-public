@@ -26,7 +26,7 @@ geplant und deployed werden. Die Stacks greifen über `terraform_remote_state`
 ineinander, nicht über direkte lokale Modulreferenzen.
 
 Damit das öffentliche Lab kompakt lesbar bleibt, sind die fachlichen
-Environment-Verträge hier in genau einer YAML-Datei je Subscription-Grenze
+Environment-Strukturen hier in genau einer YAML-Datei je Subscription-Grenze
 unter `environments/` zusammengeführt. Typische Änderungen wie neue Subnetze,
 Firewall-Regeln, VMs, Listener, Backends oder Node Pools ändern den passenden
 Abschnitt dieser Datei, nicht Terraform-Code oder Stack-Kopien.
@@ -58,7 +58,7 @@ services, firewall, compute, AKS and Application Gateway can be planned and
 deployed separately. Stacks integrate through `terraform_remote_state`, not by
 direct local module references.
 
-To keep the public lab compact, its domain contracts are consolidated into one
+To keep the public lab compact, its domain configuration is consolidated into one
 YAML file per subscription boundary below `environments/`. Common changes
 update the appropriate section there rather than Terraform code or stack
 copies.

@@ -6,9 +6,9 @@ Dieser Root-Stack macht die AKS-Plattformentscheidungen sichtbar: Cluster-
 Grenze, Netzwerk, Identität, Security, Ingress, Node Pools, Kostenprofil,
 Monitoring und Betriebsparameter. Er löst Subnet und Monitoring-Workspace aus
 Remote State auf und zeigt damit, wie AKS nicht isoliert entsteht, sondern aus
-Network- und Shared-Services-Verträgen konsumiert.
+Network- und Shared-Services-Übergaben konsumiert.
 
-Der Stack ist aktuell ein ausführbarer Intent-Vertrag und noch keine
+Der Stack enthält aktuell ein ausführbares Intent-Modell, aber noch keine
 Cluster-Provisionierung. Das ist bewusst getrennt: Die Plattformentscheidungen
 werden reviewbar, bevor ein reales Cluster mit Day-0-Entscheidungen entsteht.
 Die dazugehörigen Kubernetes-Blueprints liegen unter
@@ -29,7 +29,7 @@ OCI im Cluster abgeglichen wird. Das zugehörige Muster steht in
 - Abhängigkeiten: `network`, `shared-services`
 - Outputs: `cluster`, `cost`, `used_for`, `governance`
 
-Die wichtigsten Entscheidungen im Vertrag sind:
+Die wichtigsten Entscheidungen in diesem Stack sind:
 
 - private Cluster-Ausrichtung und interner Ingress-Pfad
 - getrennte Nonproduction- und Production-Grenzen
@@ -37,11 +37,11 @@ Die wichtigsten Entscheidungen im Vertrag sind:
 - modellierter AI-/GPU-Nodepool-Intent für spätere Inference-Workloads ohne
   reale GPU-Provisionierung in diesem Portfolio
 - Monitoring-Bezug aus Shared Services
-- Security- und Governance-Metadaten als Teil des Plattformvertrags
+- Security- und Governance-Metadaten als Teil des Plattformmodells
 - Flux-Bootstrap als nachgelagerter GitOps-Schritt für Quellen,
   Kustomizations, Helm Releases, Health und Events
 
-Der AI-/GPU-Teil ist bewusst nur als Vertrag beschrieben. Er zeigt Scheduling,
+Der AI-/GPU-Teil ist bewusst nur als Intent beschrieben. Er zeigt Scheduling,
 Taints, Labels, Kostenkontrollen, Model-Artefakt-Grenzen und Observability-
 Signale. Er behauptet keine laufende GPU-Kapazität, kein KServe und keine
 produktive Inference-Plattform.
@@ -71,13 +71,13 @@ Siehe [Terraform Pipeline Blueprint](../../../pipeline-blueprints/terraform/READ
 
 ## English Summary
 
-This stack documents the AKS platform contract: cluster boundary, networking,
+This stack documents the AKS platform shape: cluster boundary, networking,
 identity, security, ingress, node pools, cost profile, monitoring and
 operations metadata. It resolves network and shared-services dependencies
 through remote state, so AKS is modeled as part of the platform rather than as
 an isolated cluster.
 
-The current stack is an executable intent contract, not the cluster
+The current stack is an executable intent model, not the cluster
 provisioning implementation. Flux is modeled as the GitOps step after the AKS
 boundary: Terraform defines where the cluster lives, while Flux later
 reconciles approved Kubernetes state from Git or OCI into that cluster.

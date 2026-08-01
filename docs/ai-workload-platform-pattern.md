@@ -11,7 +11,7 @@ prüft Änderungen im Delivery-Loop. Dieses Dokument beschreibt dagegen, welche
 Plattformfragen entstehen, wenn ein Team Modelle auf AKS bereitstellen oder
 Inference-Workloads betreiben möchte.
 
-Der aktuelle Stand ist ein modellierter Plattformvertrag. Es werden keine
+Der aktuelle Stand ist ein vorbereiteter Entwurf. Es werden keine
 GPU-Ressourcen provisioniert, kein Modell veröffentlicht und keine
 produktive Inference-Plattform behauptet.
 
@@ -30,7 +30,7 @@ sicherheitsrelevant. Ein GPU-Nodepool ist nicht einfach nur ein weiterer
 Nodepool. Er verändert Kosten, Kapazitätsplanung, Upgrade-Verhalten,
 Observability, Image-Vertrauen, Model-Artefakte und Zugriffsgrenzen.
 
-Für mich gehört deshalb zuerst der Vertrag geklärt:
+Für mich müssen deshalb zuerst die Grundlagen geklärt sein:
 
 - Welche Workloads brauchen wirklich GPU-Kapazität?
 - Welche Teile laufen besser auf CPU oder einem verwalteten AI-Dienst?
@@ -52,7 +52,7 @@ Ein AI-Workload braucht dieselben Plattformfragen wie andere Workloads, aber
 mit engeren Kosten- und Sicherheitsgrenzen:
 
 - eigener Workload-Blueprint für Inference statt kopierter YAMLs
-- optionaler GPU-Nodepool-Intent im AKS-Vertrag
+- optionaler GPU-Nodepool-Intent im AKS-Intent
 - Taints, Tolerations und Node Selector für gezieltes Scheduling
 - Resource Requests und Limits inklusive GPU-Ressourcen
 - Model-Image oder Model-Artefakt nur aus freigegebener Quelle
@@ -86,21 +86,21 @@ AKS cluster
        -> explicit approval before Production
 ```
 
-Der wichtige Punkt ist nicht, sofort teure GPU-Knoten zu starten. Der wichtige
-Punkt ist, dass die Plattform vorab weiß, wie GPU-Workloads isoliert,
+Der wichtige Punkt ist nicht, sofort teure GPU-Knoten zu starten. Entscheidend
+ist, dass vorher klar ist, wie GPU-Workloads isoliert,
 geplant, gemessen und freigegeben werden.
 
 `min_count: 0` in Nonproduction ist deshalb Absicht. Testing und Staging
 sollen zeigen können, wie ein AI-Workload eingeordnet wird, ohne dass dauerhaft
 GPU-Kosten laufen. Production bleibt ebenfalls modelliert und braucht vor
 echter Kapazität eine bewusste Freigabe. Für mich ist das die ehrliche
-Reihenfolge: erst Vertrag und Reviewbarkeit, dann echte Kapazität.
+Reihenfolge: erst Architektur, Reviewbarkeit und Betriebsgrenzen, dann echte Kapazität.
 
 ## Inference Blueprint
 
 Der Blueprint unter
 [`kubernetes/blueprint-templates/inference-workload`](../kubernetes/blueprint-templates/inference-workload/README.md)
-zeigt den Kubernetes-Vertrag für einen Inference-Workload:
+zeigt die Kubernetes-Basis für einen Inference-Workload:
 
 - eigener Service Account ohne automatisch gemountetes Token
 - Non-Root-Ausführung
@@ -108,7 +108,7 @@ zeigt den Kubernetes-Vertrag für einen Inference-Workload:
 - CPU-, Memory- und GPU-Ressourcen
 - Node Selector und Toleration für GPU-Nodes
 - Service als interner `ClusterIP`
-- PDB und HPA als Availability- und Skalierungsrahmen
+- PDB und HPA als Availability- und Skalierungsregeln
 
 Der Blueprint wird bewusst noch nicht von den Environment-Overlays konsumiert.
 Damit bleibt klar: Das Pattern ist vorbereitet, aber noch kein freigegebener
@@ -143,7 +143,7 @@ Wichtige Betriebsfragen:
 Implementiert:
 
 - AI-Workload-Platform-Pattern als Dokumentation
-- modellierter GPU-Nodepool-Intent in den AKS-Environment-Verträgen
+- modellierter GPU-Nodepool-Intent in den AKS-Environment-Strukturen
 - Inference-Workload-Blueprint als Kustomize-Basis
 
 Nicht implementiert:
@@ -176,7 +176,7 @@ secrets, observability and production approval boundaries. It does not claim a
 running GPU cluster, KServe installation, model registry or production
 inference platform.
 
-The decision is deliberate: model the platform contract before enabling costly
+The decision is deliberate: model the platform shape before enabling costly
 GPU capacity. AI inference has different operational risks than a normal web
 workload, including scheduling, model artifacts, sensitive input, latency,
 saturation and rollback behavior. The repository therefore keeps AI workload

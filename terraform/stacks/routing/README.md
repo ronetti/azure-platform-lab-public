@@ -3,7 +3,7 @@
 ## Zweck
 
 Dieser Root-Stack modelliert Route Tables, Routen und Subnet-Zuordnungen. Er
-zeigt den Deployment-Vertrag und löst Subnet-IDs aus dem Network-State auf;
+zeigt den vorgesehenen Deployment-Ablauf und löst Subnet-IDs aus dem Network-State auf;
 reale Azure-Routing-Ressourcen sind noch nicht implementiert.
 
 ## Konfiguration

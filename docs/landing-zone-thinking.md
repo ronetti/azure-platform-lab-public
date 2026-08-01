@@ -51,13 +51,13 @@ Verantwortungsgrenzen ableitbar bleiben.
   Secret-, Netzwerk-, Cluster- und Betriebsgrenzen.
 - `corp` oder `online` bleibt für das Beispiel offen, bis Konnektivität,
   Exposition und Betriebsverantwortung belegt sind.
-- Dieses Dokument und der ALZ-Core-Vertrag sind modellierte Zielbilder für
+- Dieses Dokument und der ALZ-Core-Einstieg sind modellierte Zielbilder für
   den nächsten Governance-Layer.
 - Terraform wird nicht allein für Vollständigkeit ergänzt. Vor Code wird
   entschieden, ob ein ausführbarer Governance-Slice genügend Lern- und
   Portfoliowert besitzt.
 - Ein späterer erster Slice hält die Grenzen aus
-  [ALZ Core](alz-core-contract.md) ein: eigener State, kleine Hierarchie,
+  [ALZ Core](alz-core.md) ein: eigener State, kleine Hierarchie,
   höchstens ein nicht erzwingender Policy-Test und keine Subscription-Moves,
   Workload-RBAC- oder Platform-Ressourcen.
 - Statusangaben bleiben explizit: implementiert, modelliert oder Roadmap.
@@ -142,7 +142,7 @@ Management-Group-Ebene.
 Die übergeordnete Platform Landing Zone besitzt einen anderen Lifecycle:
 
 - `alz-core` verantwortet Management Groups, Policy- und
-  Plattform-RBAC-Verträge.
+  Plattform-RBAC-Regeln.
 - `alz-management` verantwortet zentrale Management- und
   Observability-Fähigkeiten.
 - `alz-connectivity` verantwortet Hub, zentrale Konnektivität, Firewall und
@@ -198,8 +198,8 @@ Wahrheitsquelle werden.
 
 ## Subscription Vending Als Plattformprodukt
 
-Eine neue Subscription ist nicht erst dann fertig, wenn sie existiert. Der
-Onboarding-Vertrag muss mindestens klären:
+Eine neue Subscription ist nicht erst dann fertig, wenn sie existiert. Beim
+Onboarding muss mindestens klar sein:
 
 - Workload, Owner und Kostenverantwortung
 - Nonproduction- oder Production-Grenze
@@ -222,7 +222,7 @@ Wahrheit bleiben.
 | Stufe | Ziel | Nachweis |
 | --- | --- | --- |
 | 0 – Denkmodell | Anforderungen, Alternativen, Ownership und Zielbild dokumentieren | dieses Dokument und Review |
-| 1 – Governance-Basis | [ALZ-Core-Vertrag](alz-core-contract.md): Intermediate Root, kleine Hierarchie, nicht erzwingender Policy-Test und getrennter State | Terraform-Plan, Hierarchie- und Vererbungsprüfung |
+| 1 – Governance-Basis | [ALZ Core](alz-core.md): Intermediate Root, kleine Hierarchie, nicht erzwingender Policy-Test und getrennter State | Terraform-Plan, Hierarchie- und Vererbungsprüfung |
 | 2 – Policy-Lifecycle | Initiative, Assignment, Remediation und befristete Exemption kontrolliert erproben | Compliance-Auswertung und Rücknahmetest |
 | 3 – Subscription Vending | eine Workload-Subscription reproduzierbar aufnehmen und zuordnen | wiederholbarer Onboarding-Lauf und Übergabeprotokoll |
 | 4 – Platform Landing Zone | Management-, Security- und Connectivity-Fähigkeiten nach Bedarf ergänzen | Plattform-Outputs, Diagnostics und Runbooks |
@@ -259,7 +259,7 @@ Erst diese Prüfungen verbinden Governance-Code mit realem Plattformbetrieb.
 | Bereich | Status |
 | --- | --- |
 | Landing-Zone-Entscheidungslogik | dokumentiert |
-| Nonproduction-/Production-Subscription-Grenze | als Workload-Vertrag modelliert |
+| Nonproduction-/Production-Subscription-Grenze | als getrennte Workload-Grenze modelliert |
 | Management-Group-Hierarchie | Zielbild, nicht implementiert |
 | Policy Definitions, Initiatives und Assignments | Roadmap |
 | Platform-RBAC und PIM | Roadmap und externe Voraussetzung |

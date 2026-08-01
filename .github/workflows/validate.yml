@@ -18,7 +18,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Security exception contract
+      - name: Security exception validation
         id: security-exceptions
         uses: ./.github/actions/security-exceptions
 
@@ -83,13 +83,13 @@ jobs:
           yamllint environments kubernetes terraform/stacks
           pipeline-blueprints .github
 
-      - name: Configuration-management guardrail contract
+      - name: Configuration-management guardrails
         run: |
           grep -q "ansible-lint" environments/nonproduction/nonproduction.yaml
           grep -q "check-mode" environments/nonproduction/nonproduction.yaml
           grep -q "approval-before-production" environments/nonproduction/nonproduction.yaml
 
-      - name: Environment and delivery contract
+      - name: Environment and delivery checks
         run: |
           grep -q "environment: nonproduction" environments/nonproduction/nonproduction.yaml
           grep -q "testing:" environments/nonproduction/nonproduction.yaml
@@ -105,7 +105,7 @@ jobs:
           test ! -e environments/staging/platform.yaml
           test ! -e environments/production/platform.yaml
 
-      - name: Terraform environment contract
+      - name: Terraform environment checks
         run: |
           test -f environments/nonproduction/nonproduction.yaml
           test -f environments/production/production.yaml
@@ -158,7 +158,7 @@ jobs:
           test -f kubernetes/blueprint-templates/platform-baseline/README.md
           test -f kubernetes/blueprint-templates/web-workload/README.md
 
-      - name: Production isolation contract
+      - name: Production isolation checks
         run: |
           grep -q "rg-tfstate-platform-production" \
             environments/production/production.azurerm.tfbackend.example

@@ -1,6 +1,6 @@
 # Pipeline Blueprints
 
-Dieses Verzeichnis enthält wiederverwendbare Pipeline-Verträge. Produkt-
+Dieses Verzeichnis enthält wiederverwendbare Pipeline-Vorlagen. Produkt-
 Repositories halten ihre Pipeline dadurch klein: Sie pinnen eine Blueprint-
 Version und liefern nur ihre eigenen Pfade, Environments, Service Connections
 und State-Keys.

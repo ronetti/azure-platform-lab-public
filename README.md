@@ -12,7 +12,7 @@ können.
 
 | Signal | Was sichtbar ist |
 | --- | --- |
-| Azure Platform Engineering | Terraform-Root-Stacks, Environment-Verträge, Remote-State-Übergaben und Landing-Zone-Denkmodell |
+| Azure Platform Engineering | Terraform-Root-Stacks, Environment-Strukturen, Remote-State-Übergaben und Landing-Zone-Denkmodell |
 | Secure Delivery | GitHub-Actions-Validierung, gepinnte Actions, Security-Ausnahmen mit Owner und Ablaufdatum |
 | Kubernetes / AKS | Kustomize-Blueprints, Nonproduction-/Production-Overlays, Pod Security, NetworkPolicies, Quotas, HPA und PDB |
 | GitOps / Flux | Reconciliation-Pattern zwischen freigegebenem Git-Zustand und laufendem Cluster |
@@ -32,23 +32,23 @@ Die beste kurze Prüfung beginnt hier:
 
 This repository is an anonymized Azure Platform Engineering portfolio. It
 shows how I structure platform work across Terraform root stacks, environment
-contracts, remote-state handovers, Kubernetes blueprints, GitOps reasoning,
+configuration, remote-state handovers, Kubernetes blueprints, GitOps reasoning,
 security guardrails, monitoring, runbooks and AI-assisted governance.
 
 It is not presented as a fully provisioned enterprise landing zone. The
-repository deliberately separates implemented code, modeled contracts, target
+repository deliberately separates implemented code, modeled structures, target
 architecture and later integration steps.
 
 Dieses anonymisierte Portfolio ist keine isolierte Übungsumgebung. Es
 übersetzt reale Azure-Plattformarbeit in eine prüfbare Arbeitsprobe:
-Terraform-Stacks, Environment-Verträge, Netzwerk- und Security-Grenzen,
+Terraform-Stacks, Environment-Strukturen, Netzwerk- und Security-Grenzen,
 Application Gateway/WAF, Firewall-Integration, Delivery-Pipelines,
 Configuration Management, Monitoring, Backup/Restore und Runbook-Denken.
 
 Im Mittelpunkt stehen begründete Architekturentscheidungen, klare Ownership
 und ein Plattformweg, den Teams gemeinsam prüfen und weiterentwickeln können.
 Der Umsetzungsstand trennt transparent zwischen ausführbarem Code,
-modellierten Verträgen, Zielbild und noch notwendiger realer Integration.
+modellierten Strukturen, Zielbild und noch notwendiger realer Integration.
 Ich zeige hier bewusst, wie ich denke und strukturiere: nicht nur einzelne
 Ressourcen, sondern Zusammenhänge, Abhängigkeiten, Risiken, Betrieb und
 Rückwege. Genau diese Gesamtsicht ist meine Stärke.
@@ -57,15 +57,15 @@ Rückwege. Genau diese Gesamtsicht ist meine Stärke.
 
 - **Ich denke Infrastruktur als Betriebsmodell:** Governance, Netzwerk,
   Security, Delivery, Configuration Management, Monitoring und Recovery müssen
-  über klare Schnittstellen zusammenpassen.
+  zusammenpassen und später nachvollziehbar bleiben.
 - **Teams brauchen Freiheit innerhalb klarer Grenzen:** Fachbereiche besitzen
-  eigene Root-Stacks und States; gemeinsame Verträge schützen Ownership,
+  eigene Root-Stacks und States; definierte Übergabepunkte schützen Ownership,
   Security und die Single Source of Truth.
 - **Changes müssen prüfbar bleiben:** Environment-Daten, Terraform-Pläne,
   Pipeline-Blueprints und Approvals machen Infrastrukturveränderungen
   nachvollziehbar, bevor sie im Betrieb ankommen.
 - **Betrieb beginnt nicht nach dem Deployment:** Observability, Backup,
-  Restore, Fehlergrenzen und Runbooks gehören für mich zum Plattformvertrag.
+  Restore, Fehlergrenzen und Runbooks gehören für mich zur Plattformarbeit.
 - **Automatisierung reduziert Fehlerquellen:** Was zuverlässig als Code,
   Pipeline oder Runbook beschrieben werden kann, sollte nicht dauerhaft von
   manueller Erinnerung abhängen.
@@ -78,7 +78,7 @@ Rückwege. Genau diese Gesamtsicht ist meine Stärke.
 Die gezeigten Prinzipien sind nicht nur theoretisch. Mit Azure arbeite ich seit
 2018 in unterschiedlichen beruflichen Zusammenhängen; in meiner jüngeren
 Plattformarbeit habe ich unter anderem Azure-Infrastruktur mit Terraform und
-getrennten Environment-Verträgen, Azure DevOps Pipelines und Agent Pools sowie
+getrennten Environment-Strukturen, Azure DevOps Pipelines und Agent Pools sowie
 modulares Ansible-Konfigurationsmanagement umgesetzt.
 Containerisierte, ephemere Ansible-Ausführungsumgebungen, Terraform Outputs
 beziehungsweise Remote State als Inventory-Quelle sowie Linting, Syntax Check,
@@ -199,7 +199,7 @@ Multi-Environment-YAML, Backend-/State-Grenze, Pipeline, Security-Assets und
 README. Die Single Source of Truth liegt damit je Verantwortungsbereich im
 zuständigen Repository.
 
-Für die lesbare Lab-Darstellung sind diese Verträge je Subscription-Grenze
+Für die lesbare Lab-Darstellung sind diese Übergaben je Subscription-Grenze
 konsolidiert:
 
 ```text
@@ -214,9 +214,9 @@ environments/
 
 Jeder Ordner unter `terraform/stacks/` repräsentiert eines dieser eigenständigen
 Fach-Repositories und behält einen eigenen State-Key. Im Lab liest er nur
-seinen Abschnitt aus dem konsolidierten Environment-Vertrag. Upstream-Stacks
-veröffentlichen Outputs; abhängige Stacks konsumieren ausschließlich diese
-Verträge über `terraform_remote_state`.
+seinen Abschnitt aus der konsolidierten Environment-Datei. Upstream-Stacks
+veröffentlichen Outputs; abhängige Stacks nutzen diese Outputs über
+`terraform_remote_state`.
 
 Im dargestellten Multi-Team-Betriebsmodell ist der Terraform-State zentral je
 Subscription- und Environment-Grenze in Azure Storage vorgesehen. Jedes Team
@@ -230,18 +230,18 @@ States zu geben. Production und Nonproduction teilen keinen State-Storage.
 | Bereich | Im Repository implementiert | Bewusst als Ziel/Intent modelliert |
 | --- | --- | --- |
 | Network | unabhängig geschriebener Demo-Baustein und Root-Stack | produktiver Modul- und Repository-Code |
-| Shared Services | Log Analytics; Key Vault/Storage als Resource-Group-Rahmen | produktionsreife Service-Ausprägung |
-| Routing, Firewall, App Gateway | YAML-Verträge, Remote State, Outputs | reale Ressourcenimplementierung |
-| Compute | VM-Vertrag und Ansible-Übergabe | vollständiger VM-Lifecycle |
+| Shared Services | Log Analytics; Key Vault/Storage nur auf Resource-Group-Ebene | produktionsreife Service-Ausprägung |
+| Routing, Firewall, App Gateway | YAML-Konfiguration, Remote State, Outputs | reale Ressourcenimplementierung |
+| Compute | VM-Metadaten und Ansible-Übergabe | vollständiger VM-Lifecycle |
 | AKS | Environment-, Security-, Node-Pool- und Kosten-Intent | Cluster-Provisionierung |
 | Kubernetes | Blueprints, Testing/Staging/Production-Overlays, Guardrails | Rollout-Controller für Blue-Green |
-| Landing Zone Governance | begründeter Denkweg, ALZ-Core-Vertrag und stufenweise Verifikation | Management Groups, Policy-Lifecycle, Platform-Subscriptions und Subscription Vending |
-| CI | Terraform-, YAML-, Schema-, Isolation- und Security-Ausnahmevertrag | reale Deployment- und Scanner-Pipelines |
+| Landing Zone Governance | begründeter Denkweg, ALZ-Core-Einstieg und stufenweise Verifikation | Management Groups, Policy-Lifecycle, Platform-Subscriptions und Subscription Vending |
+| CI | Terraform-, YAML-, Schema-, Isolation- und Security-Ausnahmen | reale Deployment- und Scanner-Pipelines |
 | Pipeline Blueprint | GitHub Actions Check, Validate, Plan-Artefakt und geschützter Apply | reale Entra-OIDC-Federation und Environment-Approvals |
 
 Die Trennung ist absichtlich sichtbar: Direkt prüfbarer Code, modellierte
-Verträge und nächste Integrationsschritte bleiben getrennt, damit ein Review
-erkennen kann, was heute ausführbar ist und was bewusst als Plattformvertrag
+Strukturen und nächste Integrationsschritte bleiben getrennt, damit ein Review
+erkennen kann, was heute ausführbar ist und was bewusst als Teil des Plattformmodells
 vorbereitet wurde.
 
 ## Kubernetes
@@ -306,7 +306,7 @@ sichtbar.
 | Anonymisierte Fallstudie mit überprüfbaren Ergebnissen | [Platform Case Study](docs/anonymized-platform-case-study.md) |
 | Betriebs-, Review- und Verantwortungsmodell | [Operating Model](docs/operating-model.md) |
 | Landing-Zone-Denkweg, Management Groups und Subscription Vending | [Landing Zone Thinking](docs/landing-zone-thinking.md) |
-| Kleinster verantwortbarer Tenant-Governance-Slice | [ALZ Core Contract](docs/alz-core-contract.md) |
+| Kleinster verantwortbarer Tenant-Governance-Slice | [ALZ Core](docs/alz-core.md) |
 | Gesamtarchitektur und Datenfluss | [Architecture](docs/architecture.md) |
 | Nonproduction/Production-Modell | [Environments](environments/README.md) |
 | Terraform-Root-Stacks | [Terraform Stacks](terraform/stacks/README.md) |
@@ -331,7 +331,7 @@ assets/              zentrale, begründete Security-Check-Ausnahmen
 scripts/             sichere, einfache Stack-Befehle
 pipeline-blueprints/ wiederverwendbare Produkt-Pipelines
 terraform/modules/  unabhängig geschriebene Demo-Bausteine
-terraform/stacks/   Root-Stacks und Remote-State-Verträge
+terraform/stacks/   Root-Stacks und Remote-State-Übergaben
 kubernetes/         Blueprints und Environment-Overlays
 docs/               Architektur- und Betriebsmuster
 ```
@@ -354,12 +354,12 @@ und keine Testing-/Staging-Kubernetes-Ressourcen konsumiert. Security-Ausnahmen
 liegen toolbezogen unter `assets/security_checks`; eine lokale Pipeline-Action
 validiert Begründung, Owner und Ablaufdatum.
 
-## Rahmen
+## Einordnung
 
 Dieses Repository ist ein persönliches, anonymisiertes Portfolio-Beispiel. Es
 enthält keine Kundennamen, produktiven IDs, Secrets oder vertraulichen
 Architekturwerte und ist keine vollständig angeschlossene Enterprise Landing
-Zone. Ausführbare Beispiele zeigen die beabsichtigten Verträge; externe
+Zone. Ausführbare Beispiele zeigen die beabsichtigte Struktur; externe
 Identitäten, Approvals und Azure-Ressourcen bleiben bewusst unkonfiguriert.
 
 This is a personal, anonymized portfolio example. It contains no customer

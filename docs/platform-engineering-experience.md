@@ -12,12 +12,12 @@ auch später noch erklärbar?
 Die Grundlage dafür ist reale Azure-Plattformarbeit. Dieses Repository zeigt
 keine nicht veröffentlichten Originalimplementierungen, sondern die anonymisierte, neu
 formulierte Arbeitsprobe dahinter. Es geht nicht nur um einzelne Terraform-Dateien,
-sondern um das Zusammenspiel: Environment-Verträge, Netzwerk- und
+sondern um das Zusammenspiel: Environment-Strukturen, Netzwerk- und
 Security-Grenzen, Application Gateway/WAF, Firewall-Integration, Pipelines,
 Configuration Management, Monitoring, Backup/Restore und Runbook-Denken.
 
 Der Umsetzungsstand macht sichtbar, welche Komponenten ausführbar sind und
-welche bewusst als Schnittstellen, Verträge oder Rahmen-Stacks modelliert
+welche bewusst nur als Struktur, Intent oder klar abgegrenzter Stack modelliert
 bleiben. Für mich ist das ein wichtiger Teil von Plattformarbeit: nicht nur
 Ressourcen bauen, sondern Verantwortung sauber schneiden.
 
@@ -32,7 +32,7 @@ gehören für mich zusammen. Das ist eine meiner Stärken.
 Technische Gesamtverantwortung bedeutet für mich nicht, jede Implementierung
 selbst vorzugeben. Fachleute sollen ihre Bereiche innerhalb vereinbarter
 Leitplanken eigenständig gestalten können. Sobald eine Lösung gemeinsame
-Schnittstellen, Betrieb, Wartbarkeit oder die Single Source of Truth betrifft,
+Übergaben, Betrieb, Wartbarkeit oder die Single Source of Truth betrifft,
 muss sie in den Gesamtweg passen und anhand gemeinsamer Kriterien überprüfbar
 sein. Einen nachweislich besseren Ansatz übernehme ich.
 
@@ -131,7 +131,7 @@ Das Repository trennt bewusst zwischen wiederverwendbaren Modulen und
 deploybaren Root-Stacks. Dadurch zeigt es zwei Dinge gleichzeitig:
 
 - eine konkret lauffähige Terraform-Basis für Netzwerk, Monitoring,
-  Security- und Storage-Rahmen
+  Security- und Storage-Basis
 - ein Stack-Modell, das getrennte Root-Repositories, Remote State,
   YAML-Konfiguration und klare Übergabepunkte simuliert
 
@@ -155,12 +155,12 @@ Which change needs review? And how does an environment stay explainable later?
 The foundation is real Azure platform engineering work. This repository does
 not publish original non-public source code. It translates the underlying work
 into an anonymized, reviewable sample. The point is not a collection of isolated
-Terraform files, but the system around them: environment contracts, network and
+Terraform files, but the system around them: environment configuration, network and
 security boundaries, Application Gateway/WAF, firewall integration, pipelines,
 configuration management, monitoring, backup/restore and runbook thinking.
 
-Some parts are executable, while others are intentionally modeled as
-interfaces, contracts or stack frames. For me, that is part of platform work:
+Some parts are executable, while others intentionally show structure, intent
+or stack boundaries. For me, that is part of platform work:
 not only building resources, but also drawing responsibility boundaries
 clearly.
 
@@ -168,7 +168,7 @@ clearly.
 
 For me, technical ownership does not mean prescribing every implementation.
 Specialists should be able to design their areas independently within agreed
-guardrails. Once a solution affects shared interfaces, operations,
+guardrails. Once a solution affects shared handover points, operations,
 maintainability or the single source of truth, it must fit the overall path and
 be reviewable against shared criteria. I adopt an approach that is demonstrably
 better.
@@ -192,7 +192,7 @@ looks like.
 ## Practical Patterns
 
 I implemented the following patterns in my professional platform work or
-derived them as anonymized architecture and operating contracts. The separate
+represented them here as anonymized architecture and operating patterns. The separate
 implementation-status section states which parts are executable in this public
 repository itself.
 

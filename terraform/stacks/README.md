@@ -14,7 +14,7 @@ konsumieren diese Outputs über `terraform_remote_state`.
 
 ## Muster
 
-Das öffentliche Lab konsolidiert die Environment-Verträge, um die
+Das öffentliche Lab konsolidiert die Environment-Strukturen, um die
 Repository-Beziehungen ohne wiederholte Beispieldateien lesbar zu zeigen:
 
 ```text
@@ -40,7 +40,7 @@ terraform/stacks/<stack>/
 - Downstream-Stacks konsumieren diese Outputs mit `terraform_remote_state`.
 - Im Lab lesen alle Stacks ihren Abschnitt aus der konsolidierten YAML ihrer
   Subscription-Grenze. Im getrennten Modell besitzt jedes Fach-Repository den
-  entsprechenden eigenen Environment-Vertrag.
+  entsprechenden eigenen Abschnitt in seiner Environment-Datei.
 - Nonproduction und Production verwenden getrennte State-Resource-Groups,
   Storage Accounts, State-Schlüssel und Pipeline-Berechtigungen.
 - `-var environment=...` wählt genau eine zentrale Konfiguration. `main.tf`
@@ -69,7 +69,7 @@ Die genaue Reihenfolge kann variieren, sobald Abhängigkeiten erfüllt sind.
 `routing`, `firewall` und `application-gateway` hängen von `network` ab,
 `compute` und `aks` hängen von `network` und `shared-services` ab.
 Der AI-/GPU-Intent ist kein eigener produktiver Stack, sondern Teil des
-AKS-Vertrags: GPU-Kapazität, Scheduling, Kosten- und Approval-Grenzen werden
+gemeinsamen AKS-Modells: GPU-Kapazität, Scheduling, Kosten- und Approval-Grenzen werden
 dort modelliert, bevor ein Inference-Blueprint später als Workload angebunden
 wird.
 `configuration-management` nutzt `compute`-Outputs als Inventory-Quelle
@@ -92,7 +92,7 @@ those outputs through `terraform_remote_state`.
 - Downstream stacks consume those outputs with `terraform_remote_state`.
 - In the lab, every stack reads its section from the consolidated YAML for its
   subscription boundary. In the separated model, each domain repository owns
-  the corresponding environment contract.
+  its own environment configuration.
 - Nonproduction and production use separate state resource groups, storage
   accounts, state keys and pipeline permissions.
 - `-var environment=...` selects one central configuration. `main.tf` reads
@@ -120,7 +120,7 @@ The exact order can vary once dependencies are satisfied. `routing`,
 `firewall` and `application-gateway` depend on `network`, while `compute` and
 `aks` depend on both `network` and `shared-services`.
 The AI/GPU intent is not a separate production stack. It belongs to the AKS
-contract: GPU capacity, scheduling, cost and approval boundaries are modeled
+design: GPU capacity, scheduling, cost and approval boundaries are modeled
 there before an inference blueprint is wired in as a workload.
 `configuration-management` consumes `compute` outputs as an inventory source
 for Ansible pipelines.

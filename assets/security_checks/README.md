@@ -1,6 +1,6 @@
 # Security-Check-Ausnahmen
 
-Dieses Verzeichnis ist der zentrale, reviewbare Vertrag für Ausnahmen aus
+Dieses Verzeichnis ist die zentrale, reviewbare Quelle für Ausnahmen aus
 Infrastructure-as-Code-Scannern. Die Trennung je Tool folgt dem gleichen
 Prinzip wie in den Arbeits-Repositories:
 
@@ -30,6 +30,6 @@ Jede aktive Zeile braucht:
 Kommentare beginnen mit `#`. Wildcards und unbegründete dauerhafte
 Ausnahmen sind nicht zulässig.
 
-Die lokale Action `.github/actions/security-exceptions` validiert diesen
-Vertrag und stellt die Rule-IDs als kommagetrennte Outputs für Scanner-Schritte
+Die lokale Action `.github/actions/security-exceptions` validiert diese
+Dateien und stellt die Rule-IDs als kommagetrennte Outputs für Scanner-Schritte
 bereit. Damit verwenden alle Pipeline-Templates dieselbe Quelle.

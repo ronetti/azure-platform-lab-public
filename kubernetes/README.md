@@ -44,13 +44,13 @@ Application Gateway/WAF
   -> Workload Pod
 ```
 
-`blueprint-templates/platform-baseline` enthält den Vertrag, den die Plattform
+`blueprint-templates/platform-baseline` enthält die Vorgaben, die die Plattform
 jedem Namespace mitgibt: Pod Security, Quotas, Limits und Network Policies.
 
-`blueprint-templates/web-workload` zeigt den Vertrag, den ein Team konsumiert:
+`blueprint-templates/web-workload` zeigt die gemeinsamen Vorgaben für ein Team:
 Non-Root-Ausführung, Probes, Ressourcen, PDB, HPA und interner Service.
 
-`blueprint-templates/inference-workload` modelliert einen späteren Vertrag für
+`blueprint-templates/inference-workload` modelliert eine spätere Basis für
 AI-Inference-Workloads: GPU-Scheduling, Tolerations, explizite Ressourcen,
 interner Service, Probes, PDB und HPA. Der Blueprint wird noch nicht von den
 Environment-Overlays konsumiert und behauptet keine produktive Modellplattform.
@@ -155,7 +155,7 @@ Merksätze:
 
 Die Blueprints und Environment-Overlays sind implementiert und werden in CI
 gerendert sowie gegen Kubernetes-Schemas validiert. Damit zeigt dieses
-Repository Kubernetes als prüfbaren Plattformvertrag: Namespaces,
+Repository Kubernetes als prüfbare Plattformbasis: Namespaces,
 NetworkPolicies, Pod Security, Quotas, Limits, Probes, HPA, PDB und
 environment-spezifische Overlays sind versioniert und renderbar.
 
@@ -194,7 +194,7 @@ The model deliberately uses Kustomize bases and overlays instead of copied YAML
 per environment. The base is the Single Source of Truth for shared platform
 standards; overlays only describe the real environment differences.
 
-The `inference-workload` blueprint models a future contract for AI inference
+The `inference-workload` blueprint models a future baseline for AI inference
 workloads with GPU scheduling, tolerations, explicit resources, internal
 service exposure, probes, PDB and HPA. It is not wired into the environment
 overlays yet and does not claim a production model-serving platform.

@@ -17,4 +17,4 @@ locals {
 
 # Boundary stack:
 # Terraform remains the source for infrastructure and inventory data.
-# Ansible consumes this contract through its own pipeline and guardrails.
+# Ansible consumes these outputs through its own pipeline and guardrails.

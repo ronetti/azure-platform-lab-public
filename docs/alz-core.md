@@ -1,4 +1,4 @@
-# ALZ Core: Kleinster Verantwortbarer Vertrag
+# ALZ Core: Kleinster Sinnvoller Start
 
 ## Status
 
@@ -143,10 +143,10 @@ Die offizielle Empfehlung ist damit ein gepflegter Baustein, aber kein Grund,
 Defaults ungeprüft zu übernehmen. Jede aktive Policy muss zu den Fähigkeiten
 passen, die im Ziel-Tenant tatsächlich vorhanden sind.
 
-## Konfigurationsvertrag
+## Konfiguration
 
 Die spätere Implementierung soll keine Tenant-Werte in Terraform-Code
-hartcodieren. Der erste Vertrag benötigt logisch folgende Eingaben:
+hartcodieren. Der erste Schritt benötigt logisch folgende Eingaben:
 
 | Eingabe | Zweck |
 | --- | --- |
@@ -163,9 +163,9 @@ Sicherheitsrelevante IDs und Identitäten werden aus geschützten Pipeline-
 Variablen oder einem autorisierten geschützten Konfigurationspfad bezogen. Die
 öffentliche Beispielkonfiguration enthält nur synthetische logische Werte.
 
-## Output-Vertrag
+## Outputs
 
-Der Stack veröffentlicht nur stabile Übergabepunkte:
+Der Stack veröffentlicht nur Werte, die spätere Stacks wirklich brauchen:
 
 ```text
 management_group_ids = {
@@ -196,7 +196,7 @@ nicht mit Platform-Ressourcen, Subscription Vending oder Workload-Stacks
 geteilt.
 
 ```text
-Bootstrap / externer Backend-Vertrag
+Bootstrap / extern bereitgestelltes Backend
   -> alz-core State
        -> Management Groups
        -> Policy Definitions oder Bibliotheksreferenzen
@@ -224,7 +224,7 @@ Pipeline-Grenzen:
 
 ## Policy-Auswahl Für Den Governance-Slice
 
-Der Vertrag legt noch keine konkrete Built-in-Policy-ID fest. Vor der Auswahl
+Der erste Slice legt noch keine konkrete Built-in-Policy-ID fest. Vor der Auswahl
 muss die aktuell veröffentlichte Definition geprüft werden:
 
 - unterstützt sie tatsächlich einen nicht erzwingenden Einstieg?
@@ -317,12 +317,12 @@ Vor Terraform-Code müssen noch diese Fragen beantwortet werden:
 7. Wer übernimmt das zweite Governance-/Security-Review?
 
 Bis diese Entscheidungen vorliegen, bleibt der Status **modellierter
-Implementierungsvertrag**.
+Umsetzungsplan**.
 
 ## English Summary
 
-This document defines the smallest responsible `alz-core` implementation
-contract. I keep the contract separate from Terraform code until tenant
+This document defines the smallest responsible starting point for an `alz-core`
+implementation. I keep it separate from Terraform code until tenant
 context, parent management group, permissions, backend, review and rollback
 path are clear.
 

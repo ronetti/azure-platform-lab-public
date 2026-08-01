@@ -8,5 +8,5 @@ locals {
 
 # Boundary stack:
 # In production this root module would call the firewall module or a vendor appliance module.
-# The important part for this lab is the contract: network is consumed via remote state,
+# The important part for this lab is the boundary: network is consumed via remote state,
 # while rules and IP groups are changed through YAML rather than Terraform code.

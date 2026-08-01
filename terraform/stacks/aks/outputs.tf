@@ -14,7 +14,7 @@ output "used_for" {
 }
 
 output "governance" {
-  description = "Review and source-of-truth contract for this environment."
+  description = "Review and source-of-truth metadata for this environment."
   value       = local.config.governance
 }
 

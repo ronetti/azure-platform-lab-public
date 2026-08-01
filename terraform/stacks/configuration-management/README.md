@@ -2,8 +2,8 @@
 
 ## Zweck
 
-Dieser Root-Stack übersetzt Compute-Outputs in einen stabilen
-Ansible-Inventory-Vertrag. Terraform bleibt Quelle der Infrastruktur; Ansible
+Dieser Root-Stack übersetzt Compute-Outputs in ein stabiles
+Ansible-Inventory. Terraform bleibt Quelle der Infrastruktur; Ansible
 läuft in einer getrennten Pipeline mit eigenen Guardrails.
 
 ## Konfiguration

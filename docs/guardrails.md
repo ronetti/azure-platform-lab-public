@@ -107,7 +107,7 @@ Dieses Repository nutzt bewusst einfache, nachvollziehbare Gates:
 - Kubernetes schema validation
 - Flux source and kustomization status checks
 - getrennte Ansible-Pipeline mit Linting, Syntax Check und Check Mode
-- validierter Security-Ausnahmevertrag für IaC-Scanner
+- validierter Security-Ausnahmen für IaC-Scanner
 - versionsgepinntes Terraform-Pipeline-Blueprint für Produkt-Repositories
 
 Scanner-Ausnahmen liegen zentral in `assets/security_checks`. Jede aktive
@@ -159,9 +159,9 @@ This repository intentionally uses simple, understandable gates:
 - YAML linting
 - Kubernetes schema validation
 - Flux source and kustomization status checks
-- environment and delivery-contract validation
+- environment and delivery validation
 - separate Ansible pipeline with linting, syntax check and check mode
-- validated security-exception contract for IaC scanners
+- validated security-exception files for IaC scanners
 - version-pinned Terraform pipeline blueprint for product repositories
 
 In a production-like platform, additional gates could be added:
@@ -194,7 +194,7 @@ Alert-driven Ansible, update or restore pipelines require additional rules:
 - `.github/actions/security-exceptions` ist das gemeinsame Pipeline-Template
   zum Validieren und Einlesen dieser Ausnahmen.
 - `.github/workflows/terraform-blueprint.yml` enthält den wiederverwendbaren
-  GitHub-Actions-Vertrag für Check, Validate, Plan und freigegebenen Apply.
+  GitHub-Actions-Ablauf für Check, Validate, Plan und freigegebenen Apply.
 - `pipeline-blueprints/terraform` enthält Consumer-Beispiel und
   Nutzungsdokumentation.
 - `environments/` beschreibt Nonproduction und Production in zwei Dateien;
@@ -203,9 +203,9 @@ Alert-driven Ansible, update or restore pipelines require additional rules:
   Namespace-, Netzwerk- und Ressourcen-Guardrails.
 - `kubernetes/blueprint-templates/web-workload` enthält gemeinsame Security-
   und Availability-Defaults für Workloads.
-- `kubernetes/blueprint-templates/inference-workload` enthält den modellierten
-  Vertrag für spätere AI-Inference-Workloads mit GPU-Scheduling,
-  Ressourcenvertrag und interner Service-Grenze.
+- `kubernetes/blueprint-templates/inference-workload` enthält die vorbereitete
+  Basis für spätere AI-Inference-Workloads mit GPU-Scheduling,
+  Ressourcenlimits und interner Service-Grenze.
 - `docs/change-governance.md` beschreibt Reviews, Approvals und Changelog.
 - `docs/ai-assisted-platform-governance.md` beschreibt AI als zusätzliche
   Review- und Governance-Schicht ohne automatische Verantwortungsübernahme.
@@ -222,7 +222,7 @@ Alert-driven Ansible, update or restore pipelines require additional rules:
 - `.github/actions/security-exceptions` is the shared pipeline template for
   validating and reading those exceptions.
 - `.github/workflows/terraform-blueprint.yml` contains the reusable GitHub
-  Actions contract for check, validation, planning and approved apply.
+  Actions workflow for checks, validation, planning and approved apply.
 - `pipeline-blueprints/terraform` contains the consumer example and usage
   documentation.
 - `kubernetes/blueprint-templates/platform-baseline` contains shared namespace,
@@ -230,7 +230,7 @@ Alert-driven Ansible, update or restore pipelines require additional rules:
 - `kubernetes/blueprint-templates/web-workload` contains shared workload security and
   availability defaults.
 - `kubernetes/blueprint-templates/inference-workload` contains the modeled
-  contract for future AI inference workloads with GPU scheduling, resource
+  baseline for future AI inference workloads with GPU scheduling, resource
   boundaries and internal service exposure.
 - `docs/flux-gitops-pattern.md` describes Flux as the GitOps reconciliation
   layer between approved Git state and runtime cluster state.

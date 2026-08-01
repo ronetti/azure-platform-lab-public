@@ -11,27 +11,27 @@ All notable changes to this anonymized Azure Platform Lab are documented here.
 
 - Begründetes Azure-Landing-Zone-Denkmodell mit Management-Group-
   Entscheidungslogik, Einordnung der bestehenden Workload-Subscriptions,
-  gestuftem Policy-Lifecycle, Subscription-Vending-Vertrag und expliziter
+  gestuftem Policy-Lifecycle, Subscription-Vending-Struktur und expliziter
   Trennung zwischen dokumentiertem Zielbild und noch nicht implementierter
   Tenant-Governance.
 - Reasoned Azure Landing Zone model covering management-group decisions,
   placement of the existing workload subscriptions, staged policy lifecycle,
   subscription vending and the explicit boundary between the documented target
   state and tenant governance that has not yet been implemented.
-- Kleinster verantwortbarer ALZ-Core-Vertrag mit explizitem Scope, eigenem
+- Kleinster verantwortbarer ALZ-Core-Einstieg mit explizitem Scope, eigenem
   State, nicht erzwingendem Policy-Einstieg, Review-Gates, Rücknahmepfad und
   offenen Entscheidungen vor einer späteren Terraform-Implementierung.
-- Smallest responsible ALZ Core contract with explicit scope, independent
+- Smallest responsible ALZ Core foundation with explicit scope, independent
   state, non-enforcing policy entry point, review gates, rollback path and open
   decisions before a later Terraform implementation.
 - Verbindliche Projektregeln für Landing-Zone-Entscheidungen sowie ein
   belegtes Release- und Tag-Prinzip: Semantic Versioning bezieht sich primär
-  auf den öffentlichen Workflow-Vertrag; reine Dokumentationsänderungen
+  auf das öffentliche Workflow-Verhalten; reine Dokumentationsänderungen
   erzwingen keinen Release und Tag-Unveränderlichkeit wird nur bei technisch
   geprüfter Durchsetzung behauptet.
 - Binding project rules for Landing Zone decisions and an evidence-based
   release and tag principle: Semantic Versioning primarily applies to the
-  public workflow contract, documentation-only changes do not force a release,
+  public workflow behavior, documentation-only changes do not force a release,
   and tag immutability is claimed only when technically enforced and verified.
 - GitHub-Workflow-Härtung durch explizite minimale Token-Rechte und deaktivierte
   persistierte Checkout-Anmeldedaten, wenn keine authentifizierten Git-Befehle
@@ -78,10 +78,10 @@ All notable changes to this anonymized Azure Platform Lab are documented here.
 
 ### Geändert / Changed
 
-- Die Ansible-Dokumentation präzisiert den Übergabevertrag zwischen Terraform
+- Die Ansible-Dokumentation präzisiert die Übergabe zwischen Terraform
   Outputs beziehungsweise Remote State und getrennten
   Configuration-Management-Pipelines einschließlich ihrer Guardrails.
-- The Ansible documentation now clarifies the handover contract between
+- The Ansible documentation now clarifies the handover between
   Terraform outputs or remote state and separate configuration-management
   pipelines, including their guardrails.
 - Die Solution-weite Recovery-Automatisierung wird als integrierter
@@ -107,7 +107,7 @@ All notable changes to this anonymized Azure Platform Lab are documented here.
 - Kosten- und verfügbarkeitsbewusste AKS-Intents und Kubernetes-Overlays für
   Testing, Staging und Production.
 - Namespace-, Ressourcen-, Netzwerk- und Pod-Security-Guardrails als
-  wiederverwendbarer Plattformvertrag.
+  wiederverwendbare Plattformbasis.
 - Zentrale `assets/security_checks`-Konvention und wiederverwendbare
   Pipeline-Action für begründete, verantwortete und befristete Scanner-
   Ausnahmen.

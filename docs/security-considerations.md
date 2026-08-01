@@ -52,9 +52,9 @@ das eine klare Verantwortungsgrenze: Das Repository beschreibt die Plattform,
 der Secret Store verwaltet vertrauliche Daten.
 
 Für AI-Workloads gilt dieselbe Grenze noch strenger. Modellzugänge, API-Keys,
-Prompts, produktive Eingabedaten und Model-Artefakte gehören nicht als
-Klartext in Git und nicht in einen Blueprint. Das Repository darf nur den
-Vertrag zeigen: welcher Secret-Name, welche Identity, welche Registry- oder
+Prompts, produktive Eingabedaten und Model-Artefakte dürfen weder als Klartext
+in Git noch in einem Blueprint abgelegt werden. Das Repository darf nur zeigen,
+welcher Secret-Name, welche Identity, welche Registry- oder
 Artefaktquelle und welche Freigabegrenze erwartet wird.
 
 ## Environment-Trennung
@@ -118,5 +118,5 @@ access and rotation can be controlled without changing the repository.
 For AI workloads, the same boundary is even more important. Model access,
 API keys, prompts, production input data and model artifacts must not be stored
 as plaintext in Git or in a blueprint. The repository may describe only the
-contract: secret name, identity, registry or artifact source and approval
+non-sensitive references: secret name, identity, registry or artifact source and approval
 boundary.

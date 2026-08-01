@@ -111,8 +111,8 @@ Ein Merge nach `main` ist noch kein Release und erzeugt nicht automatisch einen
 Tag. Tags und GitHub Releases werden nur für bewusst freigegebene Stände und
 nach ausdrücklichem Auftrag erstellt.
 
-Semantic Versioning braucht einen klar definierten öffentlichen Vertrag. In
-diesem Repository ist das primär der konsumierbare Vertrag von
+Für Semantic Versioning muss klar sein, was versioniert wird. In diesem
+Repository ist das vor allem der wiederverwendbare Workflow
 `.github/workflows/terraform-blueprint.yml`:
 
 - `workflow_call`-Inputs
@@ -120,12 +120,12 @@ diesem Repository ist das primär der konsumierbare Vertrag von
 - dokumentiertes Check-, Validate-, Plan- und Apply-Verhalten
 - Plan-Artefakt-, State- und Freigabegrenzen
 
-Für diesen Vertrag gilt:
+Für diesen Workflow gilt:
 
 - `PATCH` kennzeichnet eine rückwärtskompatible Fehlerkorrektur.
-- `MINOR` kennzeichnet neue rückwärtskompatible Funktionalität oder die
-  Deprecation eines Teils des öffentlichen Vertrags.
-- `MAJOR` kennzeichnet eine inkompatible Änderung des öffentlichen Vertrags.
+- `MINOR` kennzeichnet neue rückwärtskompatible Funktionalität oder eine
+  angekündigte Ablösung eines bisher unterstützten Teils.
+- `MAJOR` kennzeichnet eine inkompatible Änderung des bisherigen Verhaltens.
 - Reine Dokumentationsänderungen erzwingen keine neue Version.
 - Ein bewusst veröffentlichter Dokumentations-Snapshot ist möglich; seine
   Version ist eine Projektentscheidung und folgt nicht automatisch aus
@@ -152,7 +152,7 @@ sie durch GitHub-Einstellungen wie immutable Releases oder geeignete
 Tag-Regeln tatsächlich erzwungen und geprüft ist.
 
 Ein externer reusable Workflow kann über Branch, Release-Tag oder vollständigen
-Commit-SHA referenziert werden. `main` ist kein stabiler Consumer-Vertrag. Ein
+Commit-SHA referenziert werden. `main` ist dafür keine stabile Referenz. Ein
 vollständiger Commit-SHA ist laut GitHub die sicherste Referenz für Stabilität
 und Sicherheit. Ein Release-Tag bleibt als lesbare, bewusst freigegebene
 Referenz zulässig; seine Schutz- und Änderungsgrenzen müssen dokumentiert und
@@ -171,8 +171,8 @@ A merge to `main` is not a release and does not automatically create a tag.
 Tags and GitHub Releases are created only for deliberately approved states and
 after an explicit request.
 
-Semantic Versioning requires a clearly defined public contract. In this
-repository, that contract is primarily the reusable interface of
+Semantic Versioning requires clearly defined versioned behavior. In this
+repository, that behavior is primarily defined by the reusable workflow in
 `.github/workflows/terraform-blueprint.yml`:
 
 - `workflow_call` inputs
@@ -180,12 +180,12 @@ repository, that contract is primarily the reusable interface of
 - documented Check, Validate, Plan and Apply behavior
 - plan-artifact, state and approval boundaries
 
-For this contract:
+For this versioned workflow:
 
 - `PATCH` identifies a backward-compatible bug fix.
 - `MINOR` identifies new backward-compatible functionality or deprecation of
-  part of the public contract.
-- `MAJOR` identifies an incompatible change to the public contract.
+  previously supported behavior.
+- `MAJOR` identifies an incompatible change to the versioned behavior.
 - Documentation-only changes do not require a new version.
 - A deliberate documentation snapshot may be released, but its version is a
   project decision and is not automatically dictated by Semantic Versioning.
@@ -209,8 +209,8 @@ immutability is claimed only when GitHub settings such as immutable releases
 or suitable tag rules actually enforce it and have been verified.
 
 An external reusable workflow can be referenced through a branch, release tag
-or full commit SHA. `main` is not a stable consumer contract. GitHub identifies
-a full commit SHA as the safest reference for stability and security. A
+or full commit SHA. `main` is not a stable reference for consumers. GitHub
+identifies a full commit SHA as the safest reference for stability and security. A
 release tag remains an allowed readable, deliberately approved reference, but
 its protection and mutation boundaries must be documented and verified.
 
@@ -257,8 +257,8 @@ commands.
 - `terraform/stacks/configuration-management` zeigt Terraform Outputs als
   Inventory-Quelle für Ansible.
 - `CHANGELOG.md` dokumentiert die Entwicklung dieses Repositories.
-- `pipeline-blueprints/terraform/README.md` dokumentiert den konsumierbaren
-  Workflow- und Versionsvertrag.
+- `pipeline-blueprints/terraform/README.md` dokumentiert die Nutzung und
+  Versionierung des wiederverwendbaren Workflows.
 - `docs/availability-engineering.md` verbindet Changes mit SLI/SLO,
   Error Budget und Betriebsentscheidungen.
 
@@ -272,6 +272,6 @@ commands.
   inventory source for Ansible.
 - `CHANGELOG.md` documents the evolution of this repository.
 - `pipeline-blueprints/terraform/README.md` documents the reusable workflow
-  and versioning contract.
+  and versioning rules.
 - `docs/availability-engineering.md` connects changes with SLI/SLO, error
   budgets and operational decisions.

@@ -82,8 +82,8 @@ Pull Request
 
 Die AI-Schicht darf dabei keine zweite Source of Truth werden. Git bleibt die
 Quelle für Konfiguration, Entscheidungen und Änderungsverlauf. Der Agent liest
-diese Quelle, kommentiert Risiken und hilft beim Prüfen. Er ersetzt nicht den
-Plattformvertrag.
+diese Quelle, kommentiert Risiken und hilft beim Prüfen. Er ersetzt nicht die
+bestehenden Plattformregeln.
 
 ## Warum Das Zu Meiner Arbeitsweise Passt
 

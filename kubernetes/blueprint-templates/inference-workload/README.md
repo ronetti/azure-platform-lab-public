@@ -1,13 +1,13 @@
 # Inference Workload Blueprint
 
-Dieser Blueprint modelliert einen Kubernetes-Vertrag für AI-Inference-
+Dieser Blueprint modelliert eine Kubernetes-Basis für AI-Inference-
 Workloads. Er wird noch nicht von den Environment-Overlays konsumiert und
 stellt keine produktive Modellplattform dar.
 
 Ich habe dafür bewusst einen eigenen Blueprint angelegt. Inference ist für
 mich kein normales Web-Deployment mit anderem Image. GPU-Scheduling,
 Model-Load-Zeit, Artefaktfreigabe, sensible Eingaben, höhere Kosten und andere
-Betriebssignale brauchen einen eigenen Vertrag. So bleiben die Grenzen sichtbar
+Betriebssignale müssen getrennt betrachtet werden. So bleiben die Grenzen sichtbar
 und werden nicht im vorhandenen Web-Blueprint versteckt.
 
 Er zeigt die Plattformfragen, die vor einem echten AI-Workload geklärt sein
@@ -15,10 +15,10 @@ müssen:
 
 - Scheduling auf dafür vorgesehene AI-/GPU-Nodes
 - Taints und Tolerations gegen versehentliche Platzierung
-- CPU-, Memory- und GPU-Ressourcen als expliziter Vertrag
+- CPU-, Memory- und GPU-Ressourcen als klare Vorgabe
 - Non-Root-Ausführung und kein automatisch gemountetes Service-Account-Token
 - interne Service-Grenze
-- Probes, PDB und HPA als Betriebsrahmen
+- Probes, PDB und HPA als betriebliche Absicherung
 - Model-Image nur als Platzhalter für ein später freigegebenes Artefakt
 
 Das eigentliche Modell, Secrets, Credentials und produktive Prompts gehören
@@ -32,7 +32,7 @@ Blueprint ein echter Deployment-Pfad werden.
 
 ## English Summary
 
-This blueprint models the Kubernetes contract for AI inference workloads. It
+This blueprint models the Kubernetes baseline for AI inference workloads. It
 is not wired into the environment overlays yet and does not claim a production
 model-serving platform. It focuses on scheduling, resource boundaries, security
 defaults, internal service exposure and operational readiness.

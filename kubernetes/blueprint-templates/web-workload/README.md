@@ -1,6 +1,6 @@
 # Web Workload Blueprint
 
-Dieser Kustomize-Blueprint ist der gemeinsame Workload-Vertrag:
+Dieser Kustomize-Blueprint enthält die gemeinsamen Workload-Vorgaben:
 
 - eigener Service Account ohne automatisch eingebundenes Token
 - Deployment mit Non-Root-Security-Context, Ressourcen und Probes

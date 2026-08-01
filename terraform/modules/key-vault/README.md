@@ -2,8 +2,9 @@
 
 ## Deutsch
 
-Dieses Basismodul rahmt die Secret- und Zertifikatsbasis der Plattform. In
-diesem anonymisierten Repository wird bewusst nur der Modulrahmen gezeigt.
+Dieses Basismodul zeigt die vorgesehene Secret- und Zertifikatsbasis der
+Plattform. In diesem anonymisierten Repository wird bewusst nur die
+Grundstruktur des Moduls gezeigt.
 
 In einer echten Plattform gehören dazu klare RBAC/IAM-Grenzen, keine Secrets in
 Git, getrennte Pipeline-Berechtigungen und nachvollziehbare Zugriffe.

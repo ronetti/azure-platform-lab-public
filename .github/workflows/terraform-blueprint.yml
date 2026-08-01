@@ -92,7 +92,7 @@ jobs:
           TF_ROOT: ${{ inputs.terraform_root }}
         run: terraform -chdir="$GITHUB_WORKSPACE/$TF_ROOT" fmt -check -recursive
 
-      - name: Security exception contract
+      - name: Security exception validation
         env:
           EXCEPTIONS_PATH: ${{ inputs.security_exceptions_path }}
         run: |

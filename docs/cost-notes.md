@@ -56,8 +56,8 @@ Test- und Releasefenster ist erlaubt. Ein dedizierter Staging-Node-Pool wird
 erst bei gemessener Last oder einem echten Isolationsbedarf ergänzt.
 
 Production wird nicht durch Entfernen von Redundanz verbilligt. Zwei
-System-Nodes, reguläre Workload-Nodes und Zonenverteilung bleiben Teil des
-Verfügbarkeitsvertrags. Rightsizing, Autoscaling und eine mögliche
+System-Nodes, reguläre Workload-Nodes und Zonenverteilung bleiben Teil der
+Verfügbarkeitsanforderungen. Rightsizing, Autoscaling und eine mögliche
 Reservierung werden erst nach Auswertung realer Kosten und
 Production-Auslastungsmetriken entschieden. Production teilt keine States,
 Netzwerke, Cluster, Identitäten, Secrets, Registry oder Monitoring-Ressourcen
@@ -70,6 +70,6 @@ Einsparversprechen.
 
 Testing and staging run in one shared nonproduction environment.
 They share fixed platform services and allocate usage by namespace and stage.
-Production keeps its own platform boundary and availability contract;
+Production keeps its own platform and availability boundaries;
 it shares no runtime resources or state with nonproduction. Rightsizing and
 commitments require production cost and utilization data.
