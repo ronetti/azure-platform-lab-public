@@ -33,10 +33,11 @@ modellierten Verträgen, Zielbild und noch notwendiger realer Integration.
 
 ## Berufliche Umsetzung Hinter Der Arbeitsprobe
 
-Die gezeigten Prinzipien sind nicht nur theoretisch. Seit Ende 2023 habe ich in
-meiner beruflichen Plattformarbeit unter anderem Azure-Infrastruktur mit
-Terraform und getrennten Environment-Verträgen, Azure DevOps Pipelines und
-Agent Pools sowie modulares Ansible-Konfigurationsmanagement umgesetzt.
+Die gezeigten Prinzipien sind nicht nur theoretisch. Mit Azure arbeite ich seit
+2018 in unterschiedlichen beruflichen Zusammenhängen; in meiner jüngeren
+Plattformarbeit habe ich unter anderem Azure-Infrastruktur mit Terraform und
+getrennten Environment-Verträgen, Azure DevOps Pipelines und Agent Pools sowie
+modulares Ansible-Konfigurationsmanagement umgesetzt.
 Containerisierte, ephemere Ansible-Ausführungsumgebungen, Terraform Outputs
 beziehungsweise Remote State als Inventory-Quelle sowie Linting, Syntax Check,
 Check Mode, Reviews und Approvals gehörten dabei zum Delivery-Modell.
